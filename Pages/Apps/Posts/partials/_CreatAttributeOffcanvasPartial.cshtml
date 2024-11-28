@@ -1,0 +1,69 @@
+@model AspnetCoreStarter.Pages.Apps.Posts.AttributeModel
+
+<div class="offcanvas offcanvas-end" tabindex="-1" id="createAttributeOffcanvas" aria-labelledby="createAttributeOffcanvasLabel">
+	<div class="offcanvas-header border-bottom">
+		<h5 class="offcanvas-title" id="createAttributeOffcanvasLabel">Create Attribute</h5>
+		<button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+	</div>
+	<div class="offcanvas-body mx-0 flex-grow-0">
+		<form method="post" id="createAttributeForm">
+			<h6>1. Define Attribute.</h6>
+			<div class="form-floating form-floating-outline mb-5">
+				<input asp-for="NewAttribute.Name" class="form-control" id="NewAttribute_Attribute" placeholder="Type as String"
+							 aria-label="Type as String" />
+				<label for="NewAttribute_Attribute">Attribute Name</label>
+			</div>
+			<div class="form-floating form-floating-outline mb-5">
+				<input asp-for="NewAttribute.Description" class="form-control" id="NewAttribute_Description" placeholder="descripe the attribute data usage"
+							 aria-label="Description Text">
+				<label for="NewAttribute_Description">Description</label>
+			</div>
+			
+			<hr class="my-6 mx-n4" />
+			<h6>2. Select Types</h6>
+			<div class="form-floating form-floating-outline mb-5">
+				<select asp-for="NewAttribute.BaseType" asp-items="Model.AvailableBaseTypestList" class="form-select"
+								id="NewAttribute_SelectedRole">
+					<option value="">Select BaseType</option>
+				</select>
+				<label for="NewAttribute_SelectedRole">Select Role</label>
+			</div>
+			<div class="form-floating form-floating-outline mb-5">
+				<select asp-for="NewAttribute.ReturnType" asp-items="Model.AvailableBaseTypestList" class="form-select"
+								id="NewAttribute_SelectedPlan">
+					<option value="">Select Plan</option>
+				</select>
+				<label for="NewAttribute_SelectedPlan">Select Plan</label>
+			</div>
+			<hr class="my-6 mx-n4" />
+			<h6>3. Validation</h6>
+			<div class="row g-6">
+				<div class="col-md-6">
+					<div class="form-floating form-floating-outline mb-5">
+						<input asp-for="NewAttribute.Min" class="form-control" id="NewAttribute_Min"
+									 placeholder="" aria-label="" />
+						<label for="NewAttribute_Min">MIN</label>
+					</div>
+				</div>
+				<div class="col-md-6">
+					<div class="form-floating form-floating-outline mb-5">
+						<input asp-for="NewAttribute.Max" class="form-control" id="NewAttribute_Max"
+									 placeholder="" aria-label="" />
+						<label for="NewAttribute_Max">MAX</label>
+					</div>
+				</div>
+			</div>
+			<div class="form-floating form-floating-outline mb-5">
+				<input asp-for="NewAttribute.Format" class="form-control" id="NewAttribute_Format" placeholder="define the attribute Format"
+							 aria-label="Format Pattern">
+				<label for="NewAttribute_Format">Format Pattern</label>
+			</div>
+			<div class="row">
+				<div class="col-12">
+					<button type="submit" class="btn btn-primary me-3">Submit</button>
+					<button type="reset" class="btn btn-outline-secondary" data-bs-dismiss="offcanvas">Cancel</button>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>

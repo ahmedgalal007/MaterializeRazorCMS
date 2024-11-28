@@ -1,0 +1,47 @@
+
+@* Edit Attribute Form Offcanvas *@
+<div class="offcanvas offcanvas-end" tabindex="-1" id="editAttributeOffcanvas" aria-labelledby="editAttributeOffcanvasLabel">
+  <div class="offcanvas-header border-bottom">
+    <h5 class="offcanvas-title" id="editAttributeOffcanvasLabel">Edit Attribute</h5>
+    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body mx-0 flex-grow-0">
+    <form method="post" asp-page-handler="EditOrUpdate" asp-route-id="" id="editAttributeForm">
+
+      <div class="form-floating form-floating-outline mb-5">
+				<input class="form-control" id="EditAttribute_AttributeName" name="attribute.Name" value="" />
+        <label for="EditAttribute_AttributeName">Attribute Name</label>
+      </div>
+
+      <div class="form-floating form-floating-outline mb-5">
+				<input class="form-control" id="EditAttribute_Description" name="attribute.Description" value="" />
+				<label for="EditAttribute_Description">Description</label>
+      </div>
+
+      <div class="form-floating form-floating-outline mb-5">
+				<select class="form-select" id="EditAttribute_SelectedBaseType" name="attribute.BaseType"
+								asp-items="Model.AvailableBaseTypestList" value="">
+        </select>
+				<label for="EditAttribute_SelectedBaseType">Select Base Type</label>
+      </div>
+
+      <div class="form-floating form-floating-outline mb-5">
+				<select class="form-select" id="EditAttribute_SelectedReturnType" name="attribute.ReturnType"
+								asp-items="Model.AvailableBaseTypestList" value="">
+        </select>
+				<label for="EditAttribute_SelectedReturnType">Select Return Type</label>
+      </div>
+
+			<div class="form-floating form-floating-outline mb-5">
+				<input class="form-control" id="EditAttribute_Format" name="attribute.Format" value="" />
+				<label for="EditAttribute_Format">Format Pattern</label>
+			</div>
+      <div class="row">
+        <div class="col-12">
+          <button type="submit" class="btn btn-primary me-3">Submit</button>
+          <button type="reset" class="btn btn-outline-secondary" data-bs-dismiss="offcanvas">Cancel</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

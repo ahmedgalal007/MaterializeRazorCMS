@@ -1,0 +1,15 @@
+// global using FSH.WebApi.Application.Common.Models;
+// global using FSH.WebApi.Infrastructure.Auth.Permissions;
+// global using FSH.WebApi.Infrastructure.OpenApi;
+// global using FSH.WebApi.Shared.Authorization;
+global using global::System;
+global using global::System.Collections.Generic;
+global using global::System.IO;
+global using global::System.Linq;
+global using global::System.Net.Http;
+global using global::System.Threading;
+global using global::System.Threading.Tasks;
+global using Microsoft.AspNetCore.Authorization;
+global using Microsoft.AspNetCore.Mvc;
+global using DefaultIdType = global::System.Guid;
+// global using NSwag.Annotations;
