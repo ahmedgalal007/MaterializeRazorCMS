@@ -61,7 +61,7 @@ function submitFormAndSetSuccessFlag(form, flagName) {
   function setFormAttributes(form, attributeId, handler) {
     const routeAttribute = 'asp-route-id';
     setElementAttributes(form, routeAttribute, attributeId);
-    form.action = `/App/Post/Attribute?handler=${handler}&id=${attributeId}`;
+    form.action = `/Apps/Posts/Attribute?handler=${handler}&id=${attributeId}`;
   }
 
   // Sweet Alert Success Function (Attribute Deleted/Created/Updated)
@@ -92,40 +92,41 @@ function submitFormAndSetSuccessFlag(form, flagName) {
   // Function to handle the "Edit Attribute" Offcanvas Modal
   const handleEditAttributeModal = editButton => {
     // Get the Attribute details from the table
-    const AttributeId = editButton.id.split('-')[0];
-    const AttributeName = document.querySelector(`.Attribute-name-full-${AttributeId}`).innerText;
-    const AttributeEmail = document.getElementById(`${AttributeId}-editAttribute`).parentElement.parentElement.children[3].innerText;
-    const isVerified = document.querySelector(`.Attribute-verified-${AttributeId}`).dataset.isVerified;
-    const AttributeContactNumber = document.getElementById(`${AttributeId}-editAttribute`).parentElement.parentElement.children[5]
-      .innerText;
-    const AttributeSelectedBaseType = document.getElementById(`${AttributeId}-editAttribute`).parentElement.parentElement.children[6]
-      .innerText;
-    const AttributeSelectedReturnType = document.getElementById(`${AttributeId}-editAttribute`).parentElement.parentElement.children[7]
-      .innerText;
+    const AttributeId = editButton.id.split('--')[0];
+    const TableRow = document.getElementById(`${AttributeId}--editAttribute`).parentElement.parentElement;
+    const AttributeIdx = TableRow.attributes.idx.value;
+    //! const AttributeName = document.querySelector(`.Attribute-name-full-${AttributeId}`).innerText;
+    const AttributeName = TableRow.children[2].innerText;
+    const AttributeDescription = TableRow.children[3].innerText;
+    const AttributeSelectedBaseType = TableRow.children[4].innerText;
+    const AttributeSelectedReturnType = TableRow.children[5].innerText;
+    const AttributeFormat = TableRow.children[6].innerText;
 
     // Set the form attributes (route and action)
     const editForm = document.getElementById('editAttributeForm');
     setFormAttributes(editForm, AttributeId, 'EditOrUpdate');
 
     // Set the input asp-for attributes (for model binding)
-    setElementAttributes(document.getElementById('EditAttribute_AttributeName'), 'asp-for', `Attributes[${AttributeId}].AttributeName`);
-    setElementAttributes(document.getElementById('EditAttribute_Email'), 'asp-for', `Attributes[${AttributeId}].Email`);
-    setElementAttributes(document.getElementById('EditAttribute_IsVerified'), 'asp-for', `Attributes[${AttributeId}].IsVerified`);
-    setElementAttributes(
-      document.getElementById('EditAttribute_ContactNumber'),
-      'asp-for',
-      `Attributes[${AttributeId}].ContactNumber`
-    );
-    setElementAttributes(document.getElementById('EditAttribute_SelectedRole'), 'asp-for', `Attributes[${AttributeId}].SelectedRole`);
-    setElementAttributes(document.getElementById('EditAttribute_SelectedPlan'), 'asp-for', `Attributes[${AttributeId}].SelectedPlan`);
+    setElementAttributes(document.getElementById('EditAttribute_AttributeName'), 'asp-for', `Attributes[${AttributeIdx}].AttributeName`);
+    setElementAttributes(document.getElementById('EditAttribute_Description'), 'asp-for', `Attributes[${AttributeIdx}].Description`);
+    // setElementAttributes(document.getElementById('EditAttribute_IsVerified'), 'asp-for', `Attributes[${AttributeId}].IsVerified`);
+    //setElementAttributes(
+    //  document.getElementById('EditAttribute_ContactNumber'),
+    //  'asp-for',
+    //  `Attributes[${AttributeIdx}].ContactNumber`
+    //);
+    setElementAttributes(document.getElementById('EditAttribute_SelectedBaseType'), 'asp-for', `Attributes[${AttributeIdx}].SelectedBaseType`);
+    setElementAttributes(document.getElementById('EditAttribute_SelectedReturnType'), 'asp-for', `Attributes[${AttributeIdx}].SelectedReturnType`);
+    setElementAttributes(document.getElementById('EditAttribute_Format'), 'asp-for', `Attributes[${AttributeIdx}].Format`);
 
     // Set the input values (for value binding)
     document.getElementById('EditAttribute_AttributeName').value = AttributeName;
-    document.getElementById('EditAttribute_Email').value = AttributeEmail;
-    document.getElementById('EditAttribute_IsVerified').checked = JSON.parse(isVerified.toLowerCase());
-    document.getElementById('EditAttribute_ContactNumber').value = AttributeContactNumber;
-    document.getElementById('EditAttribute_SelectedRole').value = AttributeSelectedRole.toLowerCase();
-    document.getElementById('EditAttribute_SelectedPlan').value = AttributeSelectedPlan.toLowerCase();
+    document.getElementById('EditAttribute_Description').value = AttributeDescription;
+    // document.getElementById('EditAttribute_IsVerified').checked = JSON.parse(isVerified.toLowerCase());
+    // document.getElementById('EditAttribute_ContactNumber').value = AttributeContactNumber;
+    document.getElementById('EditAttribute_SelectedBaseType').value = AttributeSelectedBaseType.split('.')[1] ?? AttributeSelectedBaseType;
+    document.getElementById('EditAttribute_SelectedReturnType').value = AttributeSelectedReturnType;
+    document.getElementById('EditAttribute_Format').value = AttributeFormat;
   };
 
   // Attach event listeners for "Edit Attribute" buttons (pencil icon)
