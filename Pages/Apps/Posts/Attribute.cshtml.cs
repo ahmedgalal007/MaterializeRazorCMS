@@ -1,6 +1,7 @@
 using AspnetCoreStarter.Data;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Data.Entity;
+using Attribute = AspnetCoreStarter.Entities.Posts.Attribute;
 
 namespace AspnetCoreStarter.Pages.Apps.Posts;
 
@@ -15,16 +16,16 @@ public class AttributeModel : BasePageModel
     // Assign the UserContext object to the _context field
     _context = context;
 
-    AvailableBaseTypestList = new List<SelectListItem>()
-    {
-      new SelectListItem { Text = typeof(bool).Name , Value= typeof(bool).FullName},
-      new SelectListItem { Text = typeof(decimal).Name , Value= typeof(decimal).FullName},
-      new SelectListItem { Text = typeof(double).Name , Value= typeof(double).FullName},
-      new SelectListItem { Text = typeof(DateTime).Name , Value= typeof(DateTime).FullName},
-      new SelectListItem { Text = typeof(DateOnly).Name , Value= typeof(DateOnly).FullName},
-      new SelectListItem { Text = typeof(string).Name , Value= typeof(string).FullName},
-      new SelectListItem { Text = typeof(TimeSpan).Name , Value= typeof(TimeSpan).FullName}
-    };
+    AvailableBaseTypestList =
+    [
+      new() { Text = typeof(bool).Name , Value= typeof(bool).FullName},
+      new() { Text = typeof(decimal).Name , Value= typeof(decimal).FullName},
+      new() { Text = typeof(double).Name , Value= typeof(double).FullName},
+      new() { Text = typeof(DateTime).Name , Value= typeof(DateTime).FullName},
+      new() { Text = typeof(DateOnly).Name , Value= typeof(DateOnly).FullName},
+      new() { Text = typeof(string).Name , Value= typeof(string).FullName},
+      new() { Text = typeof(TimeSpan).Name , Value= typeof(TimeSpan).FullName}
+    ];
 
     AvailableReturnTypestList = new SelectList(new List<string>()
     {
@@ -37,15 +38,15 @@ public class AttributeModel : BasePageModel
       typeof(TimeSpan).Name
     });
 
-    
+
 
     NewAttribute = new Entities.Posts.Attribute();
   }
 
   [BindProperty]
-  public Entities.Posts.Attribute NewAttribute { get; private set; }
+  public Attribute NewAttribute { get; set; }
   public string SeletedReturnType { get; set; }
-  public List<Entities.Posts.Attribute> Attributes { get; set; }
+  public List<Attribute> Attributes { get; set; }
   
   public IEnumerable<SelectListItem> AvailableBaseTypestList { get; set; }
   public SelectList AvailableReturnTypestList { get; set; }
@@ -56,13 +57,13 @@ public class AttributeModel : BasePageModel
     // AvailableReturnTypestList.Concat(new SelectList(Attributes.Select(e => new { Text = e.Name, Value = e.ReturnType }).ToList()));
   }
 
-  public async Task<ActionResult> OnPostAsync(Entities.Posts.Attribute attr)
+  public async Task<IActionResult> OnPostAsync()
   {
     if (NewAttribute?.Name != null && NewAttribute?.BaseType != null)
     {
       // Add a new Attribute to the database
-      // _context.Attributes.Add(attr);
-      // await _context.SaveChangesAsync();
+      _context.Attributes.Add(NewAttribute);
+      await _context.SaveChangesAsync();
       return RedirectToPage();
     }
     return Page();
