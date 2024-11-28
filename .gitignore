@@ -399,3 +399,7 @@ FodyWeavers.xsd
 
 # JavaScript Distribution Files
 *.dist.js
+
+# CSS Distribution Files
+*.dist.css
+

@@ -124,7 +124,7 @@ function submitFormAndSetSuccessFlag(form, flagName) {
     document.getElementById('EditAttribute_Description').value = AttributeDescription;
     // document.getElementById('EditAttribute_IsVerified').checked = JSON.parse(isVerified.toLowerCase());
     // document.getElementById('EditAttribute_ContactNumber').value = AttributeContactNumber;
-    document.getElementById('EditAttribute_SelectedBaseType').value = AttributeSelectedBaseType.split('.')[1] ?? AttributeSelectedBaseType;
+    document.getElementById('EditAttribute_SelectedBaseType').value = AttributeSelectedBaseType;
     document.getElementById('EditAttribute_SelectedReturnType').value = AttributeSelectedReturnType;
     document.getElementById('EditAttribute_Format').value = AttributeFormat;
   };

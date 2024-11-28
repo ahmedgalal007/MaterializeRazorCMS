@@ -14,7 +14,19 @@ public class AttributeModel : BasePageModel
   {
     // Assign the UserContext object to the _context field
     _context = context;
-    AvailableBaseTypestList = new SelectList(new List<string>()
+
+    AvailableBaseTypestList = new List<SelectListItem>()
+    {
+      new SelectListItem { Text = typeof(bool).Name , Value= typeof(bool).FullName},
+      new SelectListItem { Text = typeof(decimal).Name , Value= typeof(decimal).FullName},
+      new SelectListItem { Text = typeof(double).Name , Value= typeof(double).FullName},
+      new SelectListItem { Text = typeof(DateTime).Name , Value= typeof(DateTime).FullName},
+      new SelectListItem { Text = typeof(DateOnly).Name , Value= typeof(DateOnly).FullName},
+      new SelectListItem { Text = typeof(string).Name , Value= typeof(string).FullName},
+      new SelectListItem { Text = typeof(TimeSpan).Name , Value= typeof(TimeSpan).FullName}
+    };
+
+    AvailableReturnTypestList = new SelectList(new List<string>()
     {
       typeof(bool).Name,
       typeof(decimal).Name,
@@ -24,19 +36,24 @@ public class AttributeModel : BasePageModel
       typeof(string).Name,
       typeof(TimeSpan).Name
     });
+
+    
+
     NewAttribute = new Entities.Posts.Attribute();
   }
 
   [BindProperty]
   public Entities.Posts.Attribute NewAttribute { get; private set; }
-
+  public string SeletedReturnType { get; set; }
   public List<Entities.Posts.Attribute> Attributes { get; set; }
   
-  public SelectList AvailableBaseTypestList { get; set; }
+  public IEnumerable<SelectListItem> AvailableBaseTypestList { get; set; }
+  public SelectList AvailableReturnTypestList { get; set; }
   
   public void OnGet() {
     Attributes = _context.Attributes.AsNoTracking().ToList();
     AvailableBaseTypestList.Concat(new SelectList(Attributes.Select(e => e.Name).ToList()));
+    // AvailableReturnTypestList.Concat(new SelectList(Attributes.Select(e => new { Text = e.Name, Value = e.ReturnType }).ToList()));
   }
 
   public async Task<ActionResult> OnPostAsync(Entities.Posts.Attribute attr)
