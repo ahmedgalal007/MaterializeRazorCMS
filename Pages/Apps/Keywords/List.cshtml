@@ -1,5 +1,5 @@
 @page
-@model AspnetCoreStarter.Pages.Apps.Keywords.ListModel
+@model AspnetCoreStarter.Pages.Apps.Keywords.KeywordModel
 @using AspnetCoreStarter.Helpers;
 @using AspnetCoreStarter.Models;
 @using AspnetCoreStarter.Entities;
@@ -28,11 +28,11 @@
 }
 
 @section PageScripts {
-	<script src="~/js/app-posts-attribute.dist.js"></script>
+  <script src="~/js/app-keywords-list.dist.js"></script>
 }
 
 @* Attributes DataTable *@
-@if (Model.Attributes != null && Model.Attributes.Count > 0)
+@if (Model.TableItems != null && Model.TableItems.Count > 0)
 {
 	<div class="card">
 		<div class="card-header pb-0">
@@ -44,28 +44,24 @@
 					<tr>
 						<th></th>
 						<th>Id</th>
-						<th>Name</th>
-						<th>Description</th>
-						<th>Base Type</th>
-						<th>Return Type</th>
-						<th>Format</th>
+            <th>KeywordURI</th>
+						<th>Slug</th>
+						<th>Schema</th>
 						<th>Action</th>
 						<th></th>
 					</tr>
 				</thead>
 				<tbody>
-					@foreach (var item in Model.Attributes.Select((value, i) => new { i, value }))
+          @foreach (var item in Model.TableItems.Select((value, i) => new { i, value }))
 					{
-						var attr = item.value;
+						var entity = item.value;
 						var index = item.i;
 						<tr idx="@index">
 							<td></td>
-							<td>@attr.Id</td>
-							<td class="Attribute-name text-nowrap">@attr.Name</td>
-							<td class="text-truncate">@attr.Description</td>
-							<td class="text-truncate">@attr.BaseType</td>
-							<td class="text-truncate">@attr.ReturnType</td>
-							<td class="text-truncate">@attr.Format</td>
+              <td>@entity.Id</td>
+              <td class="Attribute-name text-nowrap">@entity.KeywordURI</td>
+              <td class="text-truncate">@entity.Slug</td>
+              <td class="text-truncate">@entity.Schema</td>
 							@*  <td>@if (attr.Id != Guid.Empty)
 					{
 					<i class='ri-shield-check-line ri-24px text-success'><span class="d-none">1</span></i>
@@ -81,14 +77,14 @@
 					<td class="text-capitalize">@Attribute.SelectedPlan</td>*@
 							<td class="text-nowrap">
 								@* Edit Button *@
-								<button class="btn btn-sm btn-icon edit-Attribute-button" data-bs-toggle="offcanvas"
-												data-bs-target="#editAttributeOffcanvas" id="@attr.Id--editAttribute">
+								<button class="btn btn-sm btn-icon edit-Keyword-button" data-bs-toggle="offcanvas"
+                        data-bs-target="#editkKeywordOffcanvas" id="@entity.Id--editKeyword">
 									<i class="ri-edit-box-line ri-20px"></i>
 								</button>
 								@* Delete Button *@
-								<form method="post" asp-page-handler="Delete" asp-route-id="@attr.Id" id="@attr.Id--deleteForm"
+								<form method="post" asp-page-handler="Delete" asp-route-id="@entity.Id" id="@entity.Id--deleteForm"
 											onsubmit="showSuccessAlert('Deleted');" class="d-inline">
-									<button class="btn btn-sm btn-icon" id="@attr.Id-deleteAttribute" onclick="showDeleteConfirmation('@attr.Id')">
+									<button class="btn btn-sm btn-icon" id="@entity.Id-deleteKeyword" onclick="showDeleteConfirmation('@entity.Id')">
 										<i class="ri-delete-bin-7-line ri-20px"></i>
 									</button>
 								</form>
@@ -98,7 +94,7 @@
 									<i class="ri-more-2-line ri-20px"></i>
 								</button>
 								<div class="dropdown-menu dropdown-menu-end m-0">
-									<a href="/Apps/Attributes/View/Account" class="dropdown-item">View</a>
+                  <a href="/Apps/Keywords/View/Account" class="dropdown-item">View</a>
 									<a href="javascript:void(0);" class="dropdown-item">Suspend</a>
 								</div>
 
@@ -122,11 +118,9 @@ else
 					<tr>
 						<th></th>
 						<th>Id</th>
-						<th>Name</th>
-						<th>Description</th>
-						<th>Base Type</th>
-						<th>Return Type</th>
-						<th>Format</th>
+						<th>KeyWordURI</th>
+						<th>Slug</th>
+						<th>Schema</th>
 						<th>Action</th>
 					</tr>
 				</thead>
@@ -137,7 +131,7 @@ else
 
 
 @* Create Attribute Form Offcanvas Partial*@
-@await Html.PartialAsync("partials/_CreatAttributeOffcanvasPartial")
+@await Html.PartialAsync("partials/_CreateKeywordOffcanvasPartial")
 
 @* Edit Attribute Form Offcanvas Partial*@
-@await Html.PartialAsync("partials/_EditAttributeOffcanvasPartial")
+@await Html.PartialAsync("partials/_EditKeywordOffcanvasPartial")

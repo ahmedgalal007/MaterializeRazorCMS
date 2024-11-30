@@ -1,0 +1,39 @@
+@model AspnetCoreStarter.Pages.Apps.Keywords.KeywordModel
+
+<div class="offcanvas offcanvas-end" tabindex="-1" id="createKeywordOffcanvas" aria-labelledby="createKeywordOffcanvasLabel">
+	<div class="offcanvas-header border-bottom">
+		<h5 class="offcanvas-title" id="createKeywordOffcanvasLabel">Create Keyword</h5>
+		<button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+	</div>
+	<div class="offcanvas-body mx-0 flex-grow-0">
+		<form method="post" id="createKeywordForm" >
+			<h6>Define Keyword.</h6>
+			<div class="form-floating form-floating-outline mb-5">
+        <input asp-for="NewEntity.KeywordURI" class="form-control" placeholder="Keyword URI ex: Microsoft-Corporation | Mohamed-Salah"
+							 aria-label="Url of the Keyword"
+               value="@Model.NewEntity.KeywordURI" />
+        <label for="NewEntity_KeywordURI">Keyword URI</label>
+			</div>
+			<div class="form-floating form-floating-outline mb-5">
+        <input asp-for="NewEntity.Slug" class="form-control" placeholder="Keyword Slug ex: MicrosoftCorporation | MohamedSalah"
+               aria-label="Description Text"
+               value="@Model.NewEntity.Slug">
+        <label for="NewEntity_Slug">Description</label>
+			</div>
+      <div class="form-floating form-floating-outline mb-5">
+        <input asp-for="NewEntity.Schema" class="form-control"
+               placeholder="Select Schema Name Like Person|Company|Place|Event|Product"
+               aria-label="Keyword Schema"
+               value="@Model.NewEntity.Schema">
+        <label for="NewEntity_Schema">Description</label>
+      </div>
+
+			<div class="row">
+				<div class="col-12">
+					<button type="submit" class="btn btn-primary me-3">Submit</button>
+					<button type="reset" class="btn btn-outline-secondary" data-bs-dismiss="offcanvas">Cancel</button>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>

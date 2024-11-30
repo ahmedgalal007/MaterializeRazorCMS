@@ -75,7 +75,29 @@ namespace AspnetCoreStarter.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Category");
+                    b.ToTable("Categories");
+                });
+
+            modelBuilder.Entity("AspnetCoreStarter.Entities.Keywords.Keyword", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("KeywordURI")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Schema")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Slug")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Keywords");
                 });
 
             modelBuilder.Entity("AspnetCoreStarter.Entities.Lang", b =>
@@ -131,6 +153,35 @@ namespace AspnetCoreStarter.Migrations
                     b.HasIndex("LanguageId");
 
                     b.ToTable("CategoryLocals");
+                });
+
+            modelBuilder.Entity("AspnetCoreStarter.Entities.Locals.KeywordLocals", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid?>("KeywordId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("LanguageId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("KeywordId");
+
+                    b.HasIndex("LanguageId");
+
+                    b.ToTable("KeywordLocals");
                 });
 
             modelBuilder.Entity("AspnetCoreStarter.Entities.Locals.PostAttributeLocals", b =>
@@ -407,6 +458,21 @@ namespace AspnetCoreStarter.Migrations
                     b.Navigation("Language");
                 });
 
+            modelBuilder.Entity("AspnetCoreStarter.Entities.Locals.KeywordLocals", b =>
+                {
+                    b.HasOne("AspnetCoreStarter.Entities.Keywords.Keyword", null)
+                        .WithMany("Locales")
+                        .HasForeignKey("KeywordId");
+
+                    b.HasOne("AspnetCoreStarter.Entities.Lang", "Language")
+                        .WithMany()
+                        .HasForeignKey("LanguageId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Language");
+                });
+
             modelBuilder.Entity("AspnetCoreStarter.Entities.Locals.PostAttributeLocals", b =>
                 {
                     b.HasOne("AspnetCoreStarter.Entities.Lang", "Language")
@@ -470,7 +536,7 @@ namespace AspnetCoreStarter.Migrations
                         .HasForeignKey("PostTypeId");
 
                     b.HasOne("AspnetCoreStarter.Entities.Posts.Attribute", "Type")
-                        .WithMany()
+                        .WithMany("PostTypeAttributes")
                         .HasForeignKey("TypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -488,6 +554,16 @@ namespace AspnetCoreStarter.Migrations
             modelBuilder.Entity("AspnetCoreStarter.Entities.Categories.Category", b =>
                 {
                     b.Navigation("Locales");
+                });
+
+            modelBuilder.Entity("AspnetCoreStarter.Entities.Keywords.Keyword", b =>
+                {
+                    b.Navigation("Locales");
+                });
+
+            modelBuilder.Entity("AspnetCoreStarter.Entities.Posts.Attribute", b =>
+                {
+                    b.Navigation("PostTypeAttributes");
                 });
 
             modelBuilder.Entity("AspnetCoreStarter.Entities.Posts.Post", b =>

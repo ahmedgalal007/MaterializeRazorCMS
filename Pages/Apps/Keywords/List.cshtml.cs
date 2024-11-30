@@ -1,46 +1,25 @@
+using AspnetCoreStarter.Common;
 using AspnetCoreStarter.Data;
 using AspnetCoreStarter.Entities.Categories;
 using AspnetCoreStarter.Entities.Keywords;
 using System.Data.Entity;
+using System.Linq.Expressions;
 
 namespace AspnetCoreStarter.Pages.Apps.Keywords;
 
-public class ListModel:BasePageModel
+public class KeywordModel : CRUDPageModel<Keyword>
 {
-  private ApplicationDbContext _context { get; }
-
-  public ListModel(ApplicationDbContext context)
+  public KeywordModel(ApplicationDbContext context) : base(context)
   {
-    _context = context;
   }
 
-  public int Page { get; set; } = 1;
-  public int Take { get; set; } = 10 ;
-  public int Start => Take * (Page - 1);
-  public int End => Start + Take;
-  public int Total { get; set; } = 0;
-  public IEnumerable<Keyword> KeywordsList { get; set; }
-
-  public async Task OnGetAsync(int page=1, int take=10)
+  public override async Task<Boolean> UpdateEntity(Keyword entity, String entityName = "")
   {
-    KeywordsList = await _context.Keywords.Skip((Page - 1)* take).Take(take).ToListAsync();
+    // return base.OnUpdateEntity(entity, entityName);
+    if (string.IsNullOrWhiteSpace(entityName)) entityName = NewEntity.GetType().Name.ToLower();
+    await TryUpdateModelAsync(entity, entityName, u => u.KeywordURI, u => u.Slug, u => u.Schema);
+
+    return await Task.FromResult(true);
   }
 
-  public async Task<IActionResult> OnPostAsync()
-  {
-
-    return RedirectToPage();
-  }
-
-  public async Task<IActionResult> OnPostEditKeywordAsync()
-  {
-
-    return RedirectToPage();
-  }
-
-  public async Task<IActionResult> OnPostDeleteKeywordAsync()
-  {
-
-    return RedirectToPage();
-  }
 }

@@ -1,3 +1,4 @@
+using AspnetCoreStarter.Entities.Categories;
 using AspnetCoreStarter.Entities.Locals;
 
 namespace AspnetCoreStarter.Entities.Keywords;
