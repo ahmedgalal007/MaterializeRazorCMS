@@ -41,7 +41,7 @@
 					<div class="me-1">
 						<p class="text-heading mb-1">Attributes</p>
 						<div class="d-flex align-items-center">
-							<h4 class="mb-1 me-2">@Model.Attributes.Count</h4>
+							<h4 class="mb-1 me-2">@Model.AvailableBaseTypestList.Count()</h4>
 							<p class="text-primary mb-1">(+100%)</p>
 						</div>
 						<small class="mb-0">Total Attributes</small>
@@ -63,7 +63,7 @@
 					<div class="me-1">
 						<p class="text-heading mb-1">Verified Attributes</p>
 						<div class="d-flex align-items-center">
-							<h4 class="mb-1 me-2">@Model.Attributes.Count</h4>
+							<h4 class="mb-1 me-2">@Model.AvailableBaseTypestList.Count()</h4>
 							<p class="text-success mb-1">( +@ViewData["VerifiedAttributesPercentage"]% )</p>
 						</div>
 						<small class="mb-0">Recent analytics</small>
@@ -85,7 +85,7 @@
 					<div class="me-1">
 						<p class="text-heading mb-1">Duplicate Attributes</p>
 						<div class="d-flex align-items-center">
-							<h4 class="mb-1 me-2">@Model.Attributes.Count</h4>
+							<h4 class="mb-1 me-2">@Model.AvailableBaseTypestList.Count()</h4>
 							<p class="text-danger mb-1">( +@ViewData["DuplicateAttributesPercentage"]% )</p>
 						</div>
 						<small class="mb-0">Recent analytics</small>
@@ -107,7 +107,7 @@
 					<div class="me-1">
 						<p class="text-heading mb-1">Unverified Attributes</p>
 						<div class="d-flex align-items-center">
-							<h4 class="mb-1 me-2">@Model.Attributes.Count</h4>
+							<h4 class="mb-1 me-2">@Model.AvailableBaseTypestList.Count()</h4>
 							<p class="text-warning mb-1">( +@ViewData["UnverifiedAttributesPercentage"]% )</p>
 						</div>
 						<small class="mb-0">Recent analytics</small>
@@ -124,7 +124,7 @@
 </div>
 
 @* Attributes DataTable *@
-@if (Model.Attributes != null && Model.Attributes.Count > 0)
+@if (Model.AvailableBaseTypestList!= null && Model.AvailableBaseTypestList.Count() > 0)
 {
 	<div class="card">
 		<div class="card-header pb-0">

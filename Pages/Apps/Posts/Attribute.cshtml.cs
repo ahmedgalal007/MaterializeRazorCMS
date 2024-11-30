@@ -38,9 +38,8 @@ public class AttributeModel : BasePageModel
       typeof(TimeSpan).Name
     });
 
-
-
     NewAttribute = new Entities.Posts.Attribute();
+    Attributes = [];
   }
 
   [BindProperty]

@@ -1,4 +1,4 @@
-namespace AspnetCoreStarter.Entities.Categories;
+namespace AspnetCoreStarter.Entities.Locals;
 
 public class KeywordLocals : BaseLocalizedEntity
 {

@@ -32,7 +32,6 @@
     <Folder Include="Localization\" />
     <Folder Include="Models\User\" />
     <Folder Include="Pages\Apps\Categories\" />
-    <Folder Include="Pages\Apps\Keywords\Partials\" />
   </ItemGroup>
 
 </Project>

@@ -1,6 +1,6 @@
 using AspnetCoreStarter.Entities.Locals;
 
-namespace AspnetCoreStarter.Entities.Categories;
+namespace AspnetCoreStarter.Entities.Keywords;
 
 public class Keyword : MultiLangEntity<KeywordLocals, Guid>
 {

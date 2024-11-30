@@ -1,4 +1,143 @@
 @page
 @model AspnetCoreStarter.Pages.Apps.Keywords.ListModel
+@using AspnetCoreStarter.Helpers;
+@using AspnetCoreStarter.Models;
+@using AspnetCoreStarter.Entities;
+
 @{
+	ViewData["Title"] = "Keywords";
 }
+
+@section VendorStyles {
+	<link rel="stylesheet" href="~/vendor/libs/datatables-bs5/datatables.bootstrap5.dist.css">
+	<link rel="stylesheet" href="~/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.dist.css">
+	<link rel="stylesheet" href="~/vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.dist.css">
+	<link rel="stylesheet" href="~/vendor/libs/sweetalert2/sweetalert2.dist.css" />
+	<link rel="stylesheet" href="~/vendor/libs/&#64;form-validation/form-validation.dist.css" />
+}
+
+@section VendorScripts {
+	<script src="~/vendor/libs/moment/moment.dist.js"></script>
+	<script src="~/vendor/libs/datatables-bs5/datatables-bootstrap5.dist.js"></script>
+	<script src="~/vendor/libs/sweetalert2/sweetalert2.dist.js"></script>
+	<script src="~/vendor/libs/&#64;form-validation/popular.dist.js"></script>
+	<script src="~/vendor/libs/&#64;form-validation/bootstrap5.dist.js"></script>
+	<script src="~/vendor/libs/&#64;form-validation/auto-focus.dist.js"></script>
+	<script src="~/vendor/libs/cleavejs/cleave.dist.js"></script>
+	<script src="~/vendor/libs/cleavejs/cleave-phone.dist.js"></script>
+}
+
+@section PageScripts {
+	<script src="~/js/app-posts-attribute.dist.js"></script>
+}
+
+@* Attributes DataTable *@
+@if (Model.Attributes != null && Model.Attributes.Count > 0)
+{
+	<div class="card">
+		<div class="card-header pb-0">
+			<h5 class="card-title">Search Filter</h5>
+		</div>
+		<div class="card-datatable table-responsive">
+			<table id="attributeTable" class="table">
+				<thead class="table-light">
+					<tr>
+						<th></th>
+						<th>Id</th>
+						<th>Name</th>
+						<th>Description</th>
+						<th>Base Type</th>
+						<th>Return Type</th>
+						<th>Format</th>
+						<th>Action</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					@foreach (var item in Model.Attributes.Select((value, i) => new { i, value }))
+					{
+						var attr = item.value;
+						var index = item.i;
+						<tr idx="@index">
+							<td></td>
+							<td>@attr.Id</td>
+							<td class="Attribute-name text-nowrap">@attr.Name</td>
+							<td class="text-truncate">@attr.Description</td>
+							<td class="text-truncate">@attr.BaseType</td>
+							<td class="text-truncate">@attr.ReturnType</td>
+							<td class="text-truncate">@attr.Format</td>
+							@*  <td>@if (attr.Id != Guid.Empty)
+					{
+					<i class='ri-shield-check-line ri-24px text-success'><span class="d-none">1</span></i>
+					}
+					else
+					{
+					<i class="ri-shield-line ri-24px text-danger"><span class="d-none">0</span></i>
+					}
+					<input type="hidden" class="Attribute-verified-@attr.Id" data-is-verified="@Attribute.IsVerified" />
+					</td>
+					<td class="text-nowrap">@AttributeCRUDHelpers.FormatUSPhoneNumber(Attribute.ContactNumber)</td>
+					<td class="text-capitalize">@Attribute.SelectedRole</td>
+					<td class="text-capitalize">@Attribute.SelectedPlan</td>*@
+							<td class="text-nowrap">
+								@* Edit Button *@
+								<button class="btn btn-sm btn-icon edit-Attribute-button" data-bs-toggle="offcanvas"
+												data-bs-target="#editAttributeOffcanvas" id="@attr.Id--editAttribute">
+									<i class="ri-edit-box-line ri-20px"></i>
+								</button>
+								@* Delete Button *@
+								<form method="post" asp-page-handler="Delete" asp-route-id="@attr.Id" id="@attr.Id--deleteForm"
+											onsubmit="showSuccessAlert('Deleted');" class="d-inline">
+									<button class="btn btn-sm btn-icon" id="@attr.Id-deleteAttribute" onclick="showDeleteConfirmation('@attr.Id')">
+										<i class="ri-delete-bin-7-line ri-20px"></i>
+									</button>
+								</form>
+								@* Dropdown Button *@
+							<td>
+								<button class="btn btn-sm btn-icon dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+									<i class="ri-more-2-line ri-20px"></i>
+								</button>
+								<div class="dropdown-menu dropdown-menu-end m-0">
+									<a href="/Apps/Attributes/View/Account" class="dropdown-item">View</a>
+									<a href="javascript:void(0);" class="dropdown-item">Suspend</a>
+								</div>
+
+							</td>
+						</tr>
+					}
+				</tbody>
+			</table>
+		</div>
+	</div>
+}
+else
+{
+	<div class="card">
+		<div class="card-header">
+			<h5 class="card-title mb-0">Search Filter</h5>
+		</div>
+		<div class="card-datatable table-responsive">
+			<table id="attributeTable" class="table">
+				<thead>
+					<tr>
+						<th></th>
+						<th>Id</th>
+						<th>Name</th>
+						<th>Description</th>
+						<th>Base Type</th>
+						<th>Return Type</th>
+						<th>Format</th>
+						<th>Action</th>
+					</tr>
+				</thead>
+			</table>
+		</div>
+	</div>
+}
+
+
+@* Create Attribute Form Offcanvas Partial*@
+@await Html.PartialAsync("partials/_CreatAttributeOffcanvasPartial")
+
+@* Edit Attribute Form Offcanvas Partial*@
+@await Html.PartialAsync("partials/_EditAttributeOffcanvasPartial")
