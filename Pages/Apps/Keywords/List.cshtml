@@ -25,9 +25,11 @@
 	<script src="~/vendor/libs/&#64;form-validation/auto-focus.dist.js"></script>
 	<script src="~/vendor/libs/cleavejs/cleave.dist.js"></script>
 	<script src="~/vendor/libs/cleavejs/cleave-phone.dist.js"></script>
+	<script src="~/vendor/libs/jquery-repeater/jquery-repeater.dist.js"></script>
 }
 
 @section PageScripts {
+	<script src="~/js/common/crud-page-setup.dist.js"></script>
   <script src="~/js/app-keywords-list.dist.js"></script>
 }
 
@@ -39,7 +41,7 @@
 			<h5 class="card-title">Search Filter</h5>
 		</div>
 		<div class="card-datatable table-responsive">
-			<table id="attributeTable" class="table">
+			<table id="KeywordsTable" class="table">
 				<thead class="table-light">
 					<tr>
 						<th></th>
@@ -59,26 +61,13 @@
 						<tr idx="@index">
 							<td></td>
               <td>@entity.Id</td>
-              <td class="Attribute-name text-nowrap">@entity.KeywordURI</td>
-              <td class="text-truncate">@entity.Slug</td>
+              <td class="text-nowrap">@entity.KeywordURI</td>
+							<td class="keyword-name-@entity.Id  text-truncate">@entity.Slug</td>
               <td class="text-truncate">@entity.Schema</td>
-							@*  <td>@if (attr.Id != Guid.Empty)
-					{
-					<i class='ri-shield-check-line ri-24px text-success'><span class="d-none">1</span></i>
-					}
-					else
-					{
-					<i class="ri-shield-line ri-24px text-danger"><span class="d-none">0</span></i>
-					}
-					<input type="hidden" class="Attribute-verified-@attr.Id" data-is-verified="@Attribute.IsVerified" />
-					</td>
-					<td class="text-nowrap">@AttributeCRUDHelpers.FormatUSPhoneNumber(Attribute.ContactNumber)</td>
-					<td class="text-capitalize">@Attribute.SelectedRole</td>
-					<td class="text-capitalize">@Attribute.SelectedPlan</td>*@
 							<td class="text-nowrap">
 								@* Edit Button *@
 								<button class="btn btn-sm btn-icon edit-Keyword-button" data-bs-toggle="offcanvas"
-                        data-bs-target="#editkKeywordOffcanvas" id="@entity.Id--editKeyword">
+                        data-bs-target="#editKeywordOffcanvas" id="@entity.Id--editKeyword">
 									<i class="ri-edit-box-line ri-20px"></i>
 								</button>
 								@* Delete Button *@
@@ -113,7 +102,7 @@ else
 			<h5 class="card-title mb-0">Search Filter</h5>
 		</div>
 		<div class="card-datatable table-responsive">
-			<table id="attributeTable" class="table">
+			<table id="KeywordsTable" class="table">
 				<thead>
 					<tr>
 						<th></th>

@@ -1,48 +1,148 @@
 @model AspnetCoreStarter.Pages.Apps.Keywords.KeywordModel
-@* Edit Attribute Form Offcanvas *@
-<div class="offcanvas offcanvas-end" tabindex="-1" id="LocalsKeywordOffcanvas" aria-labelledby="editAttributeOffcanvasLabel">
-  <div class="offcanvas-header border-bottom">
-    <h5 class="offcanvas-title" id="LocalsAttributeOffcanvasLabel">Edit Attribute</h5>
-    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-  </div>
-  <div class="offcanvas-body mx-0 flex-grow-0">
-    <form method="post" asp-page-handler="EditOrUpdate" asp-route-id="" id="editAttributeForm">
+@using AspnetCoreStarter.Common;
+@if (Model.NewEntry.Locales.Count > -1)
+{
+	<div class="row">
+		<div class="col">
+			<h6 class="mt-4"> Form with Tabs </h6>
 
-      <div class="form-floating form-floating-outline mb-5">
-        <input class="form-control" id="EditAttribute_AttributeName" name="attribute.Name" value="" />
-        <label for="EditAttribute_AttributeName">Attribute Name</label>
-      </div>
+		</div>
+	</div>
 
-      <div class="form-floating form-floating-outline mb-5">
-        <input class="form-control" id="EditAttribute_Description" name="attribute.Description" value="" />
-        <label for="EditAttribute_Description">Description</label>
-      </div>
+	<!-- Form with Tabs -->
+	<div class="row">
+		<div class="col">
+			<h6 class="mt-4"> Form with Tabs </h6>
+			<div class="card mb-6 form-repeater">
+				<div class="card-header overflow-hidden">
+					<div>
+						<div class="input-group">
+							<select class="form-select" id="inputGroupSelectLanguage" aria-label="Example select with button addon">
+								<option selected>Choose...</option>
+								@foreach (var item in ISOLanguages.languages.Where(e => e.IsEnabled))
+								{
+									<option value="@item.ISOCode" selected="@item.IsDefault">@item.LocalName</option>
+								}
+							</select>
+							<button data-repeater-create class="btn btn-outline-primary" type="button" data-repeater-create>
+								<i class='ri-add-line ri-16px me-2'></i>
+								Add
+							</button>
+						</div>
+						@* <button class="btn btn-primary" data-repeater-create>
+					<i class='ri-add-line ri-16px me-2'></i>
+					Add another option
+					</button>*@
+					</div>
+					@* 				<ul class="nav nav-tabs " role="tablist">
 
-@*       <div class="form-floating form-floating-outline mb-5">
-        <select class="form-select" id="EditAttribute_SelectedBaseType" name="attribute.BaseType"
-                asp-items="Model.AvailableBaseTypestList" value="">
-        </select>
-        <label for="EditAttribute_SelectedBaseType">Select Base Type</label>
-      </div>
+				<li class="nav-item">
+				<button class="nav-link active" data-bs-toggle="tab" data-bs-target="#@("language-tabs-" + Model.Language.TwoLettersCode)" role="tab" aria-selected="true">
+				<span class="ri-user-line ri-20px d-sm-none"></span><span class="d-none d-sm-block">ar</span>
+				</button>
+				</li>
+				</ul>
 
-      <div class="form-floating form-floating-outline mb-5">
-        <select class="form-select" id="EditAttribute_SelectedReturnType" name="attribute.ReturnType"
-                asp-items="Model.AvailableReturnTypestList" value=""> 
-        </select>
+				<div data-repeater-list="group-a" class="tab-content">
+				<div data-repeater-item class="tab-pane fade" id="@("language-tabs-"+Model.Language.TwoLettersCode)" role="tabpanel">
+				<div class="row g-12">
+				<div class="col-md-12">
+				<div class="form-floating form-floating-outline">
+				<input type="text" class="form-control" placeholder="John" />
+				<label for="formtabs-first-name">First Name</label>
+				</div>
+				</div>
+				<div class="col-md-12">
+				<div class="form-floating form-floating-outline">
+				<input type="text" class="form-control" placeholder="Doe" />
+				<label for="formtabs-last-name">Last Name</label>
+				</div>
+				</div>
+				</div>
+				</div>
+				</div>
+				*@
+					<div class="card mb-6">
+						<div class="card-header overflow-hidden">
+							<ul class="nav nav-tabs" role="tablist">
+								@* <li class="nav-item">
+									<button class="nav-link active" data-bs-toggle="tab" data-bs-target="#language-tabs-ar" role="tab" aria-selected="true"
+													onclick="() => { SelectedLanguage = 'ar'; }">
+										<span class="ri-user-line ri-20px d-sm-none"></span><span class="d-none d-sm-block">Ar</span>
+									</button>
+								</li> *@
+								<li class="nav-item">
+									<button class="nav-link " data-bs-toggle="tab" data-bs-target="#language-tabs-en" role="tab" aria-selected="false"
+													onclick="() => { SelectedLanguage = 'en'; }">
+										<span class="ri-folder-user-line ri-20px d-sm-none"></span><span class="d-none d-sm-block">En</span></button>
+								</li>
+								<li class="nav-item">
+									<button class="nav-link" data-bs-toggle="tab" data-bs-target="#language-tabs-fr" role="tab" aria-selected="false"
+													onclick="() => { SelectedLanguage = 'fr'; }">
+										<span class="ri-facebook-fill ri-20px d-sm-none"></span><span class="d-none d-sm-block">Fr</span>
+									</button>
+								</li>
+							</ul>
+						</div>
 
-        <label for="EditAttribute_SelectedReturnType">Select Return Type</label>
-      </div> *@
+						<div data-repeater-list="group-a" class="tab-content">
+							@* <div class="language-tab-content" data-repeater-item>
+								<div class="tab-pane fade active show" id="language-tabs-ar" role="tabpanel">
 
-      <div class="form-floating form-floating-outline mb-5">
-        <input class="form-control" id="EditAttribute_Format" name="attribute.Format" value="" />
-        <label for="EditAttribute_Format">Format Pattern</label>
-      </div>
-      <div class="row">
-        <div class="col-12">
-          <button type="submit" class="btn btn-primary me-3">Submit</button>
-          <button type="reset" class="btn btn-outline-secondary" data-bs-dismiss="offcanvas">Cancel</button>
-        </div>
-      </div>
-    </form>
-  </div>
-</div>
+									<div class="row g-12">
+										<div class="col-md-12">
+											<div class="input-group input-group-merge">
+												<div class="form-floating form-floating-outline">
+													<input type="text" id="formtabs-name" class="form-control" placeholder="john.doe" aria-label="john.doe" aria-describedby="formtabs-name2" />
+													<label for="formtabs-email">Name</label>
+												</div>
+												<span class="input-group-text" id="formtabs-Name2">name..&#64;example.com</span>
+											</div>
+										</div>
+									</div>
+
+								</div>
+							</div> *@
+							@* <div class="language-tab-content" > *@
+								<div data-repeater-item class="language-tab-content tab-pane fade" id="language-tabs-en" role="tabpanel">
+
+									<div class="row g-12">
+										<div class="col-md-12">
+											<div class="input-group input-group-merge">
+												<div class="form-floating form-floating-outline">
+													<input type="text" id="formtabs-email" class="form-control" placeholder="john.doe" aria-label="john.doe" aria-describedby="formtabs-email2" />
+													<label for="formtabs-email">Email</label>
+												</div>
+												<span class="input-group-text" id="formtabs-email2">&#64;example.com</span>
+											</div>
+										</div>
+									</div>
+								</div>
+							@* </div>
+							<div class="language-tab-content" > *@
+								<div data-repeater-item class="language-tab-content tab-pane fade" id="language-tabs-fr" role="tabpanel">
+									<div class="row g-12">
+										<div class="col-md-12">
+											<div class="form-floating form-floating-outline">
+												<input type="text" id="formtabs-twitter" class="form-control" placeholder="https://twitter.com/abc" />
+												<label for="formtabs-twitter">Twitter</label>
+											</div>
+										</div>
+									</div>
+								</div>
+							@* </div> *@
+						</div>
+
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</div>
+}
+else
+{
+
+}
+
+

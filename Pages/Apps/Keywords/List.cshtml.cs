@@ -7,7 +7,7 @@ using System.Linq.Expressions;
 
 namespace AspnetCoreStarter.Pages.Apps.Keywords;
 
-public class KeywordModel : CRUDPageModel<Keyword>
+public class KeywordModel : CRUDPageModel<Keyword,Guid> 
 {
   public KeywordModel(ApplicationDbContext context) : base(context)
   {
@@ -16,7 +16,8 @@ public class KeywordModel : CRUDPageModel<Keyword>
   public override async Task<Boolean> UpdateEntity(Keyword entity, String entityName = "")
   {
     // return base.OnUpdateEntity(entity, entityName);
-    if (string.IsNullOrWhiteSpace(entityName)) entityName = NewEntity.GetType().Name.ToLower();
+    // if (string.IsNullOrWhiteSpace(entityName)) entityName = NewEntry.GetType().Name.ToLower();
+    if (string.IsNullOrWhiteSpace(entityName)) entityName = "NewEntry";
     await TryUpdateModelAsync(entity, entityName, u => u.KeywordURI, u => u.Slug, u => u.Schema);
 
     return await Task.FromResult(true);

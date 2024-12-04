@@ -3,322 +3,143 @@
  */
 
 'use strict';
+// Get the Create for validation
+const entityName = "Keyword";
+const InputPrefix = "NewEntry";
+const EditPrefix = "edit";
+const entryNameStartWithSelector = ".keyword-name-";
+
+//todo createFormValidationFields
+const createFormValidatorsFields = {
+  'NewEntry.KeywordURI': {
+    validators: {
+      notEmpty: {
+        message: 'Please enter a Uri for the keyword'
+      },
+      stringLength: {
+        min: 4,
+        max: 40,
+        message: 'The keyword Uri must be more than 6 and less than 20 characters long'
+      }
+    }
+  },
+  //'NewAttribute.Description': {
+  //  validators: {
+  //    notEmpty: {
+  //      message: 'Please enter an email address'
+  //    },
+  //    emailAddress: {
+  //      message: 'Please enter a valid email address'
+  //    },
+  //    stringLength: {
+  //      max: 50,
+  //      message: 'The email address must be less than 50 characters long'
+  //    }
+  //  }
+  //},
+  //'NewAttribute.SelectedBaseType': {
+  //  validators: {
+  //    notEmpty: {
+  //      message: 'Please select a base type'
+  //    }
+  //  }
+  //},
+  //'NewAttribute.SelectedReturnType': {
+  //  validators: {
+  //    notEmpty: {
+  //      message: 'Please select a return type'
+  //    }
+  //  }
+  //}
+};
+
+//todo editFormValidatorsFields
+const editFormValidatorsFields = {
+  'NewEntry.KeywordURI': {
+    validators: {
+      notEmpty: {
+        message: 'Please enter a Uri for the keyword'
+      },
+      stringLength: {
+        min: 4,
+        max: 40,
+        message: 'The keyword Uri must be more than 6 and less than 20 characters long'
+      }
+    }
+  },
+  //'Attribute.Email': {
+  //  validators: {
+  //    notEmpty: {
+  //      message: 'Please enter an email address'
+  //    },
+  //    emailAddress: {
+  //      message: 'Please enter a valid email address'
+  //    },
+  //    stringLength: {
+  //      max: 50,
+  //      message: 'The email address must be less than 50 characters long'
+  //    }
+  //  }
+  //},
+  //'Attribute.ContactNumber': {
+  //  validators: {
+  //    notEmpty: {
+  //      message: 'Please enter a contact number'
+  //    },
+  //    phone: {
+  //      country: 'US',
+  //      message: 'Please enter a valid phone number'
+  //    },
+  //    stringLength: {
+  //      min: 12,
+  //      message: 'The contact number must be 10 characters long'
+  //    }
+  //  }
+  //},
+  //'Attribute.SelectedRole': {
+  //  validators: {
+  //    notEmpty: {
+  //      message: 'Please select a role'
+  //    }
+  //  }
+  //},
+  //'Attribute.SelectedPlan': {
+  //  validators: {
+  //    notEmpty: {
+  //      message: 'Please select a plan'
+  //    }
+  //  }
+  //}
+};
+//todo HandelEditForm
+const handleEditKeywordModal = function (editButton, setFormAttributes, setElementAttributes) {
+  //// Get the Attribute details from the table
+  const KeywordId = editButton.id.split('--')[0];
+  const TableRow = document.getElementById(`${KeywordId}--editKeyword`).parentElement.parentElement;
+  const RowIdx = TableRow.attributes.idx.value;
+  //  const Slug = document.querySelector(`${entryNameStartWithSelector}${KeywordId}`).innerText;
+  const KeywordURI = TableRow.children[2].innerText;
+  const Slug = TableRow.children[3].innerText;
+  const Schema = TableRow.children[4].innerText;
+
+  // Set the form attributes (route and action)
+  const editForm = document.getElementById(`edit${entityName}Form`);
+  setFormAttributes(editForm, KeywordId, 'EditOrUpdate');
+
+  // Set the input asp-for attributes (for model binding)
+  setElementAttributes(document.getElementById(`edit${InputPrefix}_KeywordURI`), 'asp-for', `TableItems[${RowIdx}].KeywordURI`);
+  setElementAttributes(document.getElementById(`edit${InputPrefix}_Slug`), 'asp-for', `TableItems[${RowIdx}].Slug`);
+  setElementAttributes(document.getElementById(`edit${InputPrefix}_Schema`), 'asp-for', `TableItems[${RowIdx}].Schema`);
+
+  // Set the input values (for value binding)
+  var Control_KeywordURI = document.getElementById(`edit${InputPrefix}_KeywordURI`);
+  Control_KeywordURI.value = KeywordURI;
+  document.getElementById(`edit${InputPrefix}_Slug`).value = Slug;
+  document.getElementById(`edit${InputPrefix}_Schema`).value = Schema;
+}
+
+
 //#region Swal
-
-// Functions to handle the Delete Attribute Sweet Alerts (Delete Confirmation)
-function showDeleteConfirmation(AttributeId) {
-  event.preventDefault(); // prevent form submit
-  const AttributeName = document.querySelector(`.Attribute-name-full-${AttributeId}`).innerText;
-  Swal.fire({
-    title: 'Delete Attribute',
-    // Show the Attribute the Attribute name to be deleted
-    html: `<p>Are you sure you want to delete Attribute ?<br><br><span class="fw-medium text-danger">${AttributeName}</span></p>`,
-    icon: 'warning',
-    showCancelButton: true,
-    confirmButtonText: 'Delete',
-    cancelButtonText: 'Cancel',
-    customClass: {
-      confirmButton: 'btn btn-primary waves-effect waves-light me-3',
-      cancelButton: 'btn btn-label-secondary waves-effect waves-light'
-    }
-  }).then(result => {
-    if (result.isConfirmed) {
-      const form = document.getElementById(AttributeId + '-deleteForm');
-      if (form) {
-        submitFormAndSetSuccessFlag(form, 'successFlag');
-      } else {
-        console.error('Form element not found');
-      }
-    } else {
-      Swal.fire({
-        title: 'Cancelled',
-        // Show the Attribute that the Attribute has not been deleted.
-        html: `<p><span class="fw-medium text-primary">${AttributeName}</span> is not deleted!</p>`,
-        icon: 'error',
-        confirmButtonText: 'Ok',
-        customClass: {
-          confirmButton: 'btn btn-success waves-effect waves-light'
-        }
-      });
-    }
-  });
-}
-
-// Function to submit the form and set the success flag (Set success flags for delete, create and update)
-function submitFormAndSetSuccessFlag(form, flagName) {
-  form.submit();
-  sessionStorage.setItem(flagName, 'true');
-}
-//#endregion
-
-(function () {
-  // Function to set element attributes (asp-for)
-  function setElementAttributes(element, attribute, value) {
-    element.setAttribute(attribute, value);
-  }
-
-  // Function to set form attributes (route and action)
-  function setFormAttributes(form, attributeId, handler) {
-    const routeAttribute = 'asp-route-id';
-    setElementAttributes(form, routeAttribute, attributeId);
-    form.action = `/Apps/Posts/Attribute?handler=${handler}&id=${attributeId}`;
-  }
-
-  // Sweet Alert Success Function (Attribute Deleted/Created/Updated)
-  function showSuccessAlert(message) {
-    var name = message[0].toUpperCase() + message.slice(1);
-    Swal.fire({
-      title: name,
-      text: `Attribute ${message} Successfully!`,
-      icon: 'success',
-      confirmButtonText: 'Ok',
-      confirmButton: false,
-      customClass: {
-        confirmButton: 'btn btn-success waves-effect waves-light'
-      }
-    });
-  }
-
-  // Function to check for success flag and display success message
-  function checkAndShowSuccessAlert(flagName, successMessage) {
-    const flag = sessionStorage.getItem(flagName);
-    if (flag === 'true') {
-      showSuccessAlert(successMessage);
-      sessionStorage.removeItem(flagName);
-    }
-  }
-
-
-  // Function to handle the "Edit Attribute" Offcanvas Modal
-  const handleEditAttributeModal = editButton => {
-    // Get the Attribute details from the table
-    const AttributeId = editButton.id.split('--')[0];
-    const TableRow = document.getElementById(`${AttributeId}--editAttribute`).parentElement.parentElement;
-    const AttributeIdx = TableRow.attributes.idx.value;
-    //! const AttributeName = document.querySelector(`.Attribute-name-full-${AttributeId}`).innerText;
-    const AttributeName = TableRow.children[2].innerText;
-    const AttributeDescription = TableRow.children[3].innerText;
-    const AttributeSelectedBaseType = TableRow.children[4].innerText;
-    const AttributeSelectedReturnType = TableRow.children[5].innerText;
-    const AttributeFormat = TableRow.children[6].innerText;
-
-    // Set the form attributes (route and action)
-    const editForm = document.getElementById('editAttributeForm');
-    setFormAttributes(editForm, AttributeId, 'EditOrUpdate');
-
-    // Set the input asp-for attributes (for model binding)
-    setElementAttributes(document.getElementById('EditAttribute_AttributeName'), 'asp-for', `Attributes[${AttributeIdx}].AttributeName`);
-    setElementAttributes(document.getElementById('EditAttribute_Description'), 'asp-for', `Attributes[${AttributeIdx}].Description`);
-    // setElementAttributes(document.getElementById('EditAttribute_IsVerified'), 'asp-for', `Attributes[${AttributeId}].IsVerified`);
-    //setElementAttributes(
-    //  document.getElementById('EditAttribute_ContactNumber'),
-    //  'asp-for',
-    //  `Attributes[${AttributeIdx}].ContactNumber`
-    //);
-    setElementAttributes(document.getElementById('EditAttribute_SelectedBaseType'), 'asp-for', `Attributes[${AttributeIdx}].SelectedBaseType`);
-    setElementAttributes(document.getElementById('EditAttribute_SelectedReturnType'), 'asp-for', `Attributes[${AttributeIdx}].SelectedReturnType`);
-    setElementAttributes(document.getElementById('EditAttribute_Format'), 'asp-for', `Attributes[${AttributeIdx}].Format`);
-
-    // Set the input values (for value binding)
-    document.getElementById('EditAttribute_AttributeName').value = AttributeName;
-    document.getElementById('EditAttribute_Description').value = AttributeDescription;
-    // document.getElementById('EditAttribute_IsVerified').checked = JSON.parse(isVerified.toLowerCase());
-    // document.getElementById('EditAttribute_ContactNumber').value = AttributeContactNumber;
-    document.getElementById('EditAttribute_SelectedBaseType').value = AttributeSelectedBaseType;
-    document.getElementById('EditAttribute_SelectedReturnType').value = AttributeSelectedReturnType;
-    document.getElementById('EditAttribute_Format').value = AttributeFormat;
-  };
-
-  // Attach event listeners for "Edit Attribute" buttons (pencil icon)
-  const editAttributeButtons = document.querySelectorAll("[id$='-editAttribute']");
-  editAttributeButtons.forEach(editButton => {
-    editButton.addEventListener('click', () => handleEditAttributeModal(editButton));
-  });
-
-
-  // Check and Call the functions to check and display success messages on page reload (for delete, create and update)
-  checkAndShowSuccessAlert('successFlag', 'Deleted');
-  checkAndShowSuccessAlert('newAttributeFlag', 'Created');
-  checkAndShowSuccessAlert('editAttributeFlag', 'Updated');
-
-  //? Create Attribute
-  //#region Create Attribute
-  // Get the Create for validation
-  const createNewAttributeForm = document.getElementById('createAttributeForm');
-
-  // Initialize FormValidation for create Attribute form
-  const fv = FormValidation.formValidation(createNewAttributeForm, {
-    fields: {
-      'NewAttribute.Name': {
-        validators: {
-          notEmpty: {
-            message: 'Please enter a Attribute name'
-          },
-          stringLength: {
-            min: 6,
-            max: 20,
-            message: 'The Attribute name must be more than 6 and less than 20 characters long'
-          }
-        }
-      },
-      'NewAttribute.Description': {
-        validators: {
-          notEmpty: {
-            message: 'Please enter an email address'
-          },
-          emailAddress: {
-            message: 'Please enter a valid email address'
-          },
-          stringLength: {
-            max: 50,
-            message: 'The email address must be less than 50 characters long'
-          }
-        }
-      },
-      'NewAttribute.SelectedBaseType': {
-        validators: {
-          notEmpty: {
-            message: 'Please select a base type'
-          }
-        }
-      },
-      'NewAttribute.SelectedReturnType': {
-        validators: {
-          notEmpty: {
-            message: 'Please select a return type'
-          }
-        }
-      }
-    },
-    plugins: {
-      trigger: new FormValidation.plugins.Trigger(),
-      bootstrap5: new FormValidation.plugins.Bootstrap5({
-        eleValidClass: 'is-valid',
-        rowSelector: function (field, ele) {
-          return '.mb-5';
-        }
-      }),
-      submitButton: new FormValidation.plugins.SubmitButton({
-        // Specify the selector for your submit button
-        button: '[type="submit"]'
-      }),
-      // Submit the form when all fields are valid
-      // defaultSubmit: new FormValidation.plugins.DefaultSubmit(),
-      autoFocus: new FormValidation.plugins.AutoFocus()
-    }
-  })
-    .on('core.form.valid', function () {
-      // if fields are valid then
-      submitFormAndSetSuccessFlag(createNewAttributeForm, 'newAttributeFlag');
-    })
-    .on('core.form.invalid', function () {
-      // if fields are invalid
-      return;
-    });
-  //#endregion
-
-  // For phone number input mask with cleave.js (US phone number)
-  const phoneMaskList = document.querySelectorAll('.phone-mask');
-  if (phoneMaskList) {
-    phoneMaskList.forEach(function (phoneMask) {
-      new Cleave(phoneMask, {
-        phone: true,
-        phoneRegionCode: 'US'
-      });
-    });
-  }
-  //? Edit Attribute
-  //#region Edit Attribute
-  // Get the Edit form validation
-  const editAttributeForm = document.getElementById('editAttributeForm');
-
-  // Initialize FormValidation for edit Attribute form
-  const fv2 = FormValidation.formValidation(editAttributeForm, {
-    fields: {
-      'Attribute.AttributeName': {
-        validators: {
-          notEmpty: {
-            message: 'Please enter a Attribute name'
-          },
-          stringLength: {
-            min: 6,
-            max: 20,
-            message: 'The Attribute name must be more than 6 and less than 20 characters long'
-          }
-        }
-      },
-      'Attribute.Email': {
-        validators: {
-          notEmpty: {
-            message: 'Please enter an email address'
-          },
-          emailAddress: {
-            message: 'Please enter a valid email address'
-          },
-          stringLength: {
-            max: 50,
-            message: 'The email address must be less than 50 characters long'
-          }
-        }
-      },
-      'Attribute.ContactNumber': {
-        validators: {
-          notEmpty: {
-            message: 'Please enter a contact number'
-          },
-          phone: {
-            country: 'US',
-            message: 'Please enter a valid phone number'
-          },
-          stringLength: {
-            min: 12,
-            message: 'The contact number must be 10 characters long'
-          }
-        }
-      },
-      'Attribute.SelectedRole': {
-        validators: {
-          notEmpty: {
-            message: 'Please select a role'
-          }
-        }
-      },
-      'Attribute.SelectedPlan': {
-        validators: {
-          notEmpty: {
-            message: 'Please select a plan'
-          }
-        }
-      }
-    },
-    plugins: {
-      trigger: new FormValidation.plugins.Trigger(),
-      bootstrap5: new FormValidation.plugins.Bootstrap5({
-        eleValidClass: 'is-valid',
-        rowSelector: function (field, ele) {
-          return '.mb-5';
-        }
-      }),
-      submitButton: new FormValidation.plugins.SubmitButton({
-        // Specify the selector for your submit button
-        button: '[type="submit"]'
-      }),
-      // Submit the form when all fields are valid
-      // defaultSubmit: new FormValidation.plugins.DefaultSubmit(),
-      autoFocus: new FormValidation.plugins.AutoFocus()
-    }
-  })
-    .on('core.form.valid', function () {
-      // if fields are valid then
-      submitFormAndSetSuccessFlag(editAttributeForm, 'editAttributeFlag');
-    })
-    .on('core.form.invalid', function () {
-      // if fields are invalid
-      return;
-    });
-
-  //#endregion
-})();
 
 //? DataTable Attributes
 // Attribute DataTable initialization
@@ -335,8 +156,22 @@ $(document).ready(function () {
     headingColor = config.colors.headingColor;
   }
 
+  //todo SETUP THE CRUD PAGE IFEIIs
+  const createKeywordForm = document.getElementById(`create${entityName}Form`);
+  const editKeywordForm = document.getElementById(`edit${entityName}Form`);
+
+  SetupCRUDPage(
+    entityName,
+    entryNameStartWithSelector, // EntryNameStartWithSelector,
+    "/Apps/Keywords/List",
+    editKeywordForm,
+    editFormValidatorsFields,
+    handleEditKeywordModal,
+    createKeywordForm,
+    createFormValidatorsFields);
+
   // Attribute List DataTable Initialization (For Attribute CRUD Page)
-  $('#attributeTable').DataTable({
+  $('#KeywordsTable').DataTable({
     order: [[1, 'desc']],
     displayLength: 7,
     dom:
@@ -507,11 +342,11 @@ $(document).ready(function () {
       },
       {
         // For Create Attribute Button (Add New Attribute)
-        text: '<i class="ri-add-line ri-16px me-0 me-sm-1_5"></i><span class="d-none d-sm-inline-block">Add Attribute</span>',
+        text: '<i class="ri-add-line ri-16px me-0 me-sm-1_5"></i><span class="d-none d-sm-inline-block">Add Keyword</span>',
         className: 'add-new btn btn-primary waves-effect waves-light',
         attr: {
           'data-bs-toggle': 'offcanvas',
-          'data-bs-target': '#createAttributeOffcanvas'
+          'data-bs-target': '#createKeywordOffcanvas'
         }
       }
     ],
@@ -539,34 +374,19 @@ $(document).ready(function () {
         responsivePriority: 4
       },
       {
-        // For Attribute Name
+        // For KeywordURI
         targets: 2,
         responsivePriority: 3
       },
       {
-        // For Email
+        // For Slug
         targets: 3,
         responsivePriority: 9
       },
       {
-        // For Is Verified
+        // For Schema
         targets: 4,
         responsivePriority: 5
-      },
-      {
-        // For Contact Number
-        targets: 5,
-        responsivePriority: 7
-      },
-      {
-        // For Role
-        targets: 6,
-        responsivePriority: 6
-      },
-      {
-        // For Plan
-        targets: 7,
-        responsivePriority: 8
       },
       {
         // For Actions
@@ -616,13 +436,158 @@ $(document).ready(function () {
       }
     }
   });
+
+
+
+
+  var formRepeater = $('.form-repeater');
+
+  // Form Repeater
+  // ! Using jQuery each loop to add dynamic id and class for inputs. You may need to improve it based on form fields.
+  // -----------------------------------------------------------------------------------------------------------------
+
+  function RemoveTabContentsDublication(TabContentsSelector) {
+    let TabPans = $(TabContentsSelector);
+    let tempIds = [];
+    TabPans.each(function () {
+      let itemExists = false;
+      let elemId = $(this).attr('id');
+      tempIds.forEach(function (itm) {
+
+        if (elemId == itm.id) itemExists = true;
+      });
+      if (!itemExists) tempIds.push({ id: elemId, $el: $(this), checked: false });
+    });
+
+    TabPans.each(function () {
+      let elemId = $(this).attr('id');
+      let temp = [...tempIds].reverse();
+      temp.forEach(function (itm) {
+        if (elemId == itm.id) {
+          if (itm.checked)
+            itm.$el.remove();
+          itm.checked = true;
+        }
+      });
+    });
+  }
+
+  let SelectedLanguage;
+
+  if (formRepeater.length) {
+    let firstTab = $(formRepeater[0]).find('.tab-pane')[0];
+    firstTab.classList.add("active");
+    firstTab.classList.add("show");
+    $(formRepeater[0]).find('[role="tablist"]>li>button')[0].classList.add("active");
+    var row = 1;
+    var col = 1;
+    formRepeater.on('submit', function (e) {
+      e.preventDefault();
+    });
+    formRepeater.repeater({
+      show: function () {
+        var fromControl = $(this).find('.form-control, .form-select');
+        var formLabel = $(this).find('.form-label');
+
+        fromControl.each(function (i) {
+          var id = 'form-repeater-' + row + '-' + col;
+          $(fromControl[i]).attr('id', id);
+          $(formLabel[i]).attr('for', id);
+          col++;
+        });
+
+        row++;
+        $(this).slideDown();
+
+
+        ///////////////////////////////////////////////////////
+        var items = formRepeater.find('.language-tab-content[data-repeater-item]')
+        var tabLang = formRepeater.find('#inputGroupSelectLanguage')[0].selectedOptions[0].value.split('-')[0];
+        let navTabs = formRepeater.find('.nav-tabs');
+        items.each(function (i) {
+
+          let arr = $(this).attr('id').split('-');
+          let lang = arr[arr.length - 1];
+          // let tabControl = formRepeater.find('[data-bs-target="#language-tabs-' + tabLang + '"]');
+          let tabControl = formRepeater.find('[data-bs-target="#language-tabs-' + tabLang + '"]');
+          if (tabControl.length == 0) {
+            formRepeater.find('.nav-item button').each(function () {
+              $(this).removeClass('active');
+            })
+            formRepeater.find('.tab-pane').each(function () {
+              $(this).removeClass('active show');
+            })
+
+            const newTabId = 'language-tabs-' + tabLang;
+            let newLi = $('<li class="nav-item"></li>');
+            let newBtn = $('<button class="nav-link active waves-effect" data-bs-toggle="tab" data-bs-target="#' + newTabId + '" role="tab" onclick="() => { SelectedLanguage = ' + tabLang + '; }"></button>');
+            newBtn.append('<span class="ri-user-line ri-20px d-sm-none"></span>');
+            newBtn.attr('data-bs-target', '#' + newTabId);
+            newBtn.append('<span class="d-none d-sm-block">' + tabLang + '</span>');
+            newLi.append(newBtn);
+            navTabs.prepend(newLi);
+
+
+            const newTabContent = $('[data-repeater-list="group-a"] div:first-child.tab-pane');
+            newTabContent.attr('id', newTabId).addClass('active show');
+            const tab = new bootstrap.Tab($(newBtn));
+            tab.show();
+            // $(this).attr('name', 'language-tabs-' + tabLang);
+            // $(this).attr('id', 'language-tabs-' + tabLang).addClass('active');
+          }
+
+
+        });
+
+        RemoveTabContentsDublication('[data-repeater-list="group-a"] .tab-pane');
+        //const triggerFirstTabEl = document.querySelector('[data-bs-target="^#language-tabs-"].active');
+        // bootstrap.Tab.getInstance(triggerFirstTabEl).show();
+        const $activeTabContent = $('.language-tab-content.active');
+        // const $activeTab = $('button[data-bs-target="#' + $activeTabContent.attr('id') + '"]');
+        const $activeTab = document.querySelectorAll(`button[data-bs-target="#${$activeTabContent.attr('id')}"]`);
+
+        //$('button[data-bs-target^="#language-tabs-"]').each(function () {
+        //  // bootstrap.Tab.getInstance($(this)[0]).hide();
+        //  $(this).removeClass('active');
+        //  $(this).attr('aria-selected','false');
+        //})
+        $('.language-tab-content').removeClass('active show').attr('aria-selected', 'false');
+        $('button[data-bs-target^="#language-tabs-"]').removeClass('active').attr('aria-selected', 'false');
+
+        // if ($activeTabContent.length > 0) $($activeTabContent[$activeTabContent.length - 1]).addClass('active show');
+        bootstrap.Tab.getInstance($activeTab[0]).show();
+        // $($activeTab).addClass('active').attr('aria-selected', 'true')
+        // $($activeTab).trigger('click');
+
+        // const cleanTabContentId = $('[data-repeater-list="group-a"] div:first-child.tab-pane').attr('id');
+        // const tempContent = $(`[id='${cleanTabContentId}']`);
+
+        //$('.select2-container').remove();
+        //$('.select2.form-select').select2({
+        //  placeholder: 'Placeholder text'
+        //});
+        //$('.select2-container').css('width', '100%');
+        //var $this = $(this);
+        //select2Focus($this);
+        //$('.form-repeater:first .form-select').select2({
+        //  dropdownParent: $(this).parent(),
+        //  placeholder: 'Placeholder text'
+        //});
+        //$('.position-relative .select2').each(function () {
+        //  $(this).select2({
+        //    dropdownParent: $(this).closest('.position-relative')
+        //  });
+        //});
+      }
+    });
+  }
 });
 
 // For Modal to close on edit button click
-var editAttributeOffcanvas = $('#editAttributeOffcanvas');
+var editKeywordOffcanvas = $('#editKeywordOffcanvas');
 
 // Event listener for the "Edit" offcanvas opening
-editAttributeOffcanvas.on('show.bs.offcanvas', function () {
+editKeywordOffcanvas.on('show.bs.offcanvas', function () {
   // Close any open modals
   $('.modal').modal('hide');
 });

@@ -7,7 +7,7 @@ using System.Linq.Expressions;
 
 namespace AspnetCoreStarter.Common;
 
-public abstract class CRUDPageModel<T> : BasePageModel where T : class, new()
+public abstract class CRUDPageModel<T,TID> : BasePageModel where T : class, new() where TID : struct
 {
 
   private readonly ApplicationDbContext _context;
@@ -22,14 +22,16 @@ public abstract class CRUDPageModel<T> : BasePageModel where T : class, new()
   public int Total { get; set; } = 0;
 
   [BindProperty]
-  public T NewEntity { get; set; }
+  public T NewEntry { get; set; }
 
   public CRUDPageModel(ApplicationDbContext context)
   {
     _context = context;
     _dbSet = context.Set<T>();
-    NewEntity = new T();
+    NewEntry = new T();
   }
+
+  public string EntityName => typeof(T).Name;
 
   #region Before After CRUD
   public virtual async Task<bool> BeforeCreate(T entity)
@@ -70,21 +72,22 @@ public abstract class CRUDPageModel<T> : BasePageModel where T : class, new()
     TableItems = await _dbSet.Skip(Start).Take(take).ToListAsync();
   }
 
+
   public async Task<IActionResult> OnPostAsync()
   {
 
-    if (!await BeforeCreate(NewEntity)) return Page();
+    if (!await BeforeCreate(NewEntry)) return Page();
 
     // Add a new Entity to the database
-    _dbSet.Add(NewEntity);
+    _dbSet.Add(NewEntry);
     await _context.SaveChangesAsync();
-    await AfterCreate(NewEntity);
+    await AfterCreate(NewEntry);
     return RedirectToPage();
 
   }
 
   // The OnPostEditOrUpdateAsync method is called when the Edit User form is submitted
-  public async Task<IActionResult> OnPostEditOrUpdateAsync(int id)
+  public async Task<IActionResult> OnPostEditOrUpdateAsync(TID id)
   {
     var EntityToUpdate = await _dbSet.FindAsync(id);
     if (EntityToUpdate == null)
@@ -95,7 +98,7 @@ public abstract class CRUDPageModel<T> : BasePageModel where T : class, new()
     // Update the entity in the database and save changes
     if (await BeforeUpdate(EntityToUpdate))
     {
-      await UpdateEntity(NewEntity);
+      await UpdateEntity(EntityToUpdate);
       await _context.SaveChangesAsync();
       await AfterUpdate(EntityToUpdate);
     }
@@ -103,7 +106,7 @@ public abstract class CRUDPageModel<T> : BasePageModel where T : class, new()
   }
 
   // The OnPostDeleteAsync method is called when the Delete User form is submitted
-  public async Task<IActionResult> OnPostDeleteAsync(int id)
+  public async Task<IActionResult> OnPostDeleteAsync(TID id)
   {
 
     T? entityToDelete = await _dbSet.FindAsync(id);

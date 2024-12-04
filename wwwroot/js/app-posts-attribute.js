@@ -166,9 +166,6 @@ function submitFormAndSetSuccessFlag(form, flagName) {
           notEmpty: {
             message: 'Please enter an email address'
           },
-          emailAddress: {
-            message: 'Please enter a valid email address'
-          },
           stringLength: {
             max: 50,
             message: 'The email address must be less than 50 characters long'
@@ -235,7 +232,7 @@ function submitFormAndSetSuccessFlag(form, flagName) {
   // Initialize FormValidation for edit Attribute form
   const fv2 = FormValidation.formValidation(editAttributeForm, {
     fields: {
-      'Attribute.AttributeName': {
+      'Attribute.Name': {
         validators: {
           notEmpty: {
             message: 'Please enter a Attribute name'
@@ -247,13 +244,10 @@ function submitFormAndSetSuccessFlag(form, flagName) {
           }
         }
       },
-      'Attribute.Email': {
+      'Attribute.Description': {
         validators: {
           notEmpty: {
             message: 'Please enter an email address'
-          },
-          emailAddress: {
-            message: 'Please enter a valid email address'
           },
           stringLength: {
             max: 50,
@@ -261,32 +255,17 @@ function submitFormAndSetSuccessFlag(form, flagName) {
           }
         }
       },
-      'Attribute.ContactNumber': {
+      'Attribute.SelectedBaseType': {
         validators: {
           notEmpty: {
-            message: 'Please enter a contact number'
-          },
-          phone: {
-            country: 'US',
-            message: 'Please enter a valid phone number'
-          },
-          stringLength: {
-            min: 12,
-            message: 'The contact number must be 10 characters long'
+            message: 'Please select a Base Type'
           }
         }
       },
-      'Attribute.SelectedRole': {
+      'Attribute.SelectedReturnType': {
         validators: {
           notEmpty: {
-            message: 'Please select a role'
-          }
-        }
-      },
-      'Attribute.SelectedPlan': {
-        validators: {
-          notEmpty: {
-            message: 'Please select a plan'
+            message: 'Please select a Return Type'
           }
         }
       }

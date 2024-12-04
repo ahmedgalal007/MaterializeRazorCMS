@@ -9,25 +9,25 @@
 		<form method="post" id="createKeywordForm" >
 			<h6>Define Keyword.</h6>
 			<div class="form-floating form-floating-outline mb-5">
-        <input asp-for="NewEntity.KeywordURI" class="form-control" placeholder="Keyword URI ex: Microsoft-Corporation | Mohamed-Salah"
+        <input asp-for="NewEntry.KeywordURI" class="form-control" placeholder="Keyword URI ex: Microsoft-Corporation | Mohamed-Salah"
 							 aria-label="Url of the Keyword"
-               value="@Model.NewEntity.KeywordURI" />
+               value="@Model.NewEntry.KeywordURI" />
         <label for="NewEntity_KeywordURI">Keyword URI</label>
 			</div>
 			<div class="form-floating form-floating-outline mb-5">
-        <input asp-for="NewEntity.Slug" class="form-control" placeholder="Keyword Slug ex: MicrosoftCorporation | MohamedSalah"
+        <input asp-for="NewEntry.Slug" class="form-control" placeholder="Keyword Slug ex: MicrosoftCorporation | MohamedSalah"
                aria-label="Description Text"
-               value="@Model.NewEntity.Slug">
-        <label for="NewEntity_Slug">Description</label>
+               value="@Model.NewEntry.Slug">
+        <label for="NewEntity_Slug">Slug</label>
 			</div>
       <div class="form-floating form-floating-outline mb-5">
-        <input asp-for="NewEntity.Schema" class="form-control"
+        <input asp-for="NewEntry.Schema" class="form-control"
                placeholder="Select Schema Name Like Person|Company|Place|Event|Product"
                aria-label="Keyword Schema"
-               value="@Model.NewEntity.Schema">
-        <label for="NewEntity_Schema">Description</label>
+               value="@Model.NewEntry.Schema">
+        <label for="NewEntity_Schema">Schema</label>
       </div>
-
+			
 			<div class="row">
 				<div class="col-12">
 					<button type="submit" class="btn btn-primary me-3">Submit</button>
@@ -35,5 +35,10 @@
 				</div>
 			</div>
 		</form>
+
+
+		@* Edit Locals Form Offcanvas Partial*@
+		@await Html.PartialAsync("partials/_LocalsKeywordOffcanvasPartial")
+
 	</div>
 </div>
