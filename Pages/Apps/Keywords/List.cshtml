@@ -30,7 +30,7 @@
 
 @section PageScripts {
 	<script src="~/js/common/crud-page-setup.dist.js"></script>
-  <script src="~/js/app-keywords-list.dist.js"></script>
+	<script src="~/js/app-keywords-list.dist.js"></script>
 }
 
 @* Attributes DataTable *@
@@ -46,7 +46,7 @@
 					<tr>
 						<th></th>
 						<th>Id</th>
-            <th>KeywordURI</th>
+						<th>KeywordURI</th>
 						<th>Slug</th>
 						<th>Schema</th>
 						<th>Action</th>
@@ -54,20 +54,20 @@
 					</tr>
 				</thead>
 				<tbody>
-          @foreach (var item in Model.TableItems.Select((value, i) => new { i, value }))
+					@foreach (var item in Model.TableItems.Select((value, i) => new { i, value }))
 					{
 						var entity = item.value;
 						var index = item.i;
 						<tr idx="@index">
 							<td></td>
-              <td>@entity.Id</td>
-              <td class="text-nowrap">@entity.KeywordURI</td>
+							<td>@entity.Id</td>
+							<td class="text-nowrap">@entity.KeywordURI</td>
 							<td class="keyword-name-@entity.Id  text-truncate">@entity.Slug</td>
-              <td class="text-truncate">@entity.Schema</td>
+							<td class="text-truncate">@entity.Schema</td>
 							<td class="text-nowrap">
 								@* Edit Button *@
 								<button class="btn btn-sm btn-icon edit-Keyword-button" data-bs-toggle="offcanvas"
-                        data-bs-target="#editKeywordOffcanvas" id="@entity.Id--editKeyword">
+												data-bs-target="#editKeywordOffcanvas" id="@entity.Id--editKeyword">
 									<i class="ri-edit-box-line ri-20px"></i>
 								</button>
 								@* Delete Button *@
@@ -78,12 +78,13 @@
 									</button>
 								</form>
 								@* Dropdown Button *@
+							</td>
 							<td>
 								<button class="btn btn-sm btn-icon dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
 									<i class="ri-more-2-line ri-20px"></i>
 								</button>
 								<div class="dropdown-menu dropdown-menu-end m-0">
-                  <a href="/Apps/Keywords/View/Account" class="dropdown-item">View</a>
+									<a href="/Apps/Keywords/View/Account" class="dropdown-item">View</a>
 									<a href="javascript:void(0);" class="dropdown-item">Suspend</a>
 								</div>
 
@@ -111,6 +112,7 @@ else
 						<th>Slug</th>
 						<th>Schema</th>
 						<th>Action</th>
+						<th></th>
 					</tr>
 				</thead>
 			</table>

@@ -30,8 +30,11 @@
     <Folder Include="Endpoints\Roles\" />
     <Folder Include="Endpoints\Posts\" />
     <Folder Include="Localization\" />
+    <Folder Include="Models\Keyword\" />
     <Folder Include="Models\User\" />
     <Folder Include="Pages\Apps\Categories\" />
+    <Folder Include="Pages\Shared\DisplayTemplates\" />
+    <Folder Include="Pages\Shared\EditorTemplates\" />
   </ItemGroup>
 
 </Project>
