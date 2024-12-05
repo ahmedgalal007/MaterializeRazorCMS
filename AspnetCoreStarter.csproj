@@ -8,6 +8,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="Pages\Shared\DisplayTemplates\BaseLocalizedEntity.cshtml" />
+    <Content Remove="Pages\Shared\EditorTemplates\BaseLocalizedEntity.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.11" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.0">
@@ -33,8 +38,19 @@
     <Folder Include="Models\Keyword\" />
     <Folder Include="Models\User\" />
     <Folder Include="Pages\Apps\Categories\" />
-    <Folder Include="Pages\Shared\DisplayTemplates\" />
-    <Folder Include="Pages\Shared\EditorTemplates\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Pages\Shared\DisplayTemplates\BaseLocalizedEntity.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="Pages\Shared\DisplayTemplates\BaseLocalizedEntity.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Pages\Shared\DisplayTemplates\BaseLocalizedEntity.cshtml" />
+    <None Include="Pages\Shared\EditorTemplates\BaseLocalizedEntity.cshtml" />
   </ItemGroup>
 
 </Project>
