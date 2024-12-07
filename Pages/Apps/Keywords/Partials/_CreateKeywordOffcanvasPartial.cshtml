@@ -27,7 +27,10 @@
                value="@Model.NewEntry.Schema">
         <label for="NewEntity_Schema">Schema</label>
       </div>
-			
+
+			@* Edit Locals Form Offcanvas Partial*@
+			@await Html.PartialAsync("partials/_LocalsKeywordOffcanvasPartial")
+
 			<div class="row">
 				<div class="col-12">
 					<button type="submit" class="btn btn-primary me-3">Submit</button>
@@ -37,8 +40,6 @@
 		</form>
 
 
-		@* Edit Locals Form Offcanvas Partial*@
-		@await Html.PartialAsync("partials/_LocalsKeywordOffcanvasPartial")
 
 	</div>
 </div>

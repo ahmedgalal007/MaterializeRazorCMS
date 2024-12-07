@@ -57,6 +57,22 @@ namespace AspnetCoreStarter.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Languages",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Code = table.Column<string>(type: "TEXT", nullable: false),
+                    Name = table.Column<string>(type: "TEXT", nullable: false),
+                    IsDefault = table.Column<bool>(type: "INTEGER", nullable: false),
+                    IsRTL = table.Column<bool>(type: "INTEGER", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Languages", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "PostType",
                 columns: table => new
                 {
@@ -102,6 +118,57 @@ namespace AspnetCoreStarter.Migrations
                         column: x => x.CategoryId,
                         principalTable: "Categories",
                         principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "CategoryLocals",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
+                    Name = table.Column<string>(type: "TEXT", nullable: false),
+                    CategoryId = table.Column<Guid>(type: "TEXT", nullable: true),
+                    LanguageId = table.Column<int>(type: "INTEGER", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CategoryLocals", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_CategoryLocals_Categories_CategoryId",
+                        column: x => x.CategoryId,
+                        principalTable: "Categories",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_CategoryLocals_Languages_LanguageId",
+                        column: x => x.LanguageId,
+                        principalTable: "Languages",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "KeywordLocals",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
+                    Title = table.Column<string>(type: "TEXT", nullable: false),
+                    Description = table.Column<string>(type: "TEXT", nullable: false),
+                    KeywordId = table.Column<Guid>(type: "TEXT", nullable: true),
+                    LanguageId = table.Column<int>(type: "INTEGER", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_KeywordLocals", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_KeywordLocals_Keywords_KeywordId",
+                        column: x => x.KeywordId,
+                        principalTable: "Keywords",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_KeywordLocals_Languages_LanguageId",
+                        column: x => x.LanguageId,
+                        principalTable: "Languages",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -155,25 +222,53 @@ namespace AspnetCoreStarter.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Lang",
+                name: "UserLocals",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    Code = table.Column<string>(type: "TEXT", nullable: false),
-                    Name = table.Column<string>(type: "TEXT", nullable: false),
-                    IsDefault = table.Column<bool>(type: "INTEGER", nullable: false),
-                    IsRTL = table.Column<bool>(type: "INTEGER", nullable: false),
-                    ArticleId = table.Column<Guid>(type: "TEXT", nullable: true)
+                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
+                    FirstName = table.Column<string>(type: "TEXT", nullable: false),
+                    LastName = table.Column<string>(type: "TEXT", nullable: false),
+                    UserId = table.Column<int>(type: "INTEGER", nullable: true),
+                    LanguageId = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Lang", x => x.Id);
+                    table.PrimaryKey("PK_UserLocals", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Lang_Articles_ArticleId",
-                        column: x => x.ArticleId,
-                        principalTable: "Articles",
+                        name: "FK_UserLocals_Languages_LanguageId",
+                        column: x => x.LanguageId,
+                        principalTable: "Languages",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_UserLocals_User_UserId",
+                        column: x => x.UserId,
+                        principalTable: "User",
                         principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ArticleLang",
+                columns: table => new
+                {
+                    ArticlesId = table.Column<Guid>(type: "TEXT", nullable: false),
+                    LanguagesId = table.Column<int>(type: "INTEGER", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ArticleLang", x => new { x.ArticlesId, x.LanguagesId });
+                    table.ForeignKey(
+                        name: "FK_ArticleLang_Articles_ArticlesId",
+                        column: x => x.ArticlesId,
+                        principalTable: "Articles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ArticleLang_Languages_LanguagesId",
+                        column: x => x.LanguagesId,
+                        principalTable: "Languages",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -229,83 +324,6 @@ namespace AspnetCoreStarter.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "CategoryLocals",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
-                    Name = table.Column<string>(type: "TEXT", nullable: false),
-                    CategoryId = table.Column<Guid>(type: "TEXT", nullable: true),
-                    LanguageId = table.Column<int>(type: "INTEGER", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_CategoryLocals", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_CategoryLocals_Categories_CategoryId",
-                        column: x => x.CategoryId,
-                        principalTable: "Categories",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_CategoryLocals_Lang_LanguageId",
-                        column: x => x.LanguageId,
-                        principalTable: "Lang",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "KeywordLocals",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
-                    Title = table.Column<string>(type: "TEXT", nullable: false),
-                    Description = table.Column<string>(type: "TEXT", nullable: false),
-                    KeywordId = table.Column<Guid>(type: "TEXT", nullable: true),
-                    LanguageId = table.Column<int>(type: "INTEGER", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_KeywordLocals", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_KeywordLocals_Keywords_KeywordId",
-                        column: x => x.KeywordId,
-                        principalTable: "Keywords",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_KeywordLocals_Lang_LanguageId",
-                        column: x => x.LanguageId,
-                        principalTable: "Lang",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "UserLocals",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
-                    FirstName = table.Column<string>(type: "TEXT", nullable: false),
-                    LastName = table.Column<string>(type: "TEXT", nullable: false),
-                    UserId = table.Column<int>(type: "INTEGER", nullable: true),
-                    LanguageId = table.Column<int>(type: "INTEGER", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_UserLocals", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_UserLocals_Lang_LanguageId",
-                        column: x => x.LanguageId,
-                        principalTable: "Lang",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_UserLocals_User_UserId",
-                        column: x => x.UserId,
-                        principalTable: "User",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
                 name: "PostAttributeLocals",
                 columns: table => new
                 {
@@ -318,9 +336,9 @@ namespace AspnetCoreStarter.Migrations
                 {
                     table.PrimaryKey("PK_PostAttributeLocals", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_PostAttributeLocals_Lang_LanguageId",
+                        name: "FK_PostAttributeLocals_Languages_LanguageId",
                         column: x => x.LanguageId,
-                        principalTable: "Lang",
+                        principalTable: "Languages",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -329,6 +347,11 @@ namespace AspnetCoreStarter.Migrations
                         principalTable: "PostAttribute",
                         principalColumn: "Id");
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ArticleLang_LanguagesId",
+                table: "ArticleLang",
+                column: "LanguagesId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ArticlePost_ArticleId",
@@ -364,11 +387,6 @@ namespace AspnetCoreStarter.Migrations
                 name: "IX_KeywordLocals_LanguageId",
                 table: "KeywordLocals",
                 column: "LanguageId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Lang_ArticleId",
-                table: "Lang",
-                column: "ArticleId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Post_PostTypeId",
@@ -420,6 +438,9 @@ namespace AspnetCoreStarter.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "ArticleLang");
+
+            migrationBuilder.DropTable(
                 name: "ArticlePost");
 
             migrationBuilder.DropTable(
@@ -438,16 +459,22 @@ namespace AspnetCoreStarter.Migrations
                 name: "UserLocals");
 
             migrationBuilder.DropTable(
+                name: "Articles");
+
+            migrationBuilder.DropTable(
                 name: "Keywords");
 
             migrationBuilder.DropTable(
                 name: "PostAttribute");
 
             migrationBuilder.DropTable(
-                name: "Lang");
+                name: "Languages");
 
             migrationBuilder.DropTable(
                 name: "User");
+
+            migrationBuilder.DropTable(
+                name: "Categories");
 
             migrationBuilder.DropTable(
                 name: "Attributes");
@@ -456,13 +483,7 @@ namespace AspnetCoreStarter.Migrations
                 name: "Post");
 
             migrationBuilder.DropTable(
-                name: "Articles");
-
-            migrationBuilder.DropTable(
                 name: "PostType");
-
-            migrationBuilder.DropTable(
-                name: "Categories");
         }
     }
 }

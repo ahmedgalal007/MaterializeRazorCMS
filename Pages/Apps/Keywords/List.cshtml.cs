@@ -12,6 +12,17 @@ public class KeywordModel : LocalizedCRUDPageModel<Keyword, KeywordLocals, Guid>
 {
   public KeywordModel(ApplicationDbContext context) : base(context)
   {
+    if(NewEntry.Locales.Count == 0) NewEntry.Locales.Add(new(DefaultLanguage));
+  }
+
+  public override async Task<Boolean> BeforeUpdate(Keyword entity)
+  {
+    if(!await base.BeforeUpdate(entity)) return false;
+    foreach (var item in entity.Locales)
+    {
+        
+    }
+    return true;
   }
 
   public override async Task<Boolean> UpdateEntity(Keyword entity, String entityName = "")

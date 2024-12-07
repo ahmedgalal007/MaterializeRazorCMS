@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using AspnetCoreStarter.Entities;
 using Attribute = AspnetCoreStarter.Entities.Posts.Attribute;
+using AspnetCoreStarter.Common;
 
 namespace AspnetCoreStarter.Models
 {
@@ -105,7 +106,21 @@ namespace AspnetCoreStarter.Models
           context.SaveChanges();
         }
 
+        if (!context.Languages.Any())
+        {
+          foreach (var item in ISOLanguages.languages)
+          {
+            context.Languages.Add(new()
+            {
+              Code = item.ISOCode,
+              Name = item.Name,
+              IsDefault = item.IsDefault,
+              IsRTL = item.IsRTL
+            });
+          }
 
+          context.SaveChanges();
+        }
 
       }
     }

@@ -11,31 +11,37 @@ public class LocalizedCRUDPageModel<T, TLocal, TID> : CRUDPageModel<T, TID>
   where TID : struct
 {
 
-  [BindProperty]
-  public List<TLocal> Locals { get; set; }
-
+  //[BindProperty]
+  //public List<TLocal> Locals { get; set; }
+  public List<string> Languages => NewEntry.Locales.Select(e => e.Language.Code).ToList();
   public List<string> GetLocalProperties => ExtractPropertiesNames();
 
   public LocalizedCRUDPageModel(ApplicationDbContext context) : base(context)
   {
+    if (NewEntry.Locales == null || NewEntry.Locales.Count == 0)
+
+    {
+      if (NewEntry.Locales == null) NewEntry.Locales = new();
+      // if (DefaultLanguage != null) NewEntry.Locales.Add(new TLocal(DefaultLanguage));
+    }
   }
 
-  protected async Task UpdateLocals()
-  {
-    Locals.ForEach(x => {
+  //protected async Task UpdateLocals()
+  //{
+  //  Locals.ForEach(x => {
       
-      TLocal? local = NewEntry.Locales.FirstOrDefault(C => C.Language.Code == x.Language.Code);
-      if (local == null)
-      {
-        NewEntry.Locales.Add(x);
-      }
-      else
-      {
-        local = (TLocal)x.ShallowCopy();
-      }
-    });
-    await Task.CompletedTask;
-  }
+  //    TLocal? local = NewEntry.Locales.FirstOrDefault(C => C.Language.Code == x.Language.Code);
+  //    if (local == null)
+  //    {
+  //      NewEntry.Locales.Add(x);
+  //    }
+  //    else
+  //    {
+  //      local = (TLocal)x.ShallowCopy();
+  //    }
+  //  });
+  //  await Task.CompletedTask;
+  //}
   private List<string> ExtractPropertiesNames()
   {
     List<string> results = [];

@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AspnetCoreStarter.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241130125733_Initialization")]
+    [Migration("20241205232742_Initialization")]
     partial class Initialization
     {
         /// <inheritdoc />
@@ -19,6 +19,21 @@ namespace AspnetCoreStarter.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.0");
+
+            modelBuilder.Entity("ArticleLang", b =>
+                {
+                    b.Property<Guid>("ArticlesId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("LanguagesId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("ArticlesId", "LanguagesId");
+
+                    b.HasIndex("LanguagesId");
+
+                    b.ToTable("ArticleLang");
+                });
 
             modelBuilder.Entity("AspnetCoreStarter.Entities.Articles.Article", b =>
                 {
@@ -109,9 +124,6 @@ namespace AspnetCoreStarter.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<Guid?>("ArticleId")
-                        .HasColumnType("TEXT");
-
                     b.Property<string>("Code")
                         .IsRequired()
                         .HasColumnType("TEXT");
@@ -128,9 +140,7 @@ namespace AspnetCoreStarter.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ArticleId");
-
-                    b.ToTable("Lang");
+                    b.ToTable("Languages");
                 });
 
             modelBuilder.Entity("AspnetCoreStarter.Entities.Locals.CategoryLocals", b =>
@@ -415,6 +425,21 @@ namespace AspnetCoreStarter.Migrations
                     b.ToTable("User");
                 });
 
+            modelBuilder.Entity("ArticleLang", b =>
+                {
+                    b.HasOne("AspnetCoreStarter.Entities.Articles.Article", null)
+                        .WithMany()
+                        .HasForeignKey("ArticlesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("AspnetCoreStarter.Entities.Lang", null)
+                        .WithMany()
+                        .HasForeignKey("LanguagesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("AspnetCoreStarter.Entities.Articles.Article", b =>
                 {
                     b.HasOne("AspnetCoreStarter.Entities.Categories.Category", "Category")
@@ -437,13 +462,6 @@ namespace AspnetCoreStarter.Migrations
                         .IsRequired();
 
                     b.Navigation("Post");
-                });
-
-            modelBuilder.Entity("AspnetCoreStarter.Entities.Lang", b =>
-                {
-                    b.HasOne("AspnetCoreStarter.Entities.Articles.Article", null)
-                        .WithMany("Languages")
-                        .HasForeignKey("ArticleId");
                 });
 
             modelBuilder.Entity("AspnetCoreStarter.Entities.Locals.CategoryLocals", b =>
@@ -550,8 +568,6 @@ namespace AspnetCoreStarter.Migrations
             modelBuilder.Entity("AspnetCoreStarter.Entities.Articles.Article", b =>
                 {
                     b.Navigation("ArticlePosts");
-
-                    b.Navigation("Languages");
                 });
 
             modelBuilder.Entity("AspnetCoreStarter.Entities.Categories.Category", b =>

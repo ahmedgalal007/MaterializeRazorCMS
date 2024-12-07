@@ -1,3 +1,4 @@
+using AspnetCoreStarter.Entities.Articles;
 using Humanizer;
 
 namespace AspnetCoreStarter.Entities
@@ -9,5 +10,6 @@ namespace AspnetCoreStarter.Entities
     public string Name { get; set; }
     public bool IsDefault { get; set; } = false;
     public bool IsRTL { get; set; } = false;
+    public virtual List<Article> Articles { get; set; } 
   }
 }
