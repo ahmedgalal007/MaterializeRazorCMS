@@ -26,7 +26,10 @@
 				<label for="@(InputPrefix + "_" + "Schema")">@InputPrefix  Schema</label>
 			</div>
 
-      <div class="row">
+			@* Edit Locals Form Offcanvas Partial*@
+			@await Html.PartialAsync("partials/_LocalsKeywordOffcanvasPartial")
+
+			<div class="row">
         <div class="col-12">
           <button type="submit" class="btn btn-primary me-3">Submit</button>
           <button type="reset" class="btn btn-outline-secondary" data-bs-dismiss="offcanvas">Cancel</button>

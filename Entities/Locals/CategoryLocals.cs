@@ -5,7 +5,7 @@ public class CategoryLocals : BaseLocalizedEntity
   public CategoryLocals()
   {
   }
-  public CategoryLocals(Lang lang) : base(lang)
+  public CategoryLocals(Language lang) : base(lang)
   {
     
   }

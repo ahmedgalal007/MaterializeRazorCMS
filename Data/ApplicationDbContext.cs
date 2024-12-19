@@ -19,7 +19,7 @@ namespace AspnetCoreStarter.Data
 
     public DbSet<User> User { get; set; } = default!;
     public DbSet<Article> Articles { get; set; } = default!;
-    public DbSet<Lang> Languages { get; set; } = default!;
+    public DbSet<Language> Languages { get; set; } = default!;
     public DbSet<Entities.Posts.Attribute> Attributes { get; set; } = default!;
     public DbSet<Keyword> Keywords { get; set; } = default!;
     public DbSet<Category> Categories { get; set; } = default!;

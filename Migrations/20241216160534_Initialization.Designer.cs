@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AspnetCoreStarter.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241205232742_Initialization")]
+    [Migration("20241216160534_Initialization")]
     partial class Initialization
     {
         /// <inheritdoc />
@@ -20,7 +20,7 @@ namespace AspnetCoreStarter.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.0");
 
-            modelBuilder.Entity("ArticleLang", b =>
+            modelBuilder.Entity("ArticleLanguage", b =>
                 {
                     b.Property<Guid>("ArticlesId")
                         .HasColumnType("TEXT");
@@ -32,7 +32,7 @@ namespace AspnetCoreStarter.Migrations
 
                     b.HasIndex("LanguagesId");
 
-                    b.ToTable("ArticleLang");
+                    b.ToTable("ArticleLanguage");
                 });
 
             modelBuilder.Entity("AspnetCoreStarter.Entities.Articles.Article", b =>
@@ -44,12 +44,12 @@ namespace AspnetCoreStarter.Migrations
                     b.Property<string>("ArticleUri")
                         .HasColumnType("TEXT");
 
-                    b.Property<Guid?>("CategoryId")
+                    b.Property<Guid?>("CategoryID")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CategoryId");
+                    b.HasIndex("CategoryID");
 
                     b.ToTable("Articles");
                 });
@@ -66,14 +66,14 @@ namespace AspnetCoreStarter.Migrations
                     b.Property<int>("Order")
                         .HasColumnType("INTEGER");
 
-                    b.Property<Guid>("PostId")
+                    b.Property<Guid>("PostID")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ArticleId");
 
-                    b.HasIndex("PostId");
+                    b.HasIndex("PostID");
 
                     b.ToTable("ArticlePost");
                 });
@@ -118,23 +118,34 @@ namespace AspnetCoreStarter.Migrations
                     b.ToTable("Keywords");
                 });
 
-            modelBuilder.Entity("AspnetCoreStarter.Entities.Lang", b =>
+            modelBuilder.Entity("AspnetCoreStarter.Entities.Language", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("Code")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
                     b.Property<bool>("IsDefault")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsEnabled")
                         .HasColumnType("INTEGER");
 
                     b.Property<bool>("IsRTL")
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("IsoCode")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("LocalName")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("TwoLettersCode")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
@@ -152,7 +163,7 @@ namespace AspnetCoreStarter.Migrations
                     b.Property<Guid?>("CategoryId")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("LanguageId")
+                    b.Property<int>("LanguageID")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Name")
@@ -163,7 +174,7 @@ namespace AspnetCoreStarter.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.HasIndex("LanguageId");
+                    b.HasIndex("LanguageID");
 
                     b.ToTable("CategoryLocals");
                 });
@@ -181,7 +192,7 @@ namespace AspnetCoreStarter.Migrations
                     b.Property<Guid?>("KeywordId")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("LanguageId")
+                    b.Property<int>("LanguageID")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Title")
@@ -192,7 +203,7 @@ namespace AspnetCoreStarter.Migrations
 
                     b.HasIndex("KeywordId");
 
-                    b.HasIndex("LanguageId");
+                    b.HasIndex("LanguageID");
 
                     b.ToTable("KeywordLocals");
                 });
@@ -203,7 +214,7 @@ namespace AspnetCoreStarter.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("LanguageId")
+                    b.Property<int>("LanguageID")
                         .HasColumnType("INTEGER");
 
                     b.Property<Guid?>("PostAttributeId")
@@ -215,7 +226,7 @@ namespace AspnetCoreStarter.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("LanguageId");
+                    b.HasIndex("LanguageID");
 
                     b.HasIndex("PostAttributeId");
 
@@ -232,7 +243,7 @@ namespace AspnetCoreStarter.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("LanguageId")
+                    b.Property<int>("LanguageID")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("LastName")
@@ -244,7 +255,7 @@ namespace AspnetCoreStarter.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("LanguageId");
+                    b.HasIndex("LanguageID");
 
                     b.HasIndex("UserId");
 
@@ -294,7 +305,7 @@ namespace AspnetCoreStarter.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
-                    b.Property<Guid>("PostTypeId")
+                    b.Property<Guid>("PostTypeID")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("PostURI")
@@ -302,7 +313,7 @@ namespace AspnetCoreStarter.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PostTypeId");
+                    b.HasIndex("PostTypeID");
 
                     b.ToTable("Post");
                 });
@@ -316,7 +327,7 @@ namespace AspnetCoreStarter.Migrations
                     b.Property<Guid?>("PostId")
                         .HasColumnType("TEXT");
 
-                    b.Property<Guid>("TypeId")
+                    b.Property<Guid>("TypeID")
                         .HasColumnType("TEXT");
 
                     b.Property<bool>("ValueBoolean")
@@ -332,7 +343,7 @@ namespace AspnetCoreStarter.Migrations
 
                     b.HasIndex("PostId");
 
-                    b.HasIndex("TypeId");
+                    b.HasIndex("TypeID");
 
                     b.ToTable("PostAttribute");
                 });
@@ -384,14 +395,14 @@ namespace AspnetCoreStarter.Migrations
                     b.Property<Guid?>("PostTypeId")
                         .HasColumnType("TEXT");
 
-                    b.Property<Guid>("TypeId")
+                    b.Property<Guid>("TypeID")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
                     b.HasIndex("PostTypeId");
 
-                    b.HasIndex("TypeId");
+                    b.HasIndex("TypeID");
 
                     b.ToTable("PostTypeAttribute");
                 });
@@ -425,7 +436,7 @@ namespace AspnetCoreStarter.Migrations
                     b.ToTable("User");
                 });
 
-            modelBuilder.Entity("ArticleLang", b =>
+            modelBuilder.Entity("ArticleLanguage", b =>
                 {
                     b.HasOne("AspnetCoreStarter.Entities.Articles.Article", null)
                         .WithMany()
@@ -433,7 +444,7 @@ namespace AspnetCoreStarter.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("AspnetCoreStarter.Entities.Lang", null)
+                    b.HasOne("AspnetCoreStarter.Entities.Language", null)
                         .WithMany()
                         .HasForeignKey("LanguagesId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -444,7 +455,7 @@ namespace AspnetCoreStarter.Migrations
                 {
                     b.HasOne("AspnetCoreStarter.Entities.Categories.Category", "Category")
                         .WithMany()
-                        .HasForeignKey("CategoryId");
+                        .HasForeignKey("CategoryID");
 
                     b.Navigation("Category");
                 });
@@ -457,7 +468,7 @@ namespace AspnetCoreStarter.Migrations
 
                     b.HasOne("AspnetCoreStarter.Entities.Posts.Post", "Post")
                         .WithMany()
-                        .HasForeignKey("PostId")
+                        .HasForeignKey("PostID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -470,9 +481,9 @@ namespace AspnetCoreStarter.Migrations
                         .WithMany("Locales")
                         .HasForeignKey("CategoryId");
 
-                    b.HasOne("AspnetCoreStarter.Entities.Lang", "Language")
+                    b.HasOne("AspnetCoreStarter.Entities.Language", "Language")
                         .WithMany()
-                        .HasForeignKey("LanguageId")
+                        .HasForeignKey("LanguageID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -485,9 +496,9 @@ namespace AspnetCoreStarter.Migrations
                         .WithMany("Locales")
                         .HasForeignKey("KeywordId");
 
-                    b.HasOne("AspnetCoreStarter.Entities.Lang", "Language")
+                    b.HasOne("AspnetCoreStarter.Entities.Language", "Language")
                         .WithMany()
-                        .HasForeignKey("LanguageId")
+                        .HasForeignKey("LanguageID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -496,9 +507,9 @@ namespace AspnetCoreStarter.Migrations
 
             modelBuilder.Entity("AspnetCoreStarter.Entities.Locals.PostAttributeLocals", b =>
                 {
-                    b.HasOne("AspnetCoreStarter.Entities.Lang", "Language")
+                    b.HasOne("AspnetCoreStarter.Entities.Language", "Language")
                         .WithMany()
-                        .HasForeignKey("LanguageId")
+                        .HasForeignKey("LanguageID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -511,9 +522,9 @@ namespace AspnetCoreStarter.Migrations
 
             modelBuilder.Entity("AspnetCoreStarter.Entities.Locals.UserLocals", b =>
                 {
-                    b.HasOne("AspnetCoreStarter.Entities.Lang", "Language")
+                    b.HasOne("AspnetCoreStarter.Entities.Language", "Language")
                         .WithMany()
-                        .HasForeignKey("LanguageId")
+                        .HasForeignKey("LanguageID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -528,7 +539,7 @@ namespace AspnetCoreStarter.Migrations
                 {
                     b.HasOne("AspnetCoreStarter.Entities.Posts.PostType", "PostType")
                         .WithMany()
-                        .HasForeignKey("PostTypeId")
+                        .HasForeignKey("PostTypeID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -543,7 +554,7 @@ namespace AspnetCoreStarter.Migrations
 
                     b.HasOne("AspnetCoreStarter.Entities.Posts.Attribute", "Type")
                         .WithMany()
-                        .HasForeignKey("TypeId")
+                        .HasForeignKey("TypeID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -558,7 +569,7 @@ namespace AspnetCoreStarter.Migrations
 
                     b.HasOne("AspnetCoreStarter.Entities.Posts.Attribute", "Type")
                         .WithMany("PostTypeAttributes")
-                        .HasForeignKey("TypeId")
+                        .HasForeignKey("TypeID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

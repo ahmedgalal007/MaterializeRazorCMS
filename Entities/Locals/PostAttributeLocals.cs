@@ -5,7 +5,7 @@ public class PostAttributeLocals : BaseLocalizedEntity
   public PostAttributeLocals()
   {
   }
-  public PostAttributeLocals(Lang lang) : base(lang)
+  public PostAttributeLocals(Language lang) : base(lang)
   {
 
   }

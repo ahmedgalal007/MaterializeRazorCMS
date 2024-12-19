@@ -1,10 +1,11 @@
 
+using AspnetCoreStarter.Entities;
 using Microsoft.AspNetCore.Http;
 
 namespace AspnetCoreStarter.Common
 {
 
-  public record Language(string Name, string LocalName, string TwoLettersCode, string ISOCode, bool IsEnabled = true, bool IsRTL = false, bool IsDefault = false);
+  // public record Language(string Name, string LocalName, string TwoLettersCode, string ISOCode, bool IsEnabled = true, bool IsRTL = false, bool IsDefault = false);
 
 
   public interface IISOLanguages

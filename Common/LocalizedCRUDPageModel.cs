@@ -1,4 +1,5 @@
 using AspnetCoreStarter.Data;
+using Microsoft.EntityFrameworkCore;
 using AspnetCoreStarter.Entities;
 using System;
 using System.Reflection;
@@ -13,7 +14,7 @@ public class LocalizedCRUDPageModel<T, TLocal, TID> : CRUDPageModel<T, TID>
 
   //[BindProperty]
   //public List<TLocal> Locals { get; set; }
-  public List<string> Languages => NewEntry.Locales.Select(e => e.Language.Code).ToList();
+  public List<string> Languages => NewEntry.Locales.Select(e => e.Language.IsoCode).ToList();
   public List<string> GetLocalProperties => ExtractPropertiesNames();
 
   public LocalizedCRUDPageModel(ApplicationDbContext context) : base(context)
@@ -26,10 +27,17 @@ public class LocalizedCRUDPageModel<T, TLocal, TID> : CRUDPageModel<T, TID>
     }
   }
 
+  public override async Task OnGetAsync(int page = 1, int take = 10)
+  {
+    CurrentPage = page;
+    Total = await _dbSet.CountAsync();
+    TableItems = await _dbSet.Include(e => e.Locales).Skip(Start).Take(take).ToListAsync();
+  }
+
   //protected async Task UpdateLocals()
   //{
   //  Locals.ForEach(x => {
-      
+
   //    TLocal? local = NewEntry.Locales.FirstOrDefault(C => C.Language.Code == x.Language.Code);
   //    if (local == null)
   //    {

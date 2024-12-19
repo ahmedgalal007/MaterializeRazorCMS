@@ -1,3 +1,4 @@
+using AspnetCoreStarter.Common;
 using System;
 using System.Runtime;
 using System.Security.Cryptography;
@@ -9,7 +10,7 @@ public class BaseLocalizedEntity : BaseLocalizedEntity<Guid>
   protected BaseLocalizedEntity()
   {
   }
-  public BaseLocalizedEntity(Lang lang)
+  public BaseLocalizedEntity(Language lang)
   {
     Language = lang;
   }
@@ -29,11 +30,13 @@ public class BaseLocalizedEntity<TID> : BaseEntity<TID>
   protected BaseLocalizedEntity()
   {
   }
-  public BaseLocalizedEntity(Lang lang)
+  public BaseLocalizedEntity(Language lang)
   {
+    LanguageID = lang.Id;
     Language = lang;
   }
-  public Lang Language { get; set; }
+  public int LanguageID { get; set; }
+  public virtual Language Language { get; set; }
 
   public virtual BaseLocalizedEntity<TID> ShallowCopy()
   {

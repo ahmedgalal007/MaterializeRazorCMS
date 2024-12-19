@@ -5,7 +5,7 @@ public class UserLocals : BaseLocalizedEntity
   public UserLocals()
   {
   }
-  public UserLocals(Lang lang) : base(lang)
+  public UserLocals(Language lang) : base(lang)
   {
     
   }

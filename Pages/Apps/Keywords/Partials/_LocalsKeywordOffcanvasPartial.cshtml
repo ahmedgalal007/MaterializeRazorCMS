@@ -15,7 +15,7 @@
 								<option selected>Choose...</option>
 								@foreach (var item in ISOLanguages.languages.Where(e => e.IsEnabled))
 								{
-									<option value="@item.ISOCode" selected="@item.IsDefault">@item.LocalName</option>
+									<option value="@item.IsoCode" selected="@item.IsDefault">@item.LocalName</option>
 								}
 							</select>
 							<button data-repeater-create class="btn btn-outline-primary" type="button" data-repeater-create>
@@ -30,26 +30,26 @@
 							<ul class="nav nav-tabs" role="tablist">
 								@foreach (var NE in Model.NewEntry.Locales.Select((value, i) => new { i, value }))
 								{
-									var twoLetters = NE.value.Language.Code.Substring(0, 2);
+									var twoLetters = NE.value.Language.IsoCode.Substring(0, 2);
 									<li class="nav-item">
-										<button class="nav-link " data-bs-toggle="tab" data-bs-target="#language-tabs-@twoLetters" role="tab" aria-selected="false"
-														onclick="() => { SelectedLanguage = '@twoLetters'; }">
-											<span class="ri-folder-user-line ri-20px d-sm-none"></span><span class="d-none d-sm-block">@(twoLetters.Substring(0,1).ToUpper() + twoLetters.Substring(1))</span>
+										<button type="button" class="nav-link " data-bs-toggle="tab" data-bs-target="#language-tabs-@twoLetters" role="tab" aria-selected="false">
+											<span class="ri-folder-user-line ri-20px d-sm-none"></span>
+											<span class="d-none d-sm-block">@(twoLetters.Substring(0, 1).ToUpper() + twoLetters.Substring(1))</span>
 										</button>
 									</li>
 								}
 								@* <li class="nav-item">
-									<button class="nav-link " data-bs-toggle="tab" data-bs-target="#language-tabs-en" role="tab" aria-selected="false"
-													onclick="() => { SelectedLanguage = 'en'; }">
-										<span class="ri-folder-user-line ri-20px d-sm-none"></span><span class="d-none d-sm-block">En</span>
-									</button>
-								</li>
-								<li class="nav-item">
-									<button class="nav-link" data-bs-toggle="tab" data-bs-target="#language-tabs-fr" role="tab" aria-selected="false"
-													onclick="() => { SelectedLanguage = 'fr'; }">
-										<span class="ri-facebook-fill ri-20px d-sm-none"></span><span class="d-none d-sm-block">Fr</span>
-									</button>
-								</li> *@
+							<button class="nav-link " data-bs-toggle="tab" data-bs-target="#language-tabs-en" role="tab" aria-selected="false"
+							onclick="() => { SelectedLanguage = 'en'; }">
+							<span class="ri-folder-user-line ri-20px d-sm-none"></span><span class="d-none d-sm-block">En</span>
+							</button>
+							</li>
+							<li class="nav-item">
+							<button class="nav-link" data-bs-toggle="tab" data-bs-target="#language-tabs-fr" role="tab" aria-selected="false"
+							onclick="() => { SelectedLanguage = 'fr'; }">
+							<span class="ri-facebook-fill ri-20px d-sm-none"></span><span class="d-none d-sm-block">Fr</span>
+							</button>
+							</li> *@
 							</ul>
 						</div>
 
@@ -57,49 +57,62 @@
 
 							@* <div data-repeater-item class="language-tab-content tab-pane fade" id="language-tabs-en" role="tabpanel">
 
-								<div class="row g-12">
-									<div class="col-md-12">
-										<div class="input-group input-group-merge">
-											<div class="form-floating form-floating-outline">
-												<input type="text" id="formtabs-email" class="form-control" placeholder="john.doe" aria-label="john.doe" aria-describedby="formtabs-email2" />
-												<label for="formtabs-email">Email</label>
-											</div>
-											<span class="input-group-text" id="formtabs-email2">&#64;example.com</span>
-										</div>
-									</div>
-								</div>
-							</div>
-							<div data-repeater-item class="language-tab-content tab-pane fade" id="language-tabs-fr" role="tabpanel">
-								<div class="row g-12">
-									<div class="col-md-12">
-										<div class="form-floating form-floating-outline">
-											<input type="text" id="formtabs-twitter" class="form-control" placeholder="https://twitter.com/abc" />
-											<label for="formtabs-twitter">Twitter</label>
-										</div>
-									</div>
-								</div>
-							</div> *@
+						<div class="row g-12">
+						<div class="col-md-12">
+						<div class="input-group input-group-merge">
+						<div class="form-floating form-floating-outline">
+						<input type="text" id="formtabs-email" class="form-control" placeholder="john.doe" aria-label="john.doe" aria-describedby="formtabs-email2" />
+						<label for="formtabs-email">Email</label>
+						</div>
+						<span class="input-group-text" id="formtabs-email2">&#64;example.com</span>
+						</div>
+						</div>
+						</div>
+						</div>
+						<div data-repeater-item class="language-tab-content tab-pane fade" id="language-tabs-fr" role="tabpanel">
+						<div class="row g-12">
+						<div class="col-md-12">
+						<div class="form-floating form-floating-outline">
+						<input type="text" id="formtabs-twitter" class="form-control" placeholder="https://twitter.com/abc" />
+						<label for="formtabs-twitter">Twitter</label>
+						</div>
+						</div>
+						</div>
+						</div> *@
+
 							@foreach (var NE in Model.NewEntry.Locales.Select((value, i) => new { i, value }))
 							{
-								var twoLetters = NE.value.Language.Code.Substring(0, 2);
-								<div data-repeater-item class="language-tab-content tab-pane fade" id="language-tabs-@twoLetters" role="tabpanel">
+								var twoLetters = NE.value.Language.IsoCode.Substring(0, 2);
+
+								<div data-repeater-item class="language-tab-content tab-pane fade show active" id="language-tabs-@twoLetters" role="tabpanel">
+									<input type="hidden"
+												 data-column="LanguageID"
+												 data-sort-index="@NE.i"
+												 data-language-code="@twoLetters"
+												 name="LanguageID"
+												 id="newentry-locales-@twoLetters-LanguageID"
+												 class="form-control"
+												 aria-label="LanguageID"
+												 aria-describedby="formtabs-LanguageID"
+												 value="@NE.value.Language.Id" />
+
 									@foreach (var item in Model.GetLocalProperties)
 									{
 										<div class="row g-12">
 											<div class="col-md-12">
 												<div class="input-group input-group-merge">
 													<div class="form-floating form-floating-outline">
-														<input
-															type="text"
-															data-column="@item"
-															data-sort-index="@NE.i"
-															data-language-code="@twoLetters"
-															name="@item"
-															id="newentry-locales-@twoLetters-@item"
-															class="form-control"
-															placeholder="please enter @item"
-															aria-label="@item"
-															aria-describedby="formtabs-@item" />
+														<input type="text"
+																	 data-column="@item"
+																	 data-sort-index="@NE.i"
+																	 data-language-code="@twoLetters"
+																	 name="@item"
+																	 id="newentry-locales-@twoLetters-@item"
+																	 class="form-control"
+																	 placeholder="please enter @item"
+																	 aria-label="@item"
+																	 aria-describedby="formtabs-@item" />
+																	 @* value="@NE.value.GetType().GetProperty(item).GetValue(NE.value)" /> *@
 														<label for="newentry-locales-@twoLetters-@item">@item</label>
 													</div>
 													<span class="input-group-text" id="formtabs-@item">&#64;@item</span>
@@ -120,7 +133,7 @@
 	</div>
 
 
-	}
+}
 else
 {
 

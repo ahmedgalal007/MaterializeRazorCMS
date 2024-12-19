@@ -3,6 +3,7 @@
 @using AspnetCoreStarter.Helpers;
 @using AspnetCoreStarter.Models;
 @using AspnetCoreStarter.Entities;
+@using System.Text.Json
 
 @{
 	ViewData["Title"] = "Keywords";
@@ -49,6 +50,7 @@
 						<th>KeywordURI</th>
 						<th>Slug</th>
 						<th>Schema</th>
+						<th>Locals</th>
 						<th>Action</th>
 						<th></th>
 					</tr>
@@ -64,6 +66,7 @@
 							<td class="text-nowrap">@entity.KeywordURI</td>
 							<td class="keyword-name-@entity.Id  text-truncate">@entity.Slug</td>
 							<td class="text-truncate">@entity.Schema</td>
+							<td class="text-truncate">@JsonSerializer.Serialize(entity.Locales.ToList())</td>
 							<td class="text-nowrap">
 								@* Edit Button *@
 								<button class="btn btn-sm btn-icon edit-Keyword-button" data-bs-toggle="offcanvas"
@@ -111,6 +114,7 @@ else
 						<th>KeyWordURI</th>
 						<th>Slug</th>
 						<th>Schema</th>
+						<th>Locals</th>
 						<th>Action</th>
 						<th></th>
 					</tr>

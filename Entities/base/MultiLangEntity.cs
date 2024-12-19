@@ -8,7 +8,7 @@ public abstract class MultiLangEntity<T, TID> : BaseEntity<TID>
   protected MultiLangEntity() {
     Locales = new List<T>();
   }
-  public MultiLangEntity(Lang defaultlanguage) 
+  public MultiLangEntity(Language defaultlanguage) 
   {
     Locales = new List<T>();
   }

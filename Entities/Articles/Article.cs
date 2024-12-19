@@ -6,8 +6,9 @@ namespace AspnetCoreStarter.Entities.Articles;
 public class Article : BaseEntity
 {
   public Uri? ArticleUri { get; set; } 
-  public Category? Category { get; set; }
-  public List<Lang> Languages { get; set; } = new List<Lang>();
-  public List<ArticlePost> ArticlePosts { get; set; } = new List<ArticlePost>();
+  public Guid? CategoryID { get; set; }
+  public virtual Category? Category { get; set; }
+  public virtual List<Language> Languages { get; set; } = new List<Language>();
+  public virtual List<ArticlePost> ArticlePosts { get; set; } = new List<ArticlePost>();
 
 }

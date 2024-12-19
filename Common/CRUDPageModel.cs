@@ -14,7 +14,7 @@ public abstract class CRUDPageModel<T,TID> : BasePageModel where T : class, new(
 
   //! Protected Variables
   protected readonly DbSet<T> _dbSet;
-  public readonly Lang? DefaultLanguage;
+  public readonly Language? DefaultLanguage;
   public List<T> TableItems { get; set; }
   public int CurrentPage { get; set; } = 1;
   public int Take { get; set; } = 10;
@@ -30,8 +30,8 @@ public abstract class CRUDPageModel<T,TID> : BasePageModel where T : class, new(
     _context = context;
     _dbSet = context.Set<T>();
     NewEntry = new T();
-    var DC = ISOLanguages.languages.FirstOrDefault(e => e.IsDefault);
-    DefaultLanguage = _context.Languages.Where(x => x.Code == DC.ISOCode).FirstOrDefault();
+    Language DC = ISOLanguages.languages.FirstOrDefault(e => e.IsDefault);
+    DefaultLanguage = _context.Languages.Where(x => x.IsoCode == DC.IsoCode).FirstOrDefault();
   }
 
   public string EntityName => typeof(T).Name;
@@ -68,7 +68,7 @@ public abstract class CRUDPageModel<T,TID> : BasePageModel where T : class, new(
   // Expression<Func<T, object?>>[] entityParams = [];
   public abstract Task<bool> UpdateEntity(T entity, string entityName = "");
 
-  public async Task OnGetAsync(int page = 1, int take = 10)
+  public virtual async Task OnGetAsync(int page = 1, int take = 10)
   {
     CurrentPage = page;
     Total = await _dbSet.CountAsync();

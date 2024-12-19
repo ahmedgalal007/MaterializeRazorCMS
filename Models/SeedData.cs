@@ -110,13 +110,7 @@ namespace AspnetCoreStarter.Models
         {
           foreach (var item in ISOLanguages.languages)
           {
-            context.Languages.Add(new()
-            {
-              Code = item.ISOCode,
-              Name = item.Name,
-              IsDefault = item.IsDefault,
-              IsRTL = item.IsRTL
-            });
+            context.Languages.Add(item);
           }
 
           context.SaveChanges();

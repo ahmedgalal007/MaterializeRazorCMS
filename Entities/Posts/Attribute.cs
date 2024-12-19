@@ -15,5 +15,5 @@ public class Attribute : BaseEntity
   public int Min { get; set; }
   public string Format { get; set; } = string.Empty;
 
-  public List<PostTypeAttribute> PostTypeAttributes { get; set; }
+  public virtual List<PostTypeAttribute> PostTypeAttributes { get; set; } = new List<PostTypeAttribute>();
 }

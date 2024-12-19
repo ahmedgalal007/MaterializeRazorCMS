@@ -122,6 +122,7 @@ const handleEditKeywordModal = function (editButton, setFormAttributes, setEleme
   const Slug = TableRow.children[3].innerText;
   const Schema = TableRow.children[4].innerText;
 
+
   // Set the form attributes (route and action)
   const editForm = document.getElementById(`edit${entityName}Form`);
   setFormAttributes(editForm, KeywordId, 'EditOrUpdate');
@@ -136,6 +137,28 @@ const handleEditKeywordModal = function (editButton, setFormAttributes, setEleme
   Control_KeywordURI.value = KeywordURI;
   document.getElementById(`edit${InputPrefix}_Slug`).value = Slug;
   document.getElementById(`edit${InputPrefix}_Schema`).value = Schema;
+
+  const $activeTab2 = document.querySelectorAll(`button[data-bs-target="#language-tabs-ar"]`);
+  // $('.language-tab-content').removeClass('active show').attr('aria-selected', 'false');
+  // $('button[data-bs-target^="#language-tabs-"]').removeClass('active').attr('aria-selected', 'false');
+
+  const inst = bootstrap.Tab.getInstance($activeTab2[0]);
+  inst?.show();
+
+  const Locals = JSON.parse(TableRow.children[5].innerText);
+  var formLabel = $(this).find('.form-label');
+  for (const itm of Locals) {
+    const lang = itm.LanguageID;
+    const target = `language-tabs-${itm.Language.TwoLettersCode}`;
+    //! var fromControl = $(`#${target}`).find('.form-control, .form-select');
+    console.log("Lang: ", lang);
+    console.log("Item: ", JSON.stringify(itm));
+    for (const [key, value] of Object.entries(itm)) {
+      console.log("prop: ", key, " , value: ", value);
+      const inputSelector = `input[name="NewEntry.Locales[0][${key}]"]`;
+      $(inputSelector).val(value);
+    }
+  }
 }
 
 
@@ -364,6 +387,7 @@ $(document).ready(function () {
         orderable: false,
         responsivePriority: 2,
         targets: 0,
+        visible: true,
         render: function (data, type, full, meta) {
           return '';
         }
@@ -371,7 +395,7 @@ $(document).ready(function () {
       {
         // For Id
         targets: 1,
-        responsivePriority: 4
+        responsivePriority: 9
       },
       {
         // For KeywordURI
@@ -381,7 +405,7 @@ $(document).ready(function () {
       {
         // For Slug
         targets: 3,
-        responsivePriority: 9
+        responsivePriority: 3
       },
       {
         // For Schema
@@ -389,8 +413,23 @@ $(document).ready(function () {
         responsivePriority: 5
       },
       {
+        // For Locals
+        targets: 5,
+        responsivePriority: 100,
+        // visible: false
+      },
+      {
         // For Actions
-        targets: -1,
+        targets: 6,
+        searchable: false,
+        orderable: false,
+        responsivePriority: 1,
+        visible: true
+      },
+
+      {
+        // For DropDown
+        targets: -2,
         searchable: false,
         orderable: false,
         responsivePriority: 1
@@ -401,9 +440,9 @@ $(document).ready(function () {
         display: $.fn.dataTable.Responsive.display.modal({
           header: function (row) {
             var data = row.data();
-            var $content = $(data[2]);
+            var $content = $(data[3]);
             // Extract the value of data-Attribute-name attribute (Attribute Name)
-            var AttributeName = $content.find('[class^="Attribute-name-full-"]').text();
+            var AttributeName = $content.find('[class^="keyword-name-"]').text();
             return 'Details of ' + AttributeName;
           }
         }),
@@ -411,7 +450,7 @@ $(document).ready(function () {
         renderer: function (api, rowIdx, columns) {
           var data = $.map(columns, function (col, i) {
             // Exclude the last column (Action)
-            if (i < columns.length - 1) {
+            if (i < columns.length - 2) {
               return col.title !== ''
                 ? '<tr data-dt-row="' +
                 col.rowIndex +
@@ -472,7 +511,7 @@ $(document).ready(function () {
     });
   }
 
-  let SelectedLanguage;
+  // let SelectedLanguage;
 
   if (formRepeater.length) {
     let firstTab = $(formRepeater[0]).find('.tab-pane')[0];
@@ -485,21 +524,10 @@ $(document).ready(function () {
       e.preventDefault();
     });
     formRepeater.repeater({
+      // prependItems:false,
       show: function () {
-        var fromControl = $(this).find('.form-control, .form-select');
-        var formLabel = $(this).find('.form-label');
-
-        fromControl.each(function (i) {
-          var id = 'form-repeater-' + row + '-' + col;
-          $(fromControl[i]).attr('id', id);
-          $(formLabel[i]).attr('for', id);
-          col++;
-        });
-
-        row++;
+        // row++;
         $(this).slideDown();
-
-
         ///////////////////////////////////////////////////////
         var items = formRepeater.find('.language-tab-content[data-repeater-item]')
         var tabLang = formRepeater.find('#inputGroupSelectLanguage')[0].selectedOptions[0].value.split('-')[0];
@@ -511,16 +539,13 @@ $(document).ready(function () {
           // let tabControl = formRepeater.find('[data-bs-target="#language-tabs-' + tabLang + '"]');
           let tabControl = formRepeater.find('[data-bs-target="#language-tabs-' + tabLang + '"]');
           if (tabControl.length == 0) {
-            formRepeater.find('.nav-item button').each(function () {
-              $(this).removeClass('active');
-            })
-            formRepeater.find('.tab-pane').each(function () {
+            formRepeater.find('.nav-item button, .tab-pane').each(function () {
               $(this).removeClass('active show');
             })
 
             const newTabId = 'language-tabs-' + tabLang;
             let newLi = $('<li class="nav-item"></li>');
-            let newBtn = $('<button class="nav-link active waves-effect" data-bs-toggle="tab" data-bs-target="#' + newTabId + '" role="tab" onclick="() => { SelectedLanguage = ' + tabLang + '; }"></button>');
+            let newBtn = $('<button type="button" class="nav-link active waves-effect" data-bs-toggle="tab" data-bs-target="#' + newTabId + '" role="tab" ></button>');
             newBtn.append('<span class="ri-user-line ri-20px d-sm-none"></span>');
             newBtn.attr('data-bs-target', '#' + newTabId);
             newBtn.append('<span class="d-none d-sm-block">' + tabLang + '</span>');
@@ -528,57 +553,27 @@ $(document).ready(function () {
             navTabs.prepend(newLi);
 
 
-            const newTabContent = $('[data-repeater-list="group-a"] div:first-child.tab-pane');
+            const newTabContent = $('[data-repeater-list="NewEntry.Locales"] div:first-child.tab-pane');
             newTabContent.attr('id', newTabId).addClass('active show');
             const tab = new bootstrap.Tab($(newBtn));
             tab.show();
-            // $(this).attr('name', 'language-tabs-' + tabLang);
-            // $(this).attr('id', 'language-tabs-' + tabLang).addClass('active');
           }
-
-
         });
 
         RemoveTabContentsDublication('[data-repeater-list="group-a"] .tab-pane');
-        //const triggerFirstTabEl = document.querySelector('[data-bs-target="^#language-tabs-"].active');
-        // bootstrap.Tab.getInstance(triggerFirstTabEl).show();
         const $activeTabContent = $('.language-tab-content.active');
-        // const $activeTab = $('button[data-bs-target="#' + $activeTabContent.attr('id') + '"]');
         const $activeTab = document.querySelectorAll(`button[data-bs-target="#${$activeTabContent.attr('id')}"]`);
 
-        //$('button[data-bs-target^="#language-tabs-"]').each(function () {
-        //  // bootstrap.Tab.getInstance($(this)[0]).hide();
-        //  $(this).removeClass('active');
-        //  $(this).attr('aria-selected','false');
-        //})
         $('.language-tab-content').removeClass('active show').attr('aria-selected', 'false');
         $('button[data-bs-target^="#language-tabs-"]').removeClass('active').attr('aria-selected', 'false');
 
         // if ($activeTabContent.length > 0) $($activeTabContent[$activeTabContent.length - 1]).addClass('active show');
-        bootstrap.Tab.getInstance($activeTab[0]).show();
-        // $($activeTab).addClass('active').attr('aria-selected', 'true')
-        // $($activeTab).trigger('click');
+        bootstrap.Tab.getInstance($activeTab[0])?.show();
+      },
+      ready: function (setIndexes) {
 
-        // const cleanTabContentId = $('[data-repeater-list="group-a"] div:first-child.tab-pane').attr('id');
-        // const tempContent = $(`[id='${cleanTabContentId}']`);
-
-        //$('.select2-container').remove();
-        //$('.select2.form-select').select2({
-        //  placeholder: 'Placeholder text'
-        //});
-        //$('.select2-container').css('width', '100%');
-        //var $this = $(this);
-        //select2Focus($this);
-        //$('.form-repeater:first .form-select').select2({
-        //  dropdownParent: $(this).parent(),
-        //  placeholder: 'Placeholder text'
-        //});
-        //$('.position-relative .select2').each(function () {
-        //  $(this).select2({
-        //    dropdownParent: $(this).closest('.position-relative')
-        //  });
-        //});
       }
+
     });
   }
 });

@@ -6,12 +6,13 @@ namespace AspnetCoreStarter.Entities.Posts;
 
 public class PostAttribute : MultiLangEntity<PostAttributeLocals,Guid>
 {
-  public Attribute Type { get; set; } = new Attribute();
+  public Guid TypeID { get; set; }
+  public virtual Attribute Type { get; set; } = new Attribute();
   public DateTime ValueDate { get; set; } = new DateTime();
   public double ValueNumber { get; set; }
   public bool ValueBoolean { get; set; }
   [NotMapped]
-  public Func<string,string> ValueText => (string lang) => Locales.Where(e => e.Language.Code == lang).Select(e => e.ValueText).First();
+  public Func<string,string> ValueText => (string lang) => Locales.Where(e => e.Language.IsoCode == lang).Select(e => e.ValueText).First();
   public override PostAttributeLocals AddLocal(PostAttributeLocals local)
   {
     Locales.Add(local);

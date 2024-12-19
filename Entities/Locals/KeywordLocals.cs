@@ -5,7 +5,7 @@ public class KeywordLocals : BaseLocalizedEntity
   public KeywordLocals()
   {
   }
-  public KeywordLocals(Lang lang) : base(lang)
+  public KeywordLocals(Language lang) : base(lang)
   {
 
   }
