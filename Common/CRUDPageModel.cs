@@ -30,8 +30,8 @@ public abstract class CRUDPageModel<T,TID> : BasePageModel where T : class, new(
     _context = context;
     _dbSet = context.Set<T>();
     NewEntry = new T();
-    Language DC = ISOLanguages.languages.FirstOrDefault(e => e.IsDefault);
-    DefaultLanguage = _context.Languages.Where(x => x.IsoCode == DC.IsoCode).FirstOrDefault();
+    // Language DC = ISOLanguages.languages.FirstOrDefault(e => e.IsDefault);
+    DefaultLanguage = _context.Languages.Where(x => x.IsDefault).FirstOrDefault();
   }
 
   public string EntityName => typeof(T).Name;

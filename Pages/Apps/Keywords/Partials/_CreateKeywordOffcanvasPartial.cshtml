@@ -6,30 +6,32 @@
 		<button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
 	</div>
 	<div class="offcanvas-body mx-0 flex-grow-0">
-		<form method="post" id="createKeywordForm" >
+		<form method="post" id="createKeywordForm">
 			<h6>Define Keyword.</h6>
 			<div class="form-floating form-floating-outline mb-5">
-        <input asp-for="NewEntry.KeywordURI" class="form-control" placeholder="Keyword URI ex: Microsoft-Corporation | Mohamed-Salah"
+				<input asp-for="NewEntry.KeywordURI" class="form-control" placeholder="Keyword URI ex: Microsoft-Corporation | Mohamed-Salah"
 							 aria-label="Url of the Keyword"
-               value="@Model.NewEntry.KeywordURI" />
-        <label for="NewEntity_KeywordURI">Keyword URI</label>
+							 value="@Model.NewEntry.KeywordURI" />
+				<label for="NewEntity_KeywordURI">Keyword URI</label>
 			</div>
 			<div class="form-floating form-floating-outline mb-5">
-        <input asp-for="NewEntry.Slug" class="form-control" placeholder="Keyword Slug ex: MicrosoftCorporation | MohamedSalah"
-               aria-label="Description Text"
-               value="@Model.NewEntry.Slug">
-        <label for="NewEntity_Slug">Slug</label>
+				<input asp-for="NewEntry.Slug" class="form-control" placeholder="Keyword Slug ex: MicrosoftCorporation | MohamedSalah"
+							 aria-label="Description Text"
+							 value="@Model.NewEntry.Slug" />
+				<label for="NewEntity_Slug">Slug</label>
 			</div>
-      <div class="form-floating form-floating-outline mb-5">
-        <input asp-for="NewEntry.Schema" class="form-control"
-               placeholder="Select Schema Name Like Person|Company|Place|Event|Product"
-               aria-label="Keyword Schema"
-               value="@Model.NewEntry.Schema">
-        <label for="NewEntity_Schema">Schema</label>
-      </div>
+			<div class="form-floating form-floating-outline mb-5">
+				<input asp-for="NewEntry.Schema" class="form-control"
+							 placeholder="Select Schema Name Like Person|Company|Place|Event|Product"
+							 aria-label="Keyword Schema"
+							 value="@Model.NewEntry.Schema" />
+				<label for="NewEntity_Schema">Schema</label>
+			</div>
 
-			@* Edit Locals Form Offcanvas Partial*@
-			@await Html.PartialAsync("partials/_LocalsKeywordOffcanvasPartial")
+			@* Create Locals Form Offcanvas Partial*@
+			<div id="localization-create-context">
+				@await Html.PartialAsync("partials/_LocalsKeywordOffcanvasPartial", Model.GetLocalProperties)
+			</div>
 
 			<div class="row">
 				<div class="col-12">

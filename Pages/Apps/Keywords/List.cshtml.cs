@@ -8,19 +8,19 @@ using System.Linq.Expressions;
 
 namespace AspnetCoreStarter.Pages.Apps.Keywords;
 
-public class KeywordModel : LocalizedCRUDPageModel<Keyword, KeywordLocals, Guid> 
+public class KeywordModel : LocalizedCRUDPageModel<Keyword, KeywordLocals, Guid>
 {
   public KeywordModel(ApplicationDbContext context) : base(context)
   {
-    if(NewEntry.Locales.Count == 0) NewEntry.Locales.Add(new(DefaultLanguage));
+    if (NewEntry.Locales.Count == 0) NewEntry.Locales.Add(new(DefaultLanguage));
   }
 
   public override async Task<Boolean> BeforeUpdate(Keyword entity)
   {
-    if(!await base.BeforeUpdate(entity)) return false;
+    if (!await base.BeforeUpdate(entity)) return false;
     foreach (var item in entity.Locales)
     {
-        
+
     }
     return true;
   }
@@ -29,9 +29,11 @@ public class KeywordModel : LocalizedCRUDPageModel<Keyword, KeywordLocals, Guid>
   {
     // return base.OnUpdateEntity(entity, entityName);
     // if (string.IsNullOrWhiteSpace(entityName)) entityName = NewEntry.GetType().Name.ToLower();
+    await _dbSet.Entry(entity).Collection(e => e.Locales).LoadAsync();
     if (string.IsNullOrWhiteSpace(entityName)) entityName = "NewEntry";
-    await TryUpdateModelAsync(entity, entityName, u => u.KeywordURI, u => u.Slug, u => u.Schema, u => u.Locales );
-
+    if (entity.Locales.Count > 0)
+      await TryUpdateModelAsync(entity, entityName, u => u.KeywordURI, u => u.Slug, u => u.Schema, u => u.Locales);
+    
     return await Task.FromResult(true);
   }
 

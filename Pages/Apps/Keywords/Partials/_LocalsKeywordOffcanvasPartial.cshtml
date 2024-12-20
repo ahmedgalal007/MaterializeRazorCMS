@@ -1,44 +1,45 @@
-@model AspnetCoreStarter.Pages.Apps.Keywords.KeywordModel
+@* @model AspnetCoreStarter.Pages.Apps.Keywords.KeywordModel *@
+@model List<string>;
 @using AspnetCoreStarter.Common;
 
-@if (Model.NewEntry.Locales.Count > -1)
-{
-	<!-- Form with Tabs -->
-	<div class="row">
-		<div class="col">
-			<h6 class="mt-4"> Form with Tabs </h6>
-			<div class="card mb-6 form-repeater">
-				<div class="card-header overflow-hidden">
-					<div>
-						<div class="input-group">
-							<select class="form-select" id="inputGroupSelectLanguage" aria-label="Example select with button addon">
-								<option selected>Choose...</option>
-								@foreach (var item in ISOLanguages.languages.Where(e => e.IsEnabled))
-								{
-									<option value="@item.IsoCode" selected="@item.IsDefault">@item.LocalName</option>
-								}
-							</select>
-							<button data-repeater-create class="btn btn-outline-primary" type="button" data-repeater-create>
-								<i class='ri-add-line ri-16px me-2'></i>
-								Add
-							</button>
-						</div>
+@* @if (Model.NewEntry.Locales.Count > -1)
+{ *@
+<!-- Form with Tabs -->
+<div class="row">
+	<div class="col">
+		<h6 class="mt-4"> Form with Tabs </h6>
+		<div class="card mb-6 form-repeater">
+			<div class="card-header overflow-hidden">
+				<div>
+					<div class="input-group">
+						<select class="form-select" id="inputGroupSelectLanguage" aria-label="Example select with button addon">
+							<option selected>Choose...</option>
+							@foreach (var item in ISOLanguages.languages.Where(e => e.IsEnabled))
+							{
+								<option value="@item.IsoCode" selected="@item.IsDefault">@item.LocalName</option>
+							}
+						</select>
+						<button class="btn btn-outline-primary add-new-Language-btn" type="button">
+							<i class='ri-add-line ri-16px me-2'></i>
+							Add
+						</button>
 					</div>
+				</div>
 
-					<div class="card mb-6">
-						<div class="card-header overflow-hidden">
-							<ul class="nav nav-tabs" role="tablist">
-								@foreach (var NE in Model.NewEntry.Locales.Select((value, i) => new { i, value }))
-								{
-									var twoLetters = NE.value.Language.IsoCode.Substring(0, 2);
-									<li class="nav-item">
-										<button type="button" class="nav-link " data-bs-toggle="tab" data-bs-target="#language-tabs-@twoLetters" role="tab" aria-selected="false">
-											<span class="ri-folder-user-line ri-20px d-sm-none"></span>
-											<span class="d-none d-sm-block">@(twoLetters.Substring(0, 1).ToUpper() + twoLetters.Substring(1))</span>
-										</button>
-									</li>
-								}
-								@* <li class="nav-item">
+				<div class="card mb-6">
+					<div class="card-header overflow-hidden">
+						<ul class="nav nav-tabs" role="tablist">
+							@foreach (var NE in ISOLanguages.languages.Where(x => x.IsDefault).Select((value, i) => new { i, value }))
+							{
+								var twoLetters = NE.value.IsoCode.Substring(0, 2);
+								<li class="nav-item">
+									<button type="button" class="nav-link " data-bs-toggle="tab" data-bs-target="#language-tabs-@twoLetters" role="tab" aria-selected="false">
+										<span class="ri-folder-user-line ri-20px d-sm-none"></span>
+										<span class="d-none d-sm-block">@(twoLetters.Substring(0, 1).ToUpper() + twoLetters.Substring(1))</span>
+									</button>
+								</li>
+							}
+							@*<li class="nav-item">
 							<button class="nav-link " data-bs-toggle="tab" data-bs-target="#language-tabs-en" role="tab" aria-selected="false"
 							onclick="() => { SelectedLanguage = 'en'; }">
 							<span class="ri-folder-user-line ri-20px d-sm-none"></span><span class="d-none d-sm-block">En</span>
@@ -50,12 +51,12 @@
 							<span class="ri-facebook-fill ri-20px d-sm-none"></span><span class="d-none d-sm-block">Fr</span>
 							</button>
 							</li> *@
-							</ul>
-						</div>
+						</ul>
+					</div>
 
-						<div data-repeater-list="NewEntry.Locales" class="tab-content">
+					<div class="tab-content localizations-tabs-contents">
 
-							@* <div data-repeater-item class="language-tab-content tab-pane fade" id="language-tabs-en" role="tabpanel">
+						@* <div data-repeater-item class="language-tab-content tab-pane fade" id="language-tabs-en" role="tabpanel">
 
 						<div class="row g-12">
 						<div class="col-md-12">
@@ -80,63 +81,64 @@
 						</div>
 						</div> *@
 
-							@foreach (var NE in Model.NewEntry.Locales.Select((value, i) => new { i, value }))
-							{
-								var twoLetters = NE.value.Language.IsoCode.Substring(0, 2);
+						@foreach (var NE in ISOLanguages.languages.Where(x => x.IsDefault).Select((value, i) => new { i, value }))
+						{
+							var twoLetters = NE.value.Id;
 
-								<div data-repeater-item class="language-tab-content tab-pane fade show active" id="language-tabs-@twoLetters" role="tabpanel">
-									<input type="hidden"
-												 data-column="LanguageID"
-												 data-sort-index="@NE.i"
-												 data-language-code="@twoLetters"
-												 name="LanguageID"
-												 id="newentry-locales-@twoLetters-LanguageID"
-												 class="form-control"
-												 aria-label="LanguageID"
-												 aria-describedby="formtabs-LanguageID"
-												 value="@NE.value.Language.Id" />
 
-									@foreach (var item in Model.GetLocalProperties)
-									{
-										<div class="row g-12">
-											<div class="col-md-12">
-												<div class="input-group input-group-merge">
-													<div class="form-floating form-floating-outline">
-														<input type="text"
-																	 data-column="@item"
-																	 data-sort-index="@NE.i"
-																	 data-language-code="@twoLetters"
-																	 name="@item"
-																	 id="newentry-locales-@twoLetters-@item"
-																	 class="form-control"
-																	 placeholder="please enter @item"
-																	 aria-label="@item"
-																	 aria-describedby="formtabs-@item" />
-																	 @* value="@NE.value.GetType().GetProperty(item).GetValue(NE.value)" /> *@
-														<label for="newentry-locales-@twoLetters-@item">@item</label>
-													</div>
-													<span class="input-group-text" id="formtabs-@item">&#64;@item</span>
+							<div class="language-tab-content tab-pane fade show active" id="language-tabs-@twoLetters" role="tabpanel">
+								<input type="hidden"
+											 data-column="LanguageID"
+											 data-sort-index="0"
+											 data-language-code="@twoLetters"
+											 name="NewEntry.Locales[@NE.i].LanguageID"
+											 id="newentry-locales-@twoLetters-LanguageID"
+											 class="form-control"
+											 aria-label="LanguageID"
+											 aria-describedby="formtabs-LanguageID"
+											 value="@twoLetters" />
+
+								@foreach (var item in Model.Where(x => x != "LanguageID"))
+								{
+									<div class="row g-12">
+										<div class="col-md-12">
+											<div class="input-group input-group-merge">
+												<div class="form-floating form-floating-outline">
+													<input type="text"
+																 data-column="@item"
+																 data-sort-index="0"
+																 data-language-code="@twoLetters"
+																 name="NewEntry.Locales[@NE.i].@item"
+																 id="newentry-locales-@twoLetters-@item"
+																 class="form-control"
+																 placeholder="please enter @item"
+																 aria-label="@item"
+																 aria-describedby="formtabs-@item" />
+													@* value="@NE.value.GetType().GetProperty(item).GetValue(NE.value)" /> *@
+													<label for="newentry-locales-@twoLetters-@item">@item</label>
 												</div>
+												<span class="input-group-text" id="formtabs-@item">&#64;@item</span>
 											</div>
 										</div>
-									}
-								</div>
-							}
-
-						</div>
+									</div>
+								}
+							</div>
+						}
 
 					</div>
+
 				</div>
 			</div>
-
 		</div>
+
 	</div>
+</div>
 
 
-}
+@* }
 else
 {
 
 }
-
+ *@
 

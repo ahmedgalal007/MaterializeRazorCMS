@@ -35,7 +35,7 @@ public class BaseLocalizedEntity<TID> : BaseEntity<TID>
     LanguageID = lang.Id;
     Language = lang;
   }
-  public int LanguageID { get; set; }
+  public string LanguageID { get; set; }
   public virtual Language Language { get; set; }
 
   public virtual BaseLocalizedEntity<TID> ShallowCopy()

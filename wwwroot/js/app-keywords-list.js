@@ -112,6 +112,67 @@ const editFormValidatorsFields = {
   //}
 };
 //todo HandelEditForm
+
+const LocalizationHelper = {
+  IsHidden: function (prop) {
+    return ["LanguageID", "Id"].includes(prop)
+  },
+  GenerateLocalizationTabHeader: function (tabLang) {
+    const newTabId = 'language-tabs-' + tabLang;
+    let newLi = $('<li class="nav-item"></li>');
+    let newBtn = $('<button type="button" class="nav-link active waves-effect" data-bs-toggle="tab" data-bs-target="#' + newTabId + '" role="tab" ></button>');
+    newBtn.append('<span class="ri-user-line ri-20px d-sm-none"></span>');
+    newBtn.attr('data-bs-target', '#' + newTabId);
+    newBtn.append('<span class="d-none d-sm-block">' + tabLang + '</span>');
+    newLi.append(newBtn);
+    return newLi;
+  },
+  GenerateLocalizationInput: function (langTwoLetters, propName, value = '', idx = 0) {
+    return $.parseHTML(`<div class="row g-12 ${(this.IsHidden(propName) ? 'd-sm-none' : '')}">
+											<div class="col-md-12">
+												<div class="input-group input-group-merge">
+													<div class="form-floating form-floating-outline">
+														<input type="text"
+																	 data-column="${propName}"
+																	 data-sort-index="${idx}"
+																	 data-language-code="${langTwoLetters}"
+																	 name="NewEntry.Locales[${idx}].${propName}"
+																	 id="newentry-locales-${langTwoLetters}-${propName}"
+																	 class="form-control"
+																	 placeholder="please enter ${propName}"
+																	 aria-label="${propName}"
+																	 aria-describedby="formtabs-${propName}"
+																	 value="${value}" />
+														<label for="newentry-locales-${langTwoLetters}-${propName}">${propName}</label>
+													</div>
+													<span class="input-group-text" id="formtabs-${propName}">&#64;${propName}</span>
+												</div>
+											</div>
+										</div>`);
+  },
+  GenerateLocalizationTabContent: function (langTwoLetters, locl, idx = 0) {
+    let tabContent = $('<div id="language-tabs-' + langTwoLetters + '" class="language-tab-content tab-pane fade ' + (idx == 0 ? 'show active' : '') + '" >');
+    for (const [key, value] of Object.entries(locl)) {
+      if (typeof value === 'string' || value instanceof String) {
+        tabContent.append(this.GenerateLocalizationInput(locl.LanguageID, key, value, idx));
+      }
+    }
+    return tabContent;
+  },
+  GenerateNewLocalization: function (locl, tabHeaderContainer, tabContentContainer, idx = 0) {
+    const twoLettersLang = locl.LanguageID; //.substring(0, 2);
+    tabHeaderContainer.append(this.GenerateLocalizationTabHeader(twoLettersLang));
+    tabContentContainer.append(this.GenerateLocalizationTabContent(twoLettersLang, locl, idx));
+  },
+  GenerateAllLocalizations: function (Locals, tabHeaderContainer, tabContentContainer) {
+    tabHeaderContainer.empty();
+    tabContentContainer.empty();
+    for (const [index, value] of Locals.entries()) {
+      this.GenerateNewLocalization(value, tabHeaderContainer, tabContentContainer, index);
+    }
+  }
+}
+
 const handleEditKeywordModal = function (editButton, setFormAttributes, setElementAttributes) {
   //// Get the Attribute details from the table
   const KeywordId = editButton.id.split('--')[0];
@@ -128,9 +189,9 @@ const handleEditKeywordModal = function (editButton, setFormAttributes, setEleme
   setFormAttributes(editForm, KeywordId, 'EditOrUpdate');
 
   // Set the input asp-for attributes (for model binding)
-  setElementAttributes(document.getElementById(`edit${InputPrefix}_KeywordURI`), 'asp-for', `TableItems[${RowIdx}].KeywordURI`);
-  setElementAttributes(document.getElementById(`edit${InputPrefix}_Slug`), 'asp-for', `TableItems[${RowIdx}].Slug`);
-  setElementAttributes(document.getElementById(`edit${InputPrefix}_Schema`), 'asp-for', `TableItems[${RowIdx}].Schema`);
+  // setElementAttributes(document.getElementById(`edit${InputPrefix}_KeywordURI`), 'asp-for', `TableItems[${RowIdx}].KeywordURI`);
+  // setElementAttributes(document.getElementById(`edit${InputPrefix}_Slug`), 'asp-for', `TableItems[${RowIdx}].Slug`);
+  // setElementAttributes(document.getElementById(`edit${InputPrefix}_Schema`), 'asp-for', `TableItems[${RowIdx}].Schema`);
 
   // Set the input values (for value binding)
   var Control_KeywordURI = document.getElementById(`edit${InputPrefix}_KeywordURI`);
@@ -138,27 +199,10 @@ const handleEditKeywordModal = function (editButton, setFormAttributes, setEleme
   document.getElementById(`edit${InputPrefix}_Slug`).value = Slug;
   document.getElementById(`edit${InputPrefix}_Schema`).value = Schema;
 
-  const $activeTab2 = document.querySelectorAll(`button[data-bs-target="#language-tabs-ar"]`);
-  // $('.language-tab-content').removeClass('active show').attr('aria-selected', 'false');
-  // $('button[data-bs-target^="#language-tabs-"]').removeClass('active').attr('aria-selected', 'false');
-
-  const inst = bootstrap.Tab.getInstance($activeTab2[0]);
-  inst?.show();
-
   const Locals = JSON.parse(TableRow.children[5].innerText);
-  var formLabel = $(this).find('.form-label');
-  for (const itm of Locals) {
-    const lang = itm.LanguageID;
-    const target = `language-tabs-${itm.Language.TwoLettersCode}`;
-    //! var fromControl = $(`#${target}`).find('.form-control, .form-select');
-    console.log("Lang: ", lang);
-    console.log("Item: ", JSON.stringify(itm));
-    for (const [key, value] of Object.entries(itm)) {
-      console.log("prop: ", key, " , value: ", value);
-      const inputSelector = `input[name="NewEntry.Locales[0][${key}]"]`;
-      $(inputSelector).val(value);
-    }
-  }
+  // $(`#create${entityName}Form`).empty();
+  LocalizationHelper.GenerateAllLocalizations(Locals, $(`#edit${entityName}Form`).find('ul.nav-tabs'), $(`#edit${entityName}Form`).find('.localizations-tabs-contents'));
+
 }
 
 
@@ -476,106 +520,6 @@ $(document).ready(function () {
     }
   });
 
-
-
-
-  var formRepeater = $('.form-repeater');
-
-  // Form Repeater
-  // ! Using jQuery each loop to add dynamic id and class for inputs. You may need to improve it based on form fields.
-  // -----------------------------------------------------------------------------------------------------------------
-
-  function RemoveTabContentsDublication(TabContentsSelector) {
-    let TabPans = $(TabContentsSelector);
-    let tempIds = [];
-    TabPans.each(function () {
-      let itemExists = false;
-      let elemId = $(this).attr('id');
-      tempIds.forEach(function (itm) {
-
-        if (elemId == itm.id) itemExists = true;
-      });
-      if (!itemExists) tempIds.push({ id: elemId, $el: $(this), checked: false });
-    });
-
-    TabPans.each(function () {
-      let elemId = $(this).attr('id');
-      let temp = [...tempIds].reverse();
-      temp.forEach(function (itm) {
-        if (elemId == itm.id) {
-          if (itm.checked)
-            itm.$el.remove();
-          itm.checked = true;
-        }
-      });
-    });
-  }
-
-  // let SelectedLanguage;
-
-  if (formRepeater.length) {
-    let firstTab = $(formRepeater[0]).find('.tab-pane')[0];
-    firstTab.classList.add("active");
-    firstTab.classList.add("show");
-    $(formRepeater[0]).find('[role="tablist"]>li>button')[0].classList.add("active");
-    var row = 1;
-    var col = 1;
-    formRepeater.on('submit', function (e) {
-      e.preventDefault();
-    });
-    formRepeater.repeater({
-      // prependItems:false,
-      show: function () {
-        // row++;
-        $(this).slideDown();
-        ///////////////////////////////////////////////////////
-        var items = formRepeater.find('.language-tab-content[data-repeater-item]')
-        var tabLang = formRepeater.find('#inputGroupSelectLanguage')[0].selectedOptions[0].value.split('-')[0];
-        let navTabs = formRepeater.find('.nav-tabs');
-        items.each(function (i) {
-
-          let arr = $(this).attr('id').split('-');
-          let lang = arr[arr.length - 1];
-          // let tabControl = formRepeater.find('[data-bs-target="#language-tabs-' + tabLang + '"]');
-          let tabControl = formRepeater.find('[data-bs-target="#language-tabs-' + tabLang + '"]');
-          if (tabControl.length == 0) {
-            formRepeater.find('.nav-item button, .tab-pane').each(function () {
-              $(this).removeClass('active show');
-            })
-
-            const newTabId = 'language-tabs-' + tabLang;
-            let newLi = $('<li class="nav-item"></li>');
-            let newBtn = $('<button type="button" class="nav-link active waves-effect" data-bs-toggle="tab" data-bs-target="#' + newTabId + '" role="tab" ></button>');
-            newBtn.append('<span class="ri-user-line ri-20px d-sm-none"></span>');
-            newBtn.attr('data-bs-target', '#' + newTabId);
-            newBtn.append('<span class="d-none d-sm-block">' + tabLang + '</span>');
-            newLi.append(newBtn);
-            navTabs.prepend(newLi);
-
-
-            const newTabContent = $('[data-repeater-list="NewEntry.Locales"] div:first-child.tab-pane');
-            newTabContent.attr('id', newTabId).addClass('active show');
-            const tab = new bootstrap.Tab($(newBtn));
-            tab.show();
-          }
-        });
-
-        RemoveTabContentsDublication('[data-repeater-list="group-a"] .tab-pane');
-        const $activeTabContent = $('.language-tab-content.active');
-        const $activeTab = document.querySelectorAll(`button[data-bs-target="#${$activeTabContent.attr('id')}"]`);
-
-        $('.language-tab-content').removeClass('active show').attr('aria-selected', 'false');
-        $('button[data-bs-target^="#language-tabs-"]').removeClass('active').attr('aria-selected', 'false');
-
-        // if ($activeTabContent.length > 0) $($activeTabContent[$activeTabContent.length - 1]).addClass('active show');
-        bootstrap.Tab.getInstance($activeTab[0])?.show();
-      },
-      ready: function (setIndexes) {
-
-      }
-
-    });
-  }
 });
 
 // For Modal to close on edit button click

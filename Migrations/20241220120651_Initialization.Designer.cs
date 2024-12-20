@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AspnetCoreStarter.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241216160534_Initialization")]
+    [Migration("20241220120651_Initialization")]
     partial class Initialization
     {
         /// <inheritdoc />
@@ -25,8 +25,8 @@ namespace AspnetCoreStarter.Migrations
                     b.Property<Guid>("ArticlesId")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("LanguagesId")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("LanguagesId")
+                        .HasColumnType("TEXT");
 
                     b.HasKey("ArticlesId", "LanguagesId");
 
@@ -120,9 +120,8 @@ namespace AspnetCoreStarter.Migrations
 
             modelBuilder.Entity("AspnetCoreStarter.Entities.Language", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("Id")
+                        .HasColumnType("TEXT");
 
                     b.Property<bool>("IsDefault")
                         .HasColumnType("INTEGER");
@@ -132,10 +131,6 @@ namespace AspnetCoreStarter.Migrations
 
                     b.Property<bool>("IsRTL")
                         .HasColumnType("INTEGER");
-
-                    b.Property<string>("IsoCode")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
 
                     b.Property<string>("LocalName")
                         .IsRequired()
@@ -163,8 +158,9 @@ namespace AspnetCoreStarter.Migrations
                     b.Property<Guid?>("CategoryId")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("LanguageID")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("LanguageID")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -192,8 +188,9 @@ namespace AspnetCoreStarter.Migrations
                     b.Property<Guid?>("KeywordId")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("LanguageID")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("LanguageID")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -214,8 +211,9 @@ namespace AspnetCoreStarter.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("LanguageID")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("LanguageID")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
                     b.Property<Guid?>("PostAttributeId")
                         .HasColumnType("TEXT");
@@ -243,8 +241,9 @@ namespace AspnetCoreStarter.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("LanguageID")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("LanguageID")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("LastName")
                         .IsRequired()

@@ -60,12 +60,10 @@ namespace AspnetCoreStarter.Migrations
                 name: "Languages",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                    Id = table.Column<string>(type: "TEXT", nullable: false),
                     Name = table.Column<string>(type: "TEXT", nullable: false),
                     LocalName = table.Column<string>(type: "TEXT", nullable: false),
                     TwoLettersCode = table.Column<string>(type: "TEXT", nullable: false),
-                    IsoCode = table.Column<string>(type: "TEXT", nullable: false),
                     IsEnabled = table.Column<bool>(type: "INTEGER", nullable: false),
                     IsRTL = table.Column<bool>(type: "INTEGER", nullable: false),
                     IsDefault = table.Column<bool>(type: "INTEGER", nullable: false)
@@ -130,7 +128,7 @@ namespace AspnetCoreStarter.Migrations
                     Id = table.Column<Guid>(type: "TEXT", nullable: false),
                     Name = table.Column<string>(type: "TEXT", nullable: false),
                     CategoryId = table.Column<Guid>(type: "TEXT", nullable: true),
-                    LanguageID = table.Column<int>(type: "INTEGER", nullable: false)
+                    LanguageID = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -156,7 +154,7 @@ namespace AspnetCoreStarter.Migrations
                     Title = table.Column<string>(type: "TEXT", nullable: false),
                     Description = table.Column<string>(type: "TEXT", nullable: false),
                     KeywordId = table.Column<Guid>(type: "TEXT", nullable: true),
-                    LanguageID = table.Column<int>(type: "INTEGER", nullable: false)
+                    LanguageID = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -232,7 +230,7 @@ namespace AspnetCoreStarter.Migrations
                     FirstName = table.Column<string>(type: "TEXT", nullable: false),
                     LastName = table.Column<string>(type: "TEXT", nullable: false),
                     UserId = table.Column<int>(type: "INTEGER", nullable: true),
-                    LanguageID = table.Column<int>(type: "INTEGER", nullable: false)
+                    LanguageID = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -255,7 +253,7 @@ namespace AspnetCoreStarter.Migrations
                 columns: table => new
                 {
                     ArticlesId = table.Column<Guid>(type: "TEXT", nullable: false),
-                    LanguagesId = table.Column<int>(type: "INTEGER", nullable: false)
+                    LanguagesId = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -333,7 +331,7 @@ namespace AspnetCoreStarter.Migrations
                     Id = table.Column<Guid>(type: "TEXT", nullable: false),
                     ValueText = table.Column<string>(type: "TEXT", nullable: false),
                     PostAttributeId = table.Column<Guid>(type: "TEXT", nullable: true),
-                    LanguageID = table.Column<int>(type: "INTEGER", nullable: false)
+                    LanguageID = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
