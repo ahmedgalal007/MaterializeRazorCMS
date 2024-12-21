@@ -114,6 +114,13 @@ const editFormValidatorsFields = {
 //todo HandelEditForm
 
 const LocalizationHelper = {
+  LocalsStore: [],
+  AddLocalization: function () {
+    let newLang = $(`#edit${entityName}Form`).find('#inputGroupSelectLanguage').find(":selected").val();
+    $('.language-tab-content:first input').each(function () {
+      console.log(newLang, ': ', $(this).data().column);
+    });
+  },
   IsHidden: function (prop) {
     return ["LanguageID", "Id"].includes(prop)
   },
@@ -164,12 +171,17 @@ const LocalizationHelper = {
     tabHeaderContainer.append(this.GenerateLocalizationTabHeader(twoLettersLang));
     tabContentContainer.append(this.GenerateLocalizationTabContent(twoLettersLang, locl, idx));
   },
-  GenerateAllLocalizations: function (Locals, tabHeaderContainer, tabContentContainer) {
+  GenerateAllLocalizations: function (tabHeaderContainer, tabContentContainer) {
     tabHeaderContainer.empty();
     tabContentContainer.empty();
-    for (const [index, value] of Locals.entries()) {
+    for (const [index, value] of this.LocalsStore.entries()) {
       this.GenerateNewLocalization(value, tabHeaderContainer, tabContentContainer, index);
     }
+  },
+  init: function (Locals, tabHeaderContainer, tabContentContainer) {
+    this.LocalsStore = Locals
+    this.GenerateAllLocalizations(tabHeaderContainer, tabContentContainer);
+    $('.add-new-Language-btn').on('click', this.AddLocalization);
   }
 }
 
@@ -201,7 +213,7 @@ const handleEditKeywordModal = function (editButton, setFormAttributes, setEleme
 
   const Locals = JSON.parse(TableRow.children[5].innerText);
   // $(`#create${entityName}Form`).empty();
-  LocalizationHelper.GenerateAllLocalizations(Locals, $(`#edit${entityName}Form`).find('ul.nav-tabs'), $(`#edit${entityName}Form`).find('.localizations-tabs-contents'));
+  LocalizationHelper.init(Locals, $(`#edit${entityName}Form`).find('ul.nav-tabs'), $(`#edit${entityName}Form`).find('.localizations-tabs-contents'));
 
 }
 
