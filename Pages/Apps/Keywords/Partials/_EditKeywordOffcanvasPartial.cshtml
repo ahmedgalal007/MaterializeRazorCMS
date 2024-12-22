@@ -28,7 +28,7 @@
 
 			@* Edit Locals Form Offcanvas Partial*@
 			<div id="localization-edit-context">
-				@{await Html.RenderPartialAsync("partials/_LocalsKeywordOffcanvasPartial", Model.GetLocalProperties);}
+				@{await Html.RenderPartialAsync("_LocalsOffcanvasPartial", Model.GetLocalProperties);}
 			</div>
 			<div class="row">
         <div class="col-12">

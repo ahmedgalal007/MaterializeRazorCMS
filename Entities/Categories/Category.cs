@@ -1,4 +1,5 @@
 using AspnetCoreStarter.Entities.Locals;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AspnetCoreStarter.Entities.Categories;
 
@@ -6,6 +7,14 @@ public class Category : MultiLangEntity<CategoryLocals, Guid>
 {
   public Uri? CategoryURI { get; set; }
   public string Slug { get; set; } = string.Empty;
+
+  public Guid ParentId { get; set; }
+  public virtual Category Parent { get; set; }
+
+  [ForeignKey(nameof(ParentId))]
+  public virtual List<Category> Childrens { get; set; }
+
+
 
   public override CategoryLocals AddLocal(CategoryLocals local)
   {
