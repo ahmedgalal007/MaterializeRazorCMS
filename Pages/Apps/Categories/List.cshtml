@@ -1,0 +1,138 @@
+@page
+@model AspnetCoreStarter.Pages.Apps.Categories.CategoryModel
+@using AspnetCoreStarter.Helpers;
+@using AspnetCoreStarter.Models;
+@using AspnetCoreStarter.Entities;
+@using System.Text.Json
+
+@{
+  ViewData["Title"] = "Categories";
+}
+
+@section VendorStyles {
+  <link rel="stylesheet" href="~/vendor/libs/datatables-bs5/datatables.bootstrap5.dist.css">
+  <link rel="stylesheet" href="~/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.dist.css">
+  <link rel="stylesheet" href="~/vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.dist.css">
+  <link rel="stylesheet" href="~/vendor/libs/sweetalert2/sweetalert2.dist.css" />
+  <link rel="stylesheet" href="~/vendor/libs/&#64;form-validation/form-validation.dist.css" />
+}
+
+@section VendorScripts {
+  <script src="~/vendor/libs/moment/moment.dist.js"></script>
+  <script src="~/vendor/libs/datatables-bs5/datatables-bootstrap5.dist.js"></script>
+  <script src="~/vendor/libs/sweetalert2/sweetalert2.dist.js"></script>
+  <script src="~/vendor/libs/&#64;form-validation/popular.dist.js"></script>
+  <script src="~/vendor/libs/&#64;form-validation/bootstrap5.dist.js"></script>
+  <script src="~/vendor/libs/&#64;form-validation/auto-focus.dist.js"></script>
+  <script src="~/vendor/libs/cleavejs/cleave.dist.js"></script>
+  <script src="~/vendor/libs/cleavejs/cleave-phone.dist.js"></script>
+  <script src="~/vendor/libs/jquery-repeater/jquery-repeater.dist.js"></script>
+}
+
+@section PageScripts {
+  <script src="~/js/common/crud-page-setup.dist.js"></script>
+  <script src="~/js/common/localization-helper.dist.js"></script>
+  <script src="~/js/app-categories-list.dist.js"></script>
+}
+
+@* Attributes DataTable *@
+@if (Model.TableItems != null && Model.TableItems.Count > 0)
+{
+  <div class="card">
+    <div class="card-header pb-0">
+      <h5 class="card-title">Search Filter</h5>
+    </div>
+    <div class="card-datatable table-responsive">
+      <table id="CategoriesTable" class="table">
+        <thead class="table-light">
+          <tr>
+            <th></th>
+            <th>Id</th>
+            <th>CategoryURI</th>
+            <th>Slug</th>
+            <th>Parent</th>
+            <th>Color</th>
+            <th>Locals</th>
+            <th>Action</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          @foreach (var item in Model.TableItems.Select((value, i) => new { i, value }))
+          {
+            var entity = item.value;
+            var index = item.i;
+            <tr idx="@index">
+              <td></td>
+              <td>@entity.Id</td>
+              <td class="text-nowrap">@entity.CategoryURI</td>
+              <td class="category-name-@entity.Id  text-truncate">@entity.Slug</td>
+              @* <td class="text-truncate">@entity.ParentId</td> *@
+              <td> @(entity.Parent is not null ? entity.Parent.GetLocal(Model.DefaultLanguage.IsoCode)?.Name : "")</td>
+              <td class="text-truncate">@entity.Color</td>
+              <td class="text-truncate">@JsonSerializer.Serialize(entity.Locales.ToList())</td>
+              <td class="text-nowrap">
+                @* Edit Button *@
+                <button class="btn btn-sm btn-icon edit-Category-button" data-bs-toggle="offcanvas"
+                        data-bs-target="#editCategoryOffcanvas" id="@entity.Id--editCategory">
+                  <i class="ri-edit-box-line ri-20px"></i>
+                </button>
+                @* Delete Button *@
+                <form method="post" asp-page-handler="Delete" asp-route-id="@entity.Id" id="@entity.Id--deleteForm"
+                      onsubmit="showSuccessAlert('Deleted');" class="d-inline">
+                  <button class="btn btn-sm btn-icon" id="@entity.Id-deleteCategory" onclick="showDeleteConfirmation('@entity.Id')">
+                    <i class="ri-delete-bin-7-line ri-20px"></i>
+                  </button>
+                </form>
+                @* Dropdown Button *@
+              </td>
+              <td>
+                <button class="btn btn-sm btn-icon dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                  <i class="ri-more-2-line ri-20px"></i>
+                </button>
+                <div class="dropdown-menu dropdown-menu-end m-0">
+                  <a href="/Apps/Categories/View/Account" class="dropdown-item">View</a>
+                  <a href="javascript:void(0);" class="dropdown-item">Suspend</a>
+                </div>
+
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+}
+else
+{
+  <div class="card">
+    <div class="card-header">
+      <h5 class="card-title mb-0">Search Filter</h5>
+    </div>
+    <div class="card-datatable table-responsive">
+      <table id="CategoriesTable" class="table">
+        <thead>
+          <tr>
+            <th></th>
+            <th>Id</th>
+            <th>CategoryURI</th>
+            <th>Slug</th>
+            <th>Parent</th>
+            <th>Color</th>
+            <th>Locals</th>
+            <th>Action</th>
+            <th></th>
+          </tr>
+        </thead>
+      </table>
+    </div>
+  </div>
+}
+
+
+@* Create Attribute Form Offcanvas Partial*@
+@await Html.PartialAsync("partials/_CreateCategoryOffcanvasPartial")
+
+@* Edit Attribute Form Offcanvas Partial*@
+@await Html.PartialAsync("partials/_EditCategoryOffcanvasPartial")
+

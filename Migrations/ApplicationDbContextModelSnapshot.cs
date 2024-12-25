@@ -84,11 +84,20 @@ namespace AspnetCoreStarter.Migrations
                     b.Property<string>("CategoryURI")
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("Color")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid?>("ParentId")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Slug")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ParentId");
 
                     b.ToTable("Categories");
                 });
@@ -471,6 +480,15 @@ namespace AspnetCoreStarter.Migrations
                     b.Navigation("Post");
                 });
 
+            modelBuilder.Entity("AspnetCoreStarter.Entities.Categories.Category", b =>
+                {
+                    b.HasOne("AspnetCoreStarter.Entities.Categories.Category", "Parent")
+                        .WithMany("Childrens")
+                        .HasForeignKey("ParentId");
+
+                    b.Navigation("Parent");
+                });
+
             modelBuilder.Entity("AspnetCoreStarter.Entities.Locals.CategoryLocals", b =>
                 {
                     b.HasOne("AspnetCoreStarter.Entities.Categories.Category", null)
@@ -579,6 +597,8 @@ namespace AspnetCoreStarter.Migrations
 
             modelBuilder.Entity("AspnetCoreStarter.Entities.Categories.Category", b =>
                 {
+                    b.Navigation("Childrens");
+
                     b.Navigation("Locales");
                 });
 

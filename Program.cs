@@ -23,6 +23,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<IAuthorizationManager, AuthorizationManager>();
+builder.Services.AddScoped<AutoCompeleteHelper>();
 builder.Services.AddSingleton<IISOLanguages, ISOLanguages>();
 
 var app = builder.Build();

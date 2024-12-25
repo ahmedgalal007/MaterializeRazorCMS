@@ -1,0 +1,41 @@
+@model AspnetCoreStarter.Pages.Apps.Categories.CategoryModel
+@* Edit Attribute Form Offcanvas *@
+@{
+	var InputPrefix = "NewEntry";
+}
+<div class="offcanvas offcanvas-end" tabindex="-1" id="@("edit" + Model.EntityName + "Offcanvas")" aria-labelledby="editAttributeOffcanvasLabel">
+  <div class="offcanvas-header border-bottom">
+    <h5 class="offcanvas-title" id="editCategoryOffcanvasLabel">Edit @Model.EntityName</h5>
+    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body mx-0 flex-grow-0">
+		<form method="post" asp-page-handler="EditOrUpdate" asp-route-id="" id="@("edit" + Model.EntityName + "Form")">
+
+      <div class="form-floating form-floating-outline mb-5">
+        <input class="form-control" id="@("edit" + InputPrefix + "_" + "CategoryURI")" name="@(InputPrefix + ".CategoryURI")" value="" />
+        <label for="@(InputPrefix + "_" + "CategoryURI")">@InputPrefix  CategoryURI</label>
+      </div>
+
+			<div class="form-floating form-floating-outline mb-5">
+				<input class="form-control" id="@("edit" + InputPrefix + "_" + "Slug")" name="@(InputPrefix + ".Slug")" value="" />
+				<label for="@(InputPrefix + "_" + "Slug")">@InputPrefix  Slug</label>
+			</div>
+
+			<div class="form-floating form-floating-outline mb-5">
+        <input class="form-control" id="@("edit" + InputPrefix + "_" + "ParentId")" name="@(InputPrefix + ".ParentId")" value="" />
+        <label for="@(InputPrefix + "_" + "ParentId")">@InputPrefix  ParentId</label>
+			</div>
+
+			@* Edit Locals Form Offcanvas Partial*@
+			<div id="localization-edit-context">
+				@{await Html.RenderPartialAsync("_LocalsOffcanvasPartial", Model.GetLocalProperties);}
+			</div>
+			<div class="row">
+        <div class="col-12">
+          <button type="submit" class="btn btn-primary me-3">Submit</button>
+          <button type="reset" class="btn btn-outline-secondary" data-bs-dismiss="offcanvas">Cancel</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

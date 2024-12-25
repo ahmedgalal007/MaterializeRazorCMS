@@ -4,7 +4,7 @@
 
 'use strict';
 // Get the Create for validation
-const entityName = "Keyword";
+const entityName = "Category";
 const InputPrefix = "NewEntry";
 const EditPrefix = "edit";
 const entryNameStartWithSelector = ".keyword-name-";

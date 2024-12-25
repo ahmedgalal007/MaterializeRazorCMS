@@ -35,11 +35,18 @@ namespace AspnetCoreStarter.Migrations
                 {
                     Id = table.Column<Guid>(type: "TEXT", nullable: false),
                     CategoryURI = table.Column<string>(type: "TEXT", nullable: true),
-                    Slug = table.Column<string>(type: "TEXT", nullable: false)
+                    Slug = table.Column<string>(type: "TEXT", nullable: false),
+                    ParentId = table.Column<Guid>(type: "TEXT", nullable: true),
+                    Color = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Categories", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Categories_Categories_ParentId",
+                        column: x => x.ParentId,
+                        principalTable: "Categories",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -368,6 +375,11 @@ namespace AspnetCoreStarter.Migrations
                 name: "IX_Articles_CategoryID",
                 table: "Articles",
                 column: "CategoryID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Categories_ParentId",
+                table: "Categories",
+                column: "ParentId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_CategoryLocals_CategoryId",

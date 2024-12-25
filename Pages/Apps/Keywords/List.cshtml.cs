@@ -1,6 +1,5 @@
 using AspnetCoreStarter.Common;
 using AspnetCoreStarter.Data;
-using AspnetCoreStarter.Entities.Categories;
 using AspnetCoreStarter.Entities.Keywords;
 using AspnetCoreStarter.Entities.Locals;
 using System.Data.Entity;
