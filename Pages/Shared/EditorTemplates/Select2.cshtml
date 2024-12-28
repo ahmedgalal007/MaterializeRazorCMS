@@ -1,0 +1,18 @@
+@model Guid?
+@using AspnetCoreStarter.Pages.Shared.EditorTemplates;
+@{
+  Select2Model? Select2Model = (Select2Model?)ViewData["Select2Model"];
+}
+@* <div class="form-floating form-floating-outline"> *@
+<select @(string.IsNullOrWhiteSpace(Select2Model.Id) ? "" : $"id={Select2Model.Id} ")
+        name="@Select2Model.Name"
+        class="select2 form-select form-select-lg"
+        data-allow-clear="true"
+@(Select2Model.IsDisabled ? "disabled" : "")>
+  <option value="">Select Option...</option>
+  @foreach (var item in Select2Model.Options)
+  {
+    <option value="@item.Value" selected="@Select2Model.IsItemSelected(item.Value)"> @item.Key </option>
+  }
+</select>
+</@* div *@>

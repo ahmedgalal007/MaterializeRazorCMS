@@ -22,8 +22,8 @@ public abstract class MultiLangEntity<T, TID> : BaseEntity<TID>
     return Locales.FirstOrDefault(x => x.LanguageID == langCode) ?? default(T);
   }
 
-  public bool QueryLocales(string prop, string q)
-  {
-    return Locales.Where(x => EF.Property<string>(x , prop).Contains(q) ).Count() > 0;
-  }
+  //public bool QueryLocales(string prop, string q)
+  //{
+  //  return Locales.Where(x => EF.Property<string>(x , prop).Contains(q) ).AsEnumerable().Count() > 0;
+  //}
 }

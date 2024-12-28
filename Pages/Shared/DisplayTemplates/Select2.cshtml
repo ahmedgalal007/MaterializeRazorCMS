@@ -1,0 +1,16 @@
+@model AspnetCoreStarter.Pages.Shared.EditorTemplates.Select2Model
+<div class="form-floating form-floating-outline">
+  <select @(string.IsNullOrWhiteSpace(Model.Id) ? "" : $"id={Model.Id} ")
+          name="@Model.Name"
+          class="select2 form-select form-select-lg"
+          data-allow-clear="true"
+          disabled>
+    <option value="">Select Option...</option>
+    @foreach (var item in Model.Options)
+    {
+      <option value="@item.Value" selected=@(Model.IsItemSelected(item.Value)?"selected":"")> @item.Key </option>
+    }
+
+  </select>
+
+</div>

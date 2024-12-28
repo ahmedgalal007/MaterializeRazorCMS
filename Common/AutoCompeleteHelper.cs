@@ -17,7 +17,10 @@ public class AutoCompeleteHelper
     switch (entity)
     {
       case "Category":
-        return _context.Categories.Include(x => x.Locales).Where(x => x.QueryLocales("Name", q)).Select(s => new KeyValuePair<string, string>(s.Locales.First().Name, s.Id.ToString())).ToList();
+        return _context.Categories.Include(x => x.Locales)
+          .Where(x => x.Locales.Any(x => string.IsNullOrWhiteSpace(q)?true: x.Name.Contains(q)))
+          .Select(s => new KeyValuePair<string, string>(s.Locales.First().Name, s.Id.ToString()))
+          .ToList();
       default:
         break;
     }

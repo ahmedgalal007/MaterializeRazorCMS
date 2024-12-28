@@ -1,49 +1,64 @@
 @model AspnetCoreStarter.Pages.Apps.Categories.CategoryModel
+@using AspnetCoreStarter.Pages.Shared.EditorTemplates;
+@using AspnetCoreStarter.Common;
 @{
-	var InputPrefix = "NewEntry";
+  var InputPrefix = "NewEntry";
+  var ParentIdViewDataDictionary = new
+  {
+    Select2Model = new Select2Model
+    (
+      "NewEntry.ParentId",
+      Model.autoCompeleteHelper.Query("", "Category"),
+      false,
+      false,
+      [],
+      "createCategory_ParentId"
+    )
+  };
 }
-<div class="offcanvas offcanvas-end w-50" tabindex="-1" id="@("create" + Model.EntityName + "Offcanvas")" aria-labelledby="@("create" + Model.EntityName + "OffcanvasLabel")" >
-	<div class="offcanvas-header border-bottom">
-		<h5 class="offcanvas-title" id="@("create" + Model.EntityName + "OffcanvasLabel")">Create @Model.EntityName </h5>
-		<button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-	</div>
-	<div class="offcanvas-body mx-0 flex-grow-0">
-		<form method="post" id="createCategoryForm">
-			<h6>Define Category.</h6>
-			<div class="form-floating form-floating-outline mb-5">
-				<input asp-for="NewEntry.CategoryURI" class="form-control" placeholder="Category URI ex: Microsoft-Corporation | Mohamed-Salah"
-							 aria-label="Url of the Category"
-							 value="@Model.NewEntry.CategoryURI" />
-				<label for="NewEntity_CategoryURI">Category URI</label>
-			</div>
-			<div class="form-floating form-floating-outline mb-5">
-				<input asp-for="NewEntry.Slug" class="form-control" placeholder="Category Slug ex: MicrosoftCorporation | MohamedSalah"
-							 aria-label="Description Text"
-							 value="@Model.NewEntry.Slug" />
-				<label for="NewEntity_Slug">Slug</label>
-			</div>
-			<div class="form-floating form-floating-outline mb-5">
-				<input asp-for="NewEntry.ParentId" class="form-control"
-               placeholder="Search Parent by Name "
-               aria-label="Category Parent"
-							 value="@Model.NewEntry.ParentId" />
-        <label for="NewEntity_Parent">Parent</label>
-			</div>
+<div class="offcanvas offcanvas-end w-50" tabindex="-1" id="@("create" + Model.EntityName + "Offcanvas")" aria-labelledby="@("create" + Model.EntityName + "OffcanvasLabel")">
+  <div class="offcanvas-header border-bottom">
+    <h5 class="offcanvas-title" id="@("create" + Model.EntityName + "OffcanvasLabel")">Create @Model.EntityName </h5>
+    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body mx-0 flex-grow-0">
+    <form method="post" id="createCategoryForm">
+      <h6>Define Category.</h6>
+      <div class="form-floating form-floating-outline mb-5">
+        <input asp-for="NewEntry.CategoryURI" class="form-control" placeholder="Category URI ex: Microsoft-Corporation | Mohamed-Salah"
+               aria-label="Url of the Category"
+               value="@Model.NewEntry.CategoryURI" />
+        <label for="NewEntity_CategoryURI">Category URI</label>
+      </div>
+      <div class="form-floating form-floating-outline mb-5">
+        <input asp-for="NewEntry.Slug" class="form-control" placeholder="Category Slug ex: MicrosoftCorporation | MohamedSalah"
+               aria-label="Description Text"
+               value="@Model.NewEntry.Slug" />
+        <label for="NewEntity_Slug">Slug</label>
+      </div>
+      <div class="form-floating form-floating-outline mb-5">
+        @Html.EditorFor(x => x.NewEntry.ParentId,
+               "Select2",
+               "NewEntry.ParentId",
+               ParentIdViewDataDictionary
+               )
+        <label for="createCategory_ParentId">Parent Category</label>
+      </div>
 
-			@* Create Locals Form Offcanvas Partial*@
-			<div id="localization-create-context">
-				@await Html.PartialAsync("_LocalsOffcanvasPartial", Model.GetLocalProperties)
-			</div>
+      @* Create Locals Form Offcanvas Partial*@
+      <div id="localization-create-context">
+        @await Html.PartialAsync("_LocalsOffcanvasPartial", Model.GetLocalProperties)
+      </div>
 
-			<div class="row">
-				<div class="col-12">
-					<button type="submit" class="btn btn-primary me-3">Submit</button>
-					<button type="reset" class="btn btn-outline-secondary" data-bs-dismiss="offcanvas">Cancel</button>
-				</div>
-			</div>
-		</form>
+      <div class="row">
+        <div class="col-12">
+          <button type="submit" class="btn btn-primary me-3">Submit</button>
+          <button type="reset" class="btn btn-outline-secondary" data-bs-dismiss="offcanvas">Cancel</button>
+        </div>
+      </div>
+    </form>
 
 
 
-	</div>
+  </div>
 </div>

@@ -11,7 +11,7 @@ public abstract class CRUDPageModel<T,TID> : BasePageModel where T : class, new(
 {
 
   private readonly ApplicationDbContext _context;
-
+  public AutoCompeleteHelper autoCompeleteHelper;
   //! Protected Variables
   protected readonly DbSet<T> _dbSet;
   public readonly Language? DefaultLanguage;
@@ -32,6 +32,7 @@ public abstract class CRUDPageModel<T,TID> : BasePageModel where T : class, new(
     NewEntry = new T();
     // Language DC = ISOLanguages.languages.FirstOrDefault(e => e.IsDefault);
     DefaultLanguage = _context.Languages.Where(x => x.IsDefault).FirstOrDefault();
+    autoCompeleteHelper = new AutoCompeleteHelper(context);
   }
 
   public string EntityName => typeof(T).Name;
