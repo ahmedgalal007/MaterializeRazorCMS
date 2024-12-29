@@ -66,12 +66,26 @@ const LocalizationHelper = {
 											</div>
 										</div>`);
   },
+  GenerateLocalizationHiddenInput: function (langTwoLetters, propName, value = '', idx = 0) {
+    return $.parseHTML(`<input type="hidden"
+                       data-column="${propName}"
+                       data-sort-index="${idx}"
+                       data-language-code="${langTwoLetters}"
+                       name="NewEntry.Locales[${idx}].${propName}"
+                       id="newentry-locales-${langTwoLetters}-${propName}"
+                       class="form-control"
+                       aria-label="${propName}"
+                       aria-describedby="formtabs-${propName}"
+                       value="${value}"   />`);
+  },
   GenerateLocalizationTabContent: function (langTwoLetters, locl, idx = 0) {
     const tabContentId = this.Mode + '-language-tabs-' + langTwoLetters;
     let tabContent = $('<div id="' + tabContentId + '"  role="tabpanel" class="language-tab-content tab-pane fade" >'); // ' + (idx==0?'show active':'') + '
     for (const [key, value] of Object.entries(locl)) {
-      if (typeof value === 'string' || value instanceof String) {
-        tabContent.append(this.GenerateLocalizationInput(locl.LanguageID, key, value, idx));
+      if (typeof value === 'string' || value instanceof String || key == 'Id') {
+        this.IsHidden(key) ?
+          tabContent.append(this.GenerateLocalizationHiddenInput(locl.LanguageID, key, value, idx)) :
+          tabContent.append(this.GenerateLocalizationInput(locl.LanguageID, key, value, idx));
       }
     }
     return tabContent;

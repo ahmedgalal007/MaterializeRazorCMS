@@ -3,6 +3,7 @@ using AspnetCoreStarter.Data;
 using AspnetCoreStarter.Entities.Categories;
 using AspnetCoreStarter.Entities.Locals;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection;
 
 namespace AspnetCoreStarter.Pages.Apps.Categories
 {
@@ -35,14 +36,21 @@ namespace AspnetCoreStarter.Pages.Apps.Categories
       return true;
     }
 
-    public override async Task<Boolean> UpdateEntity(Category entity, String entityName = "")
+    public override async Task<Boolean> UpdateEntity(Category entity, String entityName = "NewEntry")
     {
-      // return base.OnUpdateEntity(entity, entityName);
-      // if (string.IsNullOrWhiteSpace(entityName)) entityName = NewEntry.GetType().Name.ToLower();
-      await _dbSet.Entry(entity).Collection(e => e.Locales).LoadAsync();
-      if (string.IsNullOrWhiteSpace(entityName)) entityName = "NewEntry";
-      if (entity.Locales.Count > 0)
-        await TryUpdateModelAsync(entity, entityName, u => u.CategoryURI, u => u.Slug, u => u.ParentId, u => u.Color, u => u.Locales);
+
+      //await _dbSet.Entry(entity).Collection(e => e.Locales).LoadAsync();
+      var entityToUpdate = await LoadLocales(entity);
+      // if (string.IsNullOrWhiteSpace(entityName)) entityName = "NewEntry";
+      if (entityToUpdate.Locales.Count > 0)
+      {
+        await TryUpdateModelAsync(entityToUpdate, entityName, u => u.CategoryURI, u => u.Slug, u => u.ParentId, u => u.Color);
+        foreach (var item in entityToUpdate.Locales.Select((e, i) => new { value = e, index = i }))
+        {
+          await TryUpdateModelAsync(item.value, entityName + $".Locales[{item.index}]", u => u.Id, u => u.LanguageID, u => u.Name);
+        }
+
+      }
 
       return await Task.FromResult(true);
     }

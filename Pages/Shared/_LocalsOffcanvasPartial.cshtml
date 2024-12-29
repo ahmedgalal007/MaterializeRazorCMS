@@ -87,7 +87,18 @@
 
 
 							<div class="language-tab-content tab-pane fade show active" id="language-tabs-@twoLetters" role="tabpanel">
-								<input type="hidden"
+
+                <input type="hidden"
+                       data-column="Id"
+                       data-sort-index="0"
+                       data-language-code="@twoLetters"
+                       name="NewEntry.Locales[@NE.i].Id"
+                       id="newentry-locales-@twoLetters-Id"
+                       class="form-control"
+                       aria-label="Id"
+                       aria-describedby="formtabs-Id"  />
+
+                <input type="hidden"
 											 data-column="LanguageID"
 											 data-sort-index="0"
 											 data-language-code="@twoLetters"
@@ -98,8 +109,8 @@
 											 aria-describedby="formtabs-LanguageID"
 											 value="@twoLetters" />
 
-								@foreach (var item in Model.Where(x => x != "LanguageID"))
-								{
+                @foreach (var item in Model.Where(x => x != "LanguageID" && x != "Id"))
+                {
 									<div class="row g-12">
 										<div class="col-md-12">
 											<div class="input-group input-group-merge">
@@ -114,7 +125,6 @@
 																 placeholder="please enter @item"
 																 aria-label="@item"
 																 aria-describedby="formtabs-@item" />
-													@* value="@NE.value.GetType().GetProperty(item).GetValue(NE.value)" /> *@
 													<label for="newentry-locales-@twoLetters-@item">@item</label>
 												</div>
 												<span class="input-group-text" id="formtabs-@item">&#64;@item</span>

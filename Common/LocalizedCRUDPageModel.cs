@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using AspnetCoreStarter.Entities;
 using System;
 using System.Reflection;
+using NuGet.Versioning;
 
 namespace AspnetCoreStarter.Common;
 
@@ -20,7 +21,6 @@ public class LocalizedCRUDPageModel<T, TLocal, TID> : CRUDPageModel<T, TID>
   public LocalizedCRUDPageModel(ApplicationDbContext context) : base(context)
   {
     if (NewEntry.Locales == null || NewEntry.Locales.Count == 0)
-
     {
       if (NewEntry.Locales == null) NewEntry.Locales = new();
       // if (DefaultLanguage != null) NewEntry.Locales.Add(new TLocal(DefaultLanguage));
@@ -56,7 +56,7 @@ public class LocalizedCRUDPageModel<T, TLocal, TID> : CRUDPageModel<T, TID>
     foreach (var item in typeof(TLocal).GetRuntimeProperties())
     {
 
-      if(item.PropertyType == typeof(string))
+      if(item.PropertyType == typeof(string) || item.Name.ToLower() == "id")
         results.Add(item.Name);
     }
     return results;
@@ -65,5 +65,10 @@ public class LocalizedCRUDPageModel<T, TLocal, TID> : CRUDPageModel<T, TID>
   public override async Task<Boolean> UpdateEntity(T entity, String entityName = "")
   {
     throw new NotImplementedException();
+  }
+
+  public virtual async Task<T?> LoadLocales(T entity)
+  {
+    return await _dbSet.Include(e => e.Locales).FirstOrDefaultAsync(e => e.Id.Equals(entity.Id));
   }
 }

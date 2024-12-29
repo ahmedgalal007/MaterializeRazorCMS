@@ -1,7 +1,21 @@
 @model AspnetCoreStarter.Pages.Apps.Categories.CategoryModel
+@using AspnetCoreStarter.Pages.Shared.EditorTemplates;
+@using AspnetCoreStarter.Common;
 @* Edit Attribute Form Offcanvas *@
 @{
 	var InputPrefix = "NewEntry";
+  var ParentIdViewDataDictionary = new
+  {
+    Select2Model = new Select2Model
+   (
+     "NewEntry.ParentId",
+     Model.autoCompeleteHelper.Query("", "Category"),
+     false,
+     false,
+     [],
+     $"edit{InputPrefix}_ParentId"
+   )
+  };
 }
 <div class="offcanvas offcanvas-end" tabindex="-1" id="@("edit" + Model.EntityName + "Offcanvas")" aria-labelledby="editAttributeOffcanvasLabel">
   <div class="offcanvas-header border-bottom">
@@ -21,10 +35,14 @@
 				<label for="@(InputPrefix + "_" + "Slug")">@InputPrefix  Slug</label>
 			</div>
 
-			<div class="form-floating form-floating-outline mb-5">
-        <input class="form-control" id="@("edit" + InputPrefix + "_" + "ParentId")" name="@(InputPrefix + ".ParentId")" value="" />
-        <label for="@(InputPrefix + "_" + "ParentId")">@InputPrefix  ParentId</label>
-			</div>
+      <div class="form-floating form-floating-outline mb-5">
+        @Html.EditorFor(x => x.NewEntry.ParentId,
+               "Select2",
+               "NewEntry.ParentId",
+               ParentIdViewDataDictionary
+               )
+        <label for="createCategory_ParentId">Parent Category</label>
+      </div>
 
 			@* Edit Locals Form Offcanvas Partial*@
 			<div id="localization-edit-context">

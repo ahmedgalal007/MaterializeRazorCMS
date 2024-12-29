@@ -3,6 +3,7 @@
 @using AspnetCoreStarter.Helpers;
 @using AspnetCoreStarter.Models;
 @using AspnetCoreStarter.Entities;
+@using AspnetCoreStarter.Entities.Categories;
 @using System.Text.Json
 
 @{
@@ -70,7 +71,11 @@
               <td class="text-nowrap">@entity.CategoryURI</td>
               <td class="category-name-@entity.Id  text-truncate">@entity.Slug</td>
               @* <td class="text-truncate">@entity.ParentId</td> *@
-              <td> @(entity.Parent is not null ? entity.Parent.GetLocal(Model.DefaultLanguage.IsoCode)?.Name : "")</td>
+              <td>
+                @{
+                  RenderParent(entity.Parent, Model.DefaultLanguage.IsoCode);
+                }
+              </td>
               <td class="text-truncate">@entity.Color</td>
               <td class="text-truncate">@JsonSerializer.Serialize(entity.Locales.ToList())</td>
               <td class="text-nowrap">
@@ -138,3 +143,15 @@ else
 @* Edit Attribute Form Offcanvas Partial*@
 @await Html.PartialAsync("partials/_EditCategoryOffcanvasPartial")
 
+
+@functions
+{
+  void RenderParent(Category parent, string langIsoCode)
+  {
+    if (parent is not null)
+    {
+      <div class="visually-hidden-focusable parentId">@parent.Id.ToString().ToUpper()</div>
+      <div class="parentName">@parent.GetLocal(langIsoCode)?.Name</div>
+    }
+  }
+}
