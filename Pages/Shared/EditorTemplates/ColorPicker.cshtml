@@ -1,10 +1,12 @@
 @model string
+@using System.Text.Json;
 @using AspnetCoreStarter.Pages.Shared.EditorTemplates
 @{
+  ColorPickerModel? ColorPickerModel = (ColorPickerModel?)ViewData["ColorPickerModel"];
 }
-<div id="color-picker-monolith"></div>
-<input type="hidden" id="editNewEntry_Color" name="NewEntry.Color" value="@Model" />
-<script type="text/javascript">
+<div id="@ColorPickerModel.ElSelectorId"></div>
+<input type="hidden" id="@ColorPickerModel.Id" name="@ColorPickerModel.Name" value="@ColorPickerModel.DefaultColor" />
+<script>
   // let $script = document.getElementById("template-editors-script-manager");
   // if (!$script) {
   //   $script = document.createElement('script');
@@ -14,44 +16,21 @@
   // }
   EditorsScriptManager.GenerateColorPicker = function ($pickr) {
     $pickr.create({
-      el: "#color-picker-monolith",
-      theme: "monolith",
+      el: "#@ColorPickerModel.ElSelectorId",
+      theme: "@ColorPickerModel.Theme",
       // default: "rgba(40, 208, 148, 1)",
-      default: document.getElementById('editNewEntry_Color').value,
-      swatches: [
-        "rgba(102, 108, 232, 1)",
-        "rgba(40, 208, 148, 1)",
-        "rgba(255, 73, 97, 1)",
-        "rgba(255, 145, 73, 1)",
-        "rgba(30, 159, 242, 1)"
-      ],
-      components: {
-        // Main components
-        preview: true,
-        opacity: true,
-        hue: true,
-
-        // Input / output Options
-        interaction: {
-          hex: true,
-          rgba: true,
-          hsla: true,
-          hsva: true,
-          cmyk: true,
-          input: true,
-          clear: true,
-          save: true
-        }
-      }
-    })
-     // .setColor(document.getElementById('NewEntry_Color').value)
+      default: document.getElementById('@ColorPickerModel.Id').value,
+      swatches: @Html.Raw(JsonSerializer.Serialize(ColorPickerModel.Swatches)),
+      components: @Html.Raw(JsonSerializer.Serialize(ColorPickerModel.Components))
+      })
+      // .setColor(document.getElementById('NewEntry_Color').value)
       .on('init', instance => {
         console.log('Event: "init"', instance);
       })
-        .on('save', instance => {
-          console.log('Event: "Save"', instance);
+      .on('save', instance => {
+        console.log('Event: "Save"', instance);
         document.getElementById('editNewEntry_Color').value = instance.toHEXA();
-        });
+      });
 
     // $pickr.setColor(document.getElementById('editNewEntry_Color').value, true);
   };

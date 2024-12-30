@@ -16,6 +16,10 @@
      $"edit{InputPrefix}_ParentId"
    )
   };
+  var ColorPickerModelDataDictionary = new
+  {
+    ColorPickerModel = new ColorPickerModel("NewEntry.Color", "editNewEntry_Color", "edit-new-entry-color-element", Model.NewEntry.Color)
+  };
 }
 <div class="offcanvas offcanvas-end w-50" tabindex="-1" id="@("edit" + Model.EntityName + "Offcanvas")" aria-labelledby="editAttributeOffcanvasLabel">
   <div class="offcanvas-header border-bottom">
@@ -46,7 +50,7 @@
       <div class="form-floating form-floating-outline mb-5">
          <p>Category Color</p>
          @*<div id="editCategory_Color"></div> *@
-        @Html.EditorFor(x => x.NewEntry.Color, "ColorPicker", "NewEntry.Color",new {})
+        @Html.EditorFor(x => x.NewEntry.Color, "ColorPicker", "NewEntry.Color", ColorPickerModelDataDictionary)
       </div>
 
       @* Edit Locals Form Offcanvas Partial*@

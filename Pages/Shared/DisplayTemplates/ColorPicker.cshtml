@@ -1,0 +1,6 @@
+@model string
+@using AspnetCoreStarter.Pages.Shared.DisplayTemplates;
+@{
+}
+<div class="visually-hidden-focusable color-value">@Model</div>
+<button type="button" class="pcr-button" role="button" aria-label="toggle color picker dialog" style="--pcr-color: @Model;width: 60px; height: 20px;background: @Model;"></button>

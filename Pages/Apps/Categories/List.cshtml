@@ -4,6 +4,7 @@
 @using AspnetCoreStarter.Models;
 @using AspnetCoreStarter.Entities;
 @using AspnetCoreStarter.Entities.Categories;
+@using AspnetCoreStarter.Pages.Shared.EditorTemplates;
 @using System.Text.Json
 
 @{
@@ -79,7 +80,10 @@
                   RenderParent(entity.Parent, Model.DefaultLanguage.IsoCode);
                 }
               </td>
-              <td class="text-truncate">@entity.Color</td>
+              <td class="text-truncate">
+                @* @entity.Color *@
+                @Html.DisplayFor(x => entity.Color, "ColorPicker")
+              </td>
               <td class="text-truncate">@JsonSerializer.Serialize(entity.Locales.ToList())</td>
               <td class="text-nowrap">
                 @* Edit Button *@

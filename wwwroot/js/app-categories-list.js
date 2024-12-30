@@ -44,7 +44,7 @@ const editFormValidatorsFields = {
 
 
 //todo HandelEditForm
-const handleEditKeywordModal = function (editButton, setFormAttributes, setElementAttributes) {
+const handleEditCategoryModal = function (editButton, setFormAttributes, setElementAttributes) {
   //// Get the Attribute details from the table
   const entityId = editButton.id.split('--')[0];
   const TableRow = document.getElementById(`${entityId}--edit${entityName}`).parentElement.parentElement;
@@ -53,7 +53,7 @@ const handleEditKeywordModal = function (editButton, setFormAttributes, setEleme
   const CategoryURI = TableRow.children[2].innerText;
   const Slug = TableRow.children[3].innerText;
   const ParentId = $(TableRow.children[4]).find('.parentId')[0]?.innerText;
-
+  const Color = $(TableRow.children[5]).find('.color-value')[0]?.innerText;
 
   // Set the form attributes (route and action)
   const editForm = document.getElementById(`edit${entityName}Form`);
@@ -63,10 +63,13 @@ const handleEditKeywordModal = function (editButton, setFormAttributes, setEleme
   var Control_CategoryURI = document.getElementById(`edit${InputPrefix}_CategoryURI`);
   Control_CategoryURI.value = CategoryURI;
   document.getElementById(`edit${InputPrefix}_Slug`).value = Slug;
+
   let $ParentIdSelect = $(`#edit${InputPrefix}_ParentId`);
-  var removeitem = $ParentIdSelect.find(`option[value="${entityId.toUpperCase()}"]`);
-  $ParentIdSelect.remove(removeitem).trigger('change');
+  $ParentIdSelect.find(`option[value="${entityId.toUpperCase()}"]`).remove();
+  $ParentIdSelect.trigger('change');
   $ParentIdSelect.val(ParentId).trigger('change');
+
+  document.getElementById(`edit${InputPrefix}_Color`).value = Color;
 
   const Locals = JSON.parse(TableRow.children[6].innerText);
   // $(`#create${entityName}Form`).empty();
@@ -75,6 +78,38 @@ const handleEditKeywordModal = function (editButton, setFormAttributes, setEleme
     $(`#edit${entityName}Form`).find('ul.nav-tabs'),
     $(`#edit${entityName}Form`).find('.localizations-tabs-contents'),
     "edit");
+
+  EditorsScriptManager.GenerateColorPicker(pickr);
+  //var monolithPicker = pickr.create({
+  //  el: "#editCategory_Color",
+  //  theme: "monolith",
+  //  default: "rgba(40, 208, 148, 1)",
+  //  swatches: [
+  //    "rgba(102, 108, 232, 1)",
+  //    "rgba(40, 208, 148, 1)",
+  //    "rgba(255, 73, 97, 1)",
+  //    "rgba(255, 145, 73, 1)",
+  //    "rgba(30, 159, 242, 1)"
+  //  ],
+  //  components: {
+  //    // Main components
+  //    preview: true,
+  //    opacity: true,
+  //    hue: true,
+
+  //    // Input / output Options
+  //    interaction: {
+  //      hex: true,
+  //      rgba: true,
+  //      hsla: true,
+  //      hsva: true,
+  //      cmyk: true,
+  //      input: true,
+  //      clear: true,
+  //      save: true
+  //    }
+  //  }
+  //});
 
 }
 
@@ -195,7 +230,7 @@ $(document).ready(function () {
     pageModelGetURL,
     editEntityForm,
     editFormValidatorsFields,
-    handleEditKeywordModal,
+    handleEditCategoryModal,
     createEntityForm,
     createFormValidatorsFields);
 
