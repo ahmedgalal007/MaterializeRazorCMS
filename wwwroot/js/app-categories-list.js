@@ -52,7 +52,7 @@ const handleEditKeywordModal = function (editButton, setFormAttributes, setEleme
   //  const Slug = document.querySelector(`${entryNameStartWithSelector}${KeywordId}`).innerText;
   const CategoryURI = TableRow.children[2].innerText;
   const Slug = TableRow.children[3].innerText;
-  const ParentId = TableRow.children[4].innerText;
+  const ParentId = $(TableRow.children[4]).find('.parentId')[0]?.innerText;
 
 
   // Set the form attributes (route and action)
@@ -63,9 +63,12 @@ const handleEditKeywordModal = function (editButton, setFormAttributes, setEleme
   var Control_CategoryURI = document.getElementById(`edit${InputPrefix}_CategoryURI`);
   Control_CategoryURI.value = CategoryURI;
   document.getElementById(`edit${InputPrefix}_Slug`).value = Slug;
-  document.getElementById(`edit${InputPrefix}_ParentId`).value = ParentId;
+  let $ParentIdSelect = $(`#edit${InputPrefix}_ParentId`);
+  var removeitem = $ParentIdSelect.find(`option[value="${entityId.toUpperCase()}"]`);
+  $ParentIdSelect.remove(removeitem).trigger('change');
+  $ParentIdSelect.val(ParentId).trigger('change');
 
-  const Locals = JSON.parse(TableRow.children[5].innerText);
+  const Locals = JSON.parse(TableRow.children[6].innerText);
   // $(`#create${entityName}Form`).empty();
   LocalizationHelper.init(
     Locals,

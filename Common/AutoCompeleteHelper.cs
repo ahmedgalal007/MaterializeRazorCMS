@@ -11,7 +11,7 @@ public class AutoCompeleteHelper
     _context = context;
   }
 
-  public List<KeyValuePair<string, string>> Query(string q, string entity, string id="",string parentId = "")
+  public List<KeyValuePair<string, string>> Query(string q, string entity, string id="",string parentId = "", List<Guid>? excludeIds = null)
   {
     List<KeyValuePair<string, string>> result = new List<KeyValuePair<string, string>>();
     switch (entity)
@@ -21,6 +21,7 @@ public class AutoCompeleteHelper
           .Where(x => x.Locales.Any(x => string.IsNullOrWhiteSpace(q)?true: x.Name.Contains(q)))
           .Where(x => string.IsNullOrWhiteSpace(id) ? true: x.Id == new Guid(id))
           .Where(x => string.IsNullOrWhiteSpace(parentId) ? true: x.ParentId == new Guid(parentId))
+          .Where(x => (excludeIds == null)? true: !excludeIds.Contains(x.Id))
           .Select(s => new KeyValuePair<string, string>(s.Locales.First().Name, s.Id.ToString()))
           .ToList();
       default:

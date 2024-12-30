@@ -3,13 +3,13 @@
 @using AspnetCoreStarter.Common;
 @* Edit Attribute Form Offcanvas *@
 @{
-	var InputPrefix = "NewEntry";
+  var InputPrefix = "NewEntry";
   var ParentIdViewDataDictionary = new
   {
     Select2Model = new Select2Model
    (
      "NewEntry.ParentId",
-     Model.autoCompeleteHelper.Query("", "Category"),
+     Model.autoCompeleteHelper.Query("", "Category", "", "", new List<Guid> { Model.NewEntry.Id }),
      false,
      false,
      [],
@@ -17,7 +17,7 @@
    )
   };
 }
-<div class="offcanvas offcanvas-end" tabindex="-1" id="@("edit" + Model.EntityName + "Offcanvas")" aria-labelledby="editAttributeOffcanvasLabel">
+<div class="offcanvas offcanvas-end w-50" tabindex="-1" id="@("edit" + Model.EntityName + "Offcanvas")" aria-labelledby="editAttributeOffcanvasLabel">
   <div class="offcanvas-header border-bottom">
     <h5 class="offcanvas-title" id="editCategoryOffcanvasLabel">Edit @Model.EntityName</h5>
     <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
@@ -41,10 +41,15 @@
                "NewEntry.ParentId",
                ParentIdViewDataDictionary
                )
-        <label for="createCategory_ParentId">Parent Category</label>
+        <label for="editCategory_ParentId">Parent Category</label>
+      </div>
+      <div class="form-floating form-floating-outline mb-5">
+         <p>Category Color</p>
+         @*<div id="editCategory_Color"></div> *@
+        @Html.EditorFor(x => x.NewEntry.Color, "ColorPicker", "NewEntry.Color",new {})
       </div>
 
-			@* Edit Locals Form Offcanvas Partial*@
+      @* Edit Locals Form Offcanvas Partial*@
 			<div id="localization-edit-context">
 				@{await Html.RenderPartialAsync("_LocalsOffcanvasPartial", Model.GetLocalProperties);}
 			</div>

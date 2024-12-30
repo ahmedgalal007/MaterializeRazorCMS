@@ -30,7 +30,7 @@ public class KeywordModel : LocalizedCRUDPageModel<Keyword, KeywordLocals, Guid>
     // if (string.IsNullOrWhiteSpace(entityName)) entityName = NewEntry.GetType().Name.ToLower();
     await _dbSet.Entry(entity).Collection(e => e.Locales).LoadAsync();
 
-    // if (string.IsNullOrWhiteSpace(entityName)) entityName = "";
+    if (string.IsNullOrWhiteSpace(entityName)) entityName = "NewEntry";
     if (entity.Locales.Count > 0)
     {
       await TryUpdateModelAsync(entity, entityName, u => u.KeywordURI, u => u.Slug, u => u.Schema);

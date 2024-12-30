@@ -15,7 +15,7 @@ public class Category : MultiLangEntity<CategoryLocals, Guid>
   [ForeignKey(nameof(ParentId))]
   public virtual List<Category> Childrens { get; set; } = new List<Category>();
 
-  [Length(4,8)]
+  [Length(4,9)]
   public string Color { get; set; } = "#ffffff";
   public override CategoryLocals AddLocal(CategoryLocals local)
   {

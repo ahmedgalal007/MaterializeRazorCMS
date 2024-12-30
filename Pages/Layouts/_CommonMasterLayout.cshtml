@@ -45,12 +45,20 @@
 
   <!-- Include Scripts for customizer, helper, analytics, config -->
   @await Html.PartialAsync("Layouts/Sections/_ScriptsIncludes" + ViewData["frontVar"])
+
+  <!-- Editors Script Manager -->
+  <script id="template-editors-script-manager" type="text/javascript">
+    const EditorsScriptManager = new Object();
+  </script>
+  <!--/ Editors Script Manager -->
 </head>
 
 <body>
   <!-- Layout Content -->
   @RenderBody()
   <!--/ Layout Content -->
+
+
 
   <!-- Core Scripts -->
   @await Html.PartialAsync("Layouts/Sections/_Scripts" + ViewData["frontVar"])
@@ -62,6 +70,7 @@
 
   <!-- Page Scripts-->
   @RenderSection("PageScripts", required: false)
+
 
 </body>
 
