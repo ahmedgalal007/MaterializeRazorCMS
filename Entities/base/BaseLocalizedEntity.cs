@@ -35,6 +35,7 @@ public class BaseLocalizedEntity<TID> : BaseEntity<TID>
     LanguageID = lang.Id;
     Language = lang;
   }
+  // public new TID Id { get; set; } = default!;
   public string LanguageID { get; set; }
   public virtual Language Language { get; set; }
 

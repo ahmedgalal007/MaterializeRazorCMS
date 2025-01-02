@@ -28,17 +28,23 @@ public class KeywordModel : LocalizedCRUDPageModel<Keyword, KeywordLocals, Guid>
   {
     // return base.OnUpdateEntity(entity, entityName);
     // if (string.IsNullOrWhiteSpace(entityName)) entityName = NewEntry.GetType().Name.ToLower();
-    await _dbSet.Entry(entity).Collection(e => e.Locales).LoadAsync();
+    // await _dbSet.Entry(entity).Collection(e => e.Locales).LoadAsync();
 
     if (string.IsNullOrWhiteSpace(entityName)) entityName = "NewEntry";
-    if (entity.Locales.Count > 0)
-    {
-      await TryUpdateModelAsync(entity, entityName, u => u.KeywordURI, u => u.Slug, u => u.Schema);
-      foreach (var item in entity.Locales.Select((e, i) => new { value = e, index = i }))
-      {
-        await TryUpdateModelAsync(item.value, entityName + $".Locales[{item.index}]", u => u.Id, u => u.LanguageID, u => u.Title, u => u.Description);
-      }
-    }
+    //if (entity.Locales.Count > 0)
+    //{
+      // var Locales = entity.Locales.Select(x => x).ToList();
+      await TryUpdateModelAsync(entity, entityName, u => u.KeywordURI, u => u.Slug, u => u.Schema, u => u.Locales);
+      //foreach (var item in Locales)
+      //{
+      //  entity.Locales.FirstOrDefault(x => x.LanguageID == item.LanguageID).Id = item.Id;
+      //}
+      //foreach (var item in entity.Locales.Select((e, i) => new { value = e, index = i }))
+      //{
+      //  await TryUpdateModelAsync(item.value, entityName + $".Locales[{item.index}]", u => u.Id, u => u.LanguageID, u => u.Title, u => u.Description);
+      //}
+
+    //}
     return await Task.FromResult(true);
   }
 

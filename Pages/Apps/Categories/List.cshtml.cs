@@ -40,17 +40,17 @@ namespace AspnetCoreStarter.Pages.Apps.Categories
     {
 
       //await _dbSet.Entry(entity).Collection(e => e.Locales).LoadAsync();
-      var entityToUpdate = await LoadLocales(entity);
-      if (string.IsNullOrWhiteSpace(entityName)) entityName = "NewEntry";
-      if (entityToUpdate.Locales.Count > 0)
-      {
-        await TryUpdateModelAsync(entityToUpdate, entityName, u => u.CategoryURI, u => u.Slug, u => u.ParentId, u => u.Color);
-        foreach (var item in entityToUpdate.Locales.Select((e, i) => new { value = e, index = i }))
-        {
-          await TryUpdateModelAsync(item.value, entityName + $".Locales[{item.index}]", u => u.Id, u => u.LanguageID, u => u.Name);
-        }
+      //var entityToUpdate = await LoadLocales(entity);
+      //if (string.IsNullOrWhiteSpace(entityName)) entityName = "NewEntry";
+      //if (entityToUpdate.Locales.Count > 0)
+      //{
+        await TryUpdateModelAsync(entity, entityName, u => u.CategoryURI, u => u.Slug, u => u.ParentId, u => u.Color, u => u.Locales);
+      //  foreach (var item in entityToUpdate.Locales.Select((e, i) => new { value = e, index = i }))
+      //  {
+      //    await TryUpdateModelAsync(item.value, entityName + $".Locales[{item.index}]", u => u.Id, u => u.LanguageID, u => u.Name);
+      //  }
 
-      }
+      //}
 
       return await Task.FromResult(true);
     }

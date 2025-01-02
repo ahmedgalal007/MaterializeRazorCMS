@@ -14,7 +14,10 @@
   //   document.body.appendChild($script);
   //   $script.innerHTML = ""
   // }
-  EditorsScriptManager.GenerateColorPicker = function ($pickr) {
+  if (!EditorsScriptManager.GenerateColorPickers) {
+    EditorsScriptManager.GenerateColorPickers = {};
+  }
+  EditorsScriptManager.GenerateColorPickers["@(ColorPickerModel.Name)"] = function ($pickr) {
     $pickr.create({
       el: "#@ColorPickerModel.ElSelectorId",
       theme: "@ColorPickerModel.Theme",
