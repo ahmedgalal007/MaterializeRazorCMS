@@ -403,3 +403,5 @@ FodyWeavers.xsd
 # CSS Distribution Files
 *.dist.css
 
+/Data/Application.Data.db-shm
+/Data/Application.Data.db-wal
