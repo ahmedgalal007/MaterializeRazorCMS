@@ -5,11 +5,12 @@ using System.ComponentModel.DataAnnotations;
 namespace AspnetCoreStarter.Pages.Shared.EditorTemplates;
 public class ColorPickerModel
 {
-  public ColorPickerModel(string name, string id, string elSelectorId, string defaultColor = "#ffffff", string theme = "classic", List<string> swatches = null, PickrComponents components = null)
+  public ColorPickerModel(string name, string id, string elSelectorId, string prefix="create", string defaultColor = "#ffffff", string theme = "classic", List<string> swatches = null, PickrComponents components = null)
   {
     Name = name;
     Id = id;
     ElSelectorId = elSelectorId;
+    Prefix = prefix;
     DefaultColor = defaultColor;
     Theme = theme;
     Swatches = swatches ??= [
@@ -28,6 +29,7 @@ public class ColorPickerModel
   public string Name { get; set; }
   [Required]
   public string ElSelectorId { get; set; }
+  public string Prefix { get; set; } = "create";
   public string DefaultColor { get; set; }
   public string Theme { get; set; } = "classic";
   public List<string> Swatches { get; set; }

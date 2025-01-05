@@ -220,6 +220,7 @@ const defaultDataTableOptions = {
 
 const DataTableFactory = {
   Generate: function ($selector,options) {
-    $($selector).DataTable({ ...defaultDataTableOptions, ...options })
+    // $($selector).DataTable({ ...defaultDataTableOptions, ...options })
+    $($selector).DataTable(Object.assign({ ...defaultDataTableOptions }, options));
   }
 }

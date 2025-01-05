@@ -3,9 +3,14 @@
 @using AspnetCoreStarter.Pages.Shared.EditorTemplates
 @{
   ColorPickerModel? ColorPickerModel = (ColorPickerModel?)ViewData["ColorPickerModel"];
+  var ContainerId = ColorPickerModel.Prefix + "-" + ColorPickerModel.ElSelectorId;
+  var InputId = ColorPickerModel.Prefix + ColorPickerModel.Id;
 }
-<div id="@ColorPickerModel.ElSelectorId"></div>
-<input type="hidden" id="@ColorPickerModel.Id" name="@ColorPickerModel.Name" value="@ColorPickerModel.DefaultColor" />
+<div id="@ContainerId">
+  <button class="pickr"></button>
+</div>
+
+<input type="hidden" id="@InputId" name="@ColorPickerModel.Name" value="@ColorPickerModel.DefaultColor" />
 <script>
   // let $script = document.getElementById("template-editors-script-manager");
   // if (!$script) {
@@ -14,27 +19,31 @@
   //   document.body.appendChild($script);
   //   $script.innerHTML = ""
   // }
-  if (!EditorsScriptManager.GenerateColorPickers) {
-    EditorsScriptManager.GenerateColorPickers = {};
-  }
-  EditorsScriptManager.GenerateColorPickers["@(ColorPickerModel.Name)"] = function ($pickr) {
+  // let EditorsScriptManager = EditorsScriptManager || {};
+  EditorsScriptManager.GenerateColorPickers = EditorsScriptManager.GenerateColorPickers || {};
+
+  EditorsScriptManager.GenerateColorPickers["@(ColorPickerModel.Name)"] = function ($pickr, prefix) {
+    // if ($("#" + prefix + "-@(ColorPickerModel.ElSelectorId)" + "-pickr")[0]) {
+    let _containerId = prefix + "-@(ColorPickerModel.ElSelectorId)";
+    let _inputId = prefix + "@ColorPickerModel.Id";
     $pickr.create({
-      el: "#@ColorPickerModel.ElSelectorId",
+      // el: "#" + prefix + "-@(ColorPickerModel.ElSelectorId)" + "-pickr",
+      el: "#" + _containerId + " .pickr",
       theme: "@ColorPickerModel.Theme",
       // default: "rgba(40, 208, 148, 1)",
-      default: document.getElementById('@ColorPickerModel.Id').value,
+      default: document.getElementById(_inputId).value,
       swatches: @Html.Raw(JsonSerializer.Serialize(ColorPickerModel.Swatches)),
       components: @Html.Raw(JsonSerializer.Serialize(ColorPickerModel.Components))
-      })
+          })
       // .setColor(document.getElementById('NewEntry_Color').value)
       .on('init', instance => {
         console.log('Event: "init"', instance);
       })
-      .on('save', instance => {
-        console.log('Event: "Save"', instance);
-        document.getElementById('editNewEntry_Color').value = instance.toHEXA();
+      .on('save', (color, instance) => {
+        console.log('Event: "Save"', color.toHEXA(), instance);
+        document.getElementById(_inputId).value = color.toHEXA();
       });
-
+    // }
     // $pickr.setColor(document.getElementById('editNewEntry_Color').value, true);
   };
 </script>

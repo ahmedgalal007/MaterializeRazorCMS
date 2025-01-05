@@ -65,7 +65,14 @@ const handleEditCategoryModal = function (editButton, setFormAttributes, setElem
   document.getElementById(`edit${InputPrefix}_Slug`).value = Slug;
 
   let $ParentIdSelect = $(`#edit${InputPrefix}_ParentId`);
-  $ParentIdSelect.find(`option[value="${entityId.toUpperCase()}"]`).remove();
+  if ($ParentIdSelect.length < 1) $ParentIdSelect = $(`[data-select2-id="edit${InputPrefix}_ParentId"`)
+  $ParentIdSelect.find('option').each(function () {
+    $(this).val() == entityId.toUpperCase() ?
+      $(this).prop("disabled", true).hide() :
+      // $(this).hide() :
+      $(this).prop("disabled", false).show();  // .remove();
+    // $(this).show();  // .remove();
+  });
   $ParentIdSelect.trigger('change');
   $ParentIdSelect.val(ParentId).trigger('change');
 
@@ -79,37 +86,7 @@ const handleEditCategoryModal = function (editButton, setFormAttributes, setElem
     $(`#edit${entityName}Form`).find('.localizations-tabs-contents'),
     "edit");
 
-  EditorsScriptManager.GenerateColorPickers["NewEntry.Color"](pickr);
-  //var monolithPicker = pickr.create({
-  //  el: "#editCategory_Color",
-  //  theme: "monolith",
-  //  default: "rgba(40, 208, 148, 1)",
-  //  swatches: [
-  //    "rgba(102, 108, 232, 1)",
-  //    "rgba(40, 208, 148, 1)",
-  //    "rgba(255, 73, 97, 1)",
-  //    "rgba(255, 145, 73, 1)",
-  //    "rgba(30, 159, 242, 1)"
-  //  ],
-  //  components: {
-  //    // Main components
-  //    preview: true,
-  //    opacity: true,
-  //    hue: true,
-
-  //    // Input / output Options
-  //    interaction: {
-  //      hex: true,
-  //      rgba: true,
-  //      hsla: true,
-  //      hsva: true,
-  //      cmyk: true,
-  //      input: true,
-  //      clear: true,
-  //      save: true
-  //    }
-  //  }
-  //});
+  EditorsScriptManager.GenerateColorPickers["NewEntry.Color"](pickr, "edit");
 
 }
 
@@ -200,6 +177,9 @@ const dataTableCreateButton = {
       $(`#create${entityName}Form`).find('ul.nav-tabs'),
       $(`#create${entityName}Form`).find('.localizations-tabs-contents'),
       "create");
+
+    EditorsScriptManager.GenerateColorPickers["NewEntry.Color"](pickr, "create");
+
   }
 };
 
