@@ -61,6 +61,7 @@
             <th>Parent</th>
             <th>Color</th>
             <th>Locals</th>
+            <th>Childrens</th>
             <th>Action</th>
             <th></th>
           </tr>
@@ -86,6 +87,7 @@
                 @Html.DisplayFor(x => entity.Color, "ColorPicker")
               </td>
               <td class="text-truncate">@JsonSerializer.Serialize(entity.Locales.ToList())</td>
+              <td class="text-truncate">@JsonSerializer.Serialize(entity.Childrens.Select(x  => x.Id).ToList())</td>
               <td class="text-nowrap">
                 @* Edit Button *@
                 <button class="btn btn-sm btn-icon edit-Category-button" data-bs-toggle="offcanvas"
@@ -135,6 +137,7 @@ else
             <th>Parent</th>
             <th>Color</th>
             <th>Locals</th>
+            <th>Childrens</th>
             <th>Action</th>
             <th></th>
           </tr>

@@ -20,6 +20,7 @@ namespace AspnetCoreStarter.Pages.Apps.Categories
       Total = await _dbSet.CountAsync();
       TableItems = await _dbSet
         .Include(e => e.Locales)
+        .Include(e => e.Childrens)
         .Include(e => e.Parent)
         .ThenInclude(x => x.Locales)
         .Skip(Start)

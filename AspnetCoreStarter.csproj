@@ -37,6 +37,7 @@
     <Folder Include="Localization\" />
     <Folder Include="Models\Keyword\" />
     <Folder Include="Models\User\" />
+    <Folder Include="Pages\Apps\DynamicForms\" />
   </ItemGroup>
 
   <ItemGroup>

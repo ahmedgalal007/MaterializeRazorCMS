@@ -65,7 +65,7 @@ const handleEditCategoryModal = function (editButton, setFormAttributes, setElem
   document.getElementById(`edit${InputPrefix}_Slug`).value = Slug;
 
   let $ParentIdSelect = $(`#edit${InputPrefix}_ParentId`);
-  if ($ParentIdSelect.length < 1) $ParentIdSelect = $(`[data-select2-id="edit${InputPrefix}_ParentId"`)
+  // if ($ParentIdSelect.length < 1) $ParentIdSelect = $(`[data-select2-id="edit${InputPrefix}_ParentId"`)
   $ParentIdSelect.find('option').each(function () {
     $(this).val() == entityId.toUpperCase() ?
       $(this).prop("disabled", true).hide() :

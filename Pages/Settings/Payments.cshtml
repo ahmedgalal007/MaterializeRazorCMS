@@ -134,5 +134,8 @@
   <!-- /Options-->
 </div>
 
-@await Html.PartialAsync("../_Partials/_Modals/ModalSelectPaymentProviders")
-@await Html.PartialAsync("../_Partials/_Modals/ModalSelectPaymentMethods")
+@await Html.PartialAsync("_Partials/ModalSelectPaymentProviders")
+@await Html.PartialAsync("_Partials/ModalSelectPaymentMethods")
+<script type="text/javascript">
+  PageLoaded();
+</script>
