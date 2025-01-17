@@ -13,7 +13,7 @@ public class Attribute : BaseEntity
 
   public int Max { get; set; }
   public int Min { get; set; }
-  public string Format { get; set; } = string.Empty;
+  public string? Format { get; set; } = string.Empty;
 
   public virtual List<PostTypeAttribute> PostTypeAttributes { get; set; } = new List<PostTypeAttribute>();
 }

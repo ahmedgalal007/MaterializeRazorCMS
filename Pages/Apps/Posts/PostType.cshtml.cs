@@ -1,12 +1,35 @@
+using AspnetCoreStarter.Entities.Posts;
+using AspnetCoreStarter.Common;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using AspnetCoreStarter.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace AspnetCoreStarter.Pages.Apps.Posts
 {
-    public class PostTypeModel : PageModel
+  public class PostTypeModel : CRUDPageModel<PostType, Guid>
+  {
+    public override async Task OnGetAsync(int page = 1, int take = 10)
     {
-        public void OnGet()
-        {
-        }
+      CurrentPage = page;
+      Total = await _dbSet.CountAsync();
+      TableItems = await _dbSet
+        .Include(e => e.Attributes)
+        .Include(e => e.Childrens)
+        .Include(e => e.Parent)
+        .Skip(Start)
+        .Take(take)
+        .ToListAsync();
     }
+    public PostTypeModel(ApplicationDbContext context) : base(context)
+    {
+    }
+
+
+    public override Task<Boolean> UpdateEntity(PostType entity, String entityName = "")
+    {
+      
+      throw new NotImplementedException();
+    }
+  }
 }

@@ -22,7 +22,7 @@ namespace AspnetCoreStarter.Migrations
                     ReturnType = table.Column<string>(type: "TEXT", nullable: false),
                     Max = table.Column<int>(type: "INTEGER", nullable: false),
                     Min = table.Column<int>(type: "INTEGER", nullable: false),
-                    Format = table.Column<string>(type: "TEXT", nullable: false)
+                    Format = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -85,11 +85,18 @@ namespace AspnetCoreStarter.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "TEXT", nullable: false),
-                    Name = table.Column<string>(type: "TEXT", nullable: false)
+                    Name = table.Column<string>(type: "TEXT", nullable: false),
+                    Slug = table.Column<string>(type: "TEXT", nullable: false),
+                    ParentId = table.Column<Guid>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_PostType", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_PostType_PostType_ParentId",
+                        column: x => x.ParentId,
+                        principalTable: "PostType",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -425,6 +432,11 @@ namespace AspnetCoreStarter.Migrations
                 name: "IX_PostAttributeLocals_PostAttributeId",
                 table: "PostAttributeLocals",
                 column: "PostAttributeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PostType_ParentId",
+                table: "PostType",
+                column: "ParentId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_PostTypeAttribute_PostTypeId",

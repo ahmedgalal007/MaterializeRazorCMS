@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AspnetCoreStarter.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241223150552_Initialization")]
+    [Migration("20250117182327_Initialization")]
     partial class Initialization
     {
         /// <inheritdoc />
@@ -285,7 +285,6 @@ namespace AspnetCoreStarter.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Format")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<int>("Max")
@@ -366,7 +365,16 @@ namespace AspnetCoreStarter.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<Guid?>("ParentId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Slug")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("ParentId");
 
                     b.ToTable("PostType");
                 });
@@ -578,6 +586,15 @@ namespace AspnetCoreStarter.Migrations
                     b.Navigation("Type");
                 });
 
+            modelBuilder.Entity("AspnetCoreStarter.Entities.Posts.PostType", b =>
+                {
+                    b.HasOne("AspnetCoreStarter.Entities.Posts.PostType", "Parent")
+                        .WithMany("Childrens")
+                        .HasForeignKey("ParentId");
+
+                    b.Navigation("Parent");
+                });
+
             modelBuilder.Entity("AspnetCoreStarter.Entities.Posts.PostTypeAttribute", b =>
                 {
                     b.HasOne("AspnetCoreStarter.Entities.Posts.PostType", null)
@@ -628,6 +645,8 @@ namespace AspnetCoreStarter.Migrations
             modelBuilder.Entity("AspnetCoreStarter.Entities.Posts.PostType", b =>
                 {
                     b.Navigation("Attributes");
+
+                    b.Navigation("Childrens");
                 });
 
             modelBuilder.Entity("AspnetCoreStarter.Entities.User", b =>
