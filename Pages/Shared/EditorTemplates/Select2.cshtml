@@ -6,7 +6,7 @@
 @* <div class="form-floating form-floating-outline"> *@
 <select @(string.IsNullOrWhiteSpace(Select2Model.Id) ? "" : $"id={Select2Model.Id} ")
         name="@Select2Model.Name"
-        class="select2 form-select form-select-lg"
+        class="select2 form-select"
         data-allow-clear="true"
 @(Select2Model.IsDisabled ? "disabled" : "")>
   <option value="">Select Option...</option>

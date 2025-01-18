@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AspnetCoreStarter.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250117182327_Initialization")]
+    [Migration("20250118095445_Initialization")]
     partial class Initialization
     {
         /// <inheritdoc />
@@ -385,14 +385,19 @@ namespace AspnetCoreStarter.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("Default")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Format")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<bool>("IsList")
                         .HasColumnType("INTEGER");
 
                     b.Property<bool>("IsNullable")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsReference")
                         .HasColumnType("INTEGER");
 
                     b.Property<bool>("IsUnique")
@@ -408,7 +413,7 @@ namespace AspnetCoreStarter.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<Guid?>("PostTypeId")
+                    b.Property<Guid?>("ReferenceId")
                         .HasColumnType("TEXT");
 
                     b.Property<Guid>("TypeID")
@@ -416,7 +421,7 @@ namespace AspnetCoreStarter.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PostTypeId");
+                    b.HasIndex("ReferenceId");
 
                     b.HasIndex("TypeID");
 
@@ -597,15 +602,17 @@ namespace AspnetCoreStarter.Migrations
 
             modelBuilder.Entity("AspnetCoreStarter.Entities.Posts.PostTypeAttribute", b =>
                 {
-                    b.HasOne("AspnetCoreStarter.Entities.Posts.PostType", null)
+                    b.HasOne("AspnetCoreStarter.Entities.Posts.PostType", "Reference")
                         .WithMany("Attributes")
-                        .HasForeignKey("PostTypeId");
+                        .HasForeignKey("ReferenceId");
 
                     b.HasOne("AspnetCoreStarter.Entities.Posts.Attribute", "Type")
                         .WithMany("PostTypeAttributes")
                         .HasForeignKey("TypeID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Reference");
 
                     b.Navigation("Type");
                 });

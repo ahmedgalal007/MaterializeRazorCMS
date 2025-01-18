@@ -4,11 +4,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using AspnetCoreStarter.Data;
 using Microsoft.EntityFrameworkCore;
+using SQLitePCL;
 
 namespace AspnetCoreStarter.Pages.Apps.Posts
 {
   public class PostTypeModel : CRUDPageModel<PostType, Guid>
   {
+    public List<Entities.Posts.Attribute> AttributeTypes { get; set; }
     public override async Task OnGetAsync(int page = 1, int take = 10)
     {
       CurrentPage = page;

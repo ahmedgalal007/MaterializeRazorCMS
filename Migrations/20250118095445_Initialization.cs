@@ -212,13 +212,15 @@ namespace AspnetCoreStarter.Migrations
                     Id = table.Column<Guid>(type: "TEXT", nullable: false),
                     Name = table.Column<string>(type: "TEXT", nullable: false),
                     TypeID = table.Column<Guid>(type: "TEXT", nullable: false),
+                    IsReference = table.Column<bool>(type: "INTEGER", nullable: false),
+                    ReferenceId = table.Column<Guid>(type: "TEXT", nullable: true),
                     Max = table.Column<int>(type: "INTEGER", nullable: false),
                     Min = table.Column<int>(type: "INTEGER", nullable: false),
-                    Format = table.Column<string>(type: "TEXT", nullable: false),
+                    Format = table.Column<string>(type: "TEXT", nullable: true),
+                    Default = table.Column<string>(type: "TEXT", nullable: true),
                     IsNullable = table.Column<bool>(type: "INTEGER", nullable: false),
                     IsList = table.Column<bool>(type: "INTEGER", nullable: false),
-                    IsUnique = table.Column<bool>(type: "INTEGER", nullable: false),
-                    PostTypeId = table.Column<Guid>(type: "TEXT", nullable: true)
+                    IsUnique = table.Column<bool>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -230,8 +232,8 @@ namespace AspnetCoreStarter.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_PostTypeAttribute_PostType_PostTypeId",
-                        column: x => x.PostTypeId,
+                        name: "FK_PostTypeAttribute_PostType_ReferenceId",
+                        column: x => x.ReferenceId,
                         principalTable: "PostType",
                         principalColumn: "Id");
                 });
@@ -439,9 +441,9 @@ namespace AspnetCoreStarter.Migrations
                 column: "ParentId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PostTypeAttribute_PostTypeId",
+                name: "IX_PostTypeAttribute_ReferenceId",
                 table: "PostTypeAttribute",
-                column: "PostTypeId");
+                column: "ReferenceId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_PostTypeAttribute_TypeID",

@@ -5,7 +5,7 @@ namespace AspnetCoreStarter.Entities.Posts;
 
 public class PostType : BaseEntity
 {
-  public  string Name { get; set; }
+  public string Name { get; set; }
   public string Slug { get; set; } = string.Empty;
 
   public Guid? ParentId { get; set; }

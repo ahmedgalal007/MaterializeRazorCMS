@@ -24,6 +24,13 @@ public class AutoCompeleteHelper
           .Where(x => (excludeIds == null)? true: !excludeIds.Contains(x.Id))
           .Select(s => new KeyValuePair<string, string>(s.Locales.First().Name, s.Id.ToString()))
           .ToList();
+      case "Attribute":
+        return _context.Attributes
+          .Where(x => string.IsNullOrWhiteSpace(q) ? true : x.Name.Contains(q))
+          .Where(x => string.IsNullOrWhiteSpace(id) ? true : x.Id == new Guid(id))
+          .Where(x => (excludeIds == null) ? true : !excludeIds.Contains(x.Id))
+          .Select(s => new KeyValuePair<string, string>(s.Name, s.Id.ToString()))
+          .ToList();
       default:
         break;
     }

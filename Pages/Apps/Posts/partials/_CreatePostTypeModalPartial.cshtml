@@ -1,5 +1,17 @@
 @model AspnetCoreStarter.Pages.Apps.Posts.PostTypeModel
-
+@using AspnetCoreStarter.Pages.Shared.EditorTemplates;
+@using AspnetCoreStarter.Common;
+@{
+  var InputPrefix = "NewEntry";
+  List<KeyValuePair<string, string>> Attributes = Model.autoCompeleteHelper.Query("", "Attribute");
+  Object GenerateSelect2ViewDataDictionary(string inputName, string inputId, List<KeyValuePair<string, string>> options)
+  {
+    return new
+    {
+      Select2Model = new Select2Model(inputName,options,false,false,[],inputId)
+    };
+  };
+}
 <!-- Modal -->
 <div class="modal fade" id="createPostTypeModal" tabindex="-1" aria-labelledby="modalScrollableTitle" aria-hidden="true">
   <div class="modal-dialog modal-dialog-scrollable modal-xl" role="document">
@@ -29,50 +41,123 @@
           <div class="card overflow-hidden mb-6" style="height: 300px;">
             <div class="card-body" id="vertical-scrollbar">
               <div id="post-type-attributes" class="form-repeater">
-                <div data-repeater-list="group-a">
-                  <div data-repeater-item>
-                    <div class="row">
-                      <div class="mb-6 col-lg-6 col-xl-3 col-12 mb-0">
-                        <div class="form-floating form-floating-outline">
-                          <input type="text" id="form-repeater-1-1" class="form-control" placeholder="john.doe" />
-                          <label for="form-repeater-1-1">Username</label>
+                <div data-repeater-list="NewEntry.Attributes">
+                  @if (Model.NewEntry.Attributes != null && Model.NewEntry.Attributes.Count > 0)
+                  {
+                    foreach (var item in Model.NewEntry.Attributes.Select((x, i) => new { value = x, index = i }))
+                    {
+                      <div data-repeater-item>
+                        <div class="row">
+                          <div class="mb-6 col-lg-6 col-xl-3 col-12 mb-0">
+                            <div class="form-floating form-floating-outline">
+                              <input type="text" id="form-repeater-1-1" class="form-control" placeholder="john.doe" />
+                              <label for="form-repeater-1-1">Username</label>
+                            </div>
+                          </div>
+                          <div class="mb-6 col-lg-6 col-xl-3 col-12 mb-0">
+                            <div class="form-floating form-floating-outline">
+                              <input type="password" id="form-repeater-1-2" class="form-control" placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;" />
+                              <label for="form-repeater-1-2">Password</label>
+                            </div>
+                          </div>
+                          <div class="mb-6 col-lg-6 col-xl-2 col-12 mb-0">
+                            @* <div class="form-floating form-floating-outline">
+                        <select id="form-repeater-1-3" class="form-select">
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                        </select>
+                        <label for="form-repeater-1-3">Gender</label>
+                        </div> *@
+                            @{
+                              var idx = item.index;
+                            }
+                            <div class="form-floating form-floating-outline mb-5">
+                              @Html.EditorFor(x => x.AttributeTypes[idx].Id,
+                                     "Select2",
+                                     $"NewEntry.Attribute[{idx}].Id",
+                                     GenerateSelect2ViewDataDictionary($"NewEntry.Attribute[{idx}].Id", $"NewEntry_Attribute[{idx}]_Id", Attributes)
+                                     )
+                              <label for="createCategory_ParentId">Parent Category</label>
+                            </div>
+                          </div>
+                          <div class="mb-6 col-lg-6 col-xl-2 col-12 mb-0">
+                            <div class="form-floating form-floating-outline">
+                              <select id="form-repeater-1-4" class="form-select">
+                                <option value="Designer">Designer</option>
+                                <option value="Developer">Developer</option>
+                                <option value="Tester">Tester</option>
+                                <option value="Manager">Manager</option>
+                              </select>
+                              <label for="form-repeater-1-4">Profession</label>
+                            </div>
+                          </div>
+                          <div class="mb-6 col-lg-12 col-xl-2 col-12 d-flex align-items-center mb-0">
+                            <button class="btn btn-outline-danger btn-xl" data-repeater-delete>
+                              <i class="ri-close-line ri-24px me-1"></i>
+                              <span class="align-middle">Delete</span>
+                            </button>
+                          </div>
+                        </div>
+                        <hr class="mt-0">
+                      </div>
+                    }
+                  }
+                  else
+                  {
+
+                    <div data-repeater-item>
+                      <div class="row">
+                        <div class="mb-6 col-lg-6 col-xl-3 col-12 mb-0">
+                          <div class="form-floating form-floating-outline">
+                            <input type="text" id="form-repeater-1-1" class="form-control" placeholder="john.doe" />
+                            <label for="form-repeater-1-1">Username</label>
+                          </div>
+                        </div>
+                        <div class="mb-6 col-lg-6 col-xl-3 col-12 mb-0">
+                          <div class="form-floating form-floating-outline">
+                            <input type="password" id="form-repeater-1-2" class="form-control" placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;" />
+                            <label for="form-repeater-1-2">Password</label>
+                          </div>
+                        </div>
+                        <div class="mb-6 col-lg-6 col-xl-2 col-12 mb-0">
+                          @* <div class="form-floating form-floating-outline">
+                        <select id="form-repeater-1-3" class="form-select">
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                        </select>
+                        <label for="form-repeater-1-3">Gender</label>
+                        </div> *@
+                          <div class="form-floating form-floating-outline mb-5">
+                            @Html.EditorFor(x => x.AttributeTypes[0].Id,
+                                   "Select2",
+                                   $"NewEntry.Attribute[0].Id",
+                                   GenerateSelect2ViewDataDictionary($"NewEntry.Attribute[0].Id", $"NewEntry_Attribute[0]_Id", Attributes)
+                                   )
+                            <label for="createCategory_ParentId">Parent Category</label>
+                          </div>
+                        </div>
+                        <div class="mb-6 col-lg-6 col-xl-2 col-12 mb-0">
+                          <div class="form-floating form-floating-outline">
+                            <select id="form-repeater-1-4" class="form-select">
+                              <option value="Designer">Designer</option>
+                              <option value="Developer">Developer</option>
+                              <option value="Tester">Tester</option>
+                              <option value="Manager">Manager</option>
+                            </select>
+                            <label for="form-repeater-1-4">Profession</label>
+                          </div>
+                        </div>
+                        <div class="mb-6 col-lg-12 col-xl-2 col-12 d-flex align-items-center mb-0">
+                          <button class="btn btn-outline-danger btn-xl" data-repeater-delete>
+                            <i class="ri-close-line ri-24px me-1"></i>
+                            <span class="align-middle">Delete</span>
+                          </button>
                         </div>
                       </div>
-                      <div class="mb-6 col-lg-6 col-xl-3 col-12 mb-0">
-                        <div class="form-floating form-floating-outline">
-                          <input type="password" id="form-repeater-1-2" class="form-control" placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;" />
-                          <label for="form-repeater-1-2">Password</label>
-                        </div>
-                      </div>
-                      <div class="mb-6 col-lg-6 col-xl-2 col-12 mb-0">
-                        <div class="form-floating form-floating-outline">
-                          <select id="form-repeater-1-3" class="form-select">
-                            <option value="Male">Male</option>
-                            <option value="Female">Female</option>
-                          </select>
-                          <label for="form-repeater-1-3">Gender</label>
-                        </div>
-                      </div>
-                      <div class="mb-6 col-lg-6 col-xl-2 col-12 mb-0">
-                        <div class="form-floating form-floating-outline">
-                          <select id="form-repeater-1-4" class="form-select">
-                            <option value="Designer">Designer</option>
-                            <option value="Developer">Developer</option>
-                            <option value="Tester">Tester</option>
-                            <option value="Manager">Manager</option>
-                          </select>
-                          <label for="form-repeater-1-4">Profession</label>
-                        </div>
-                      </div>
-                      <div class="mb-6 col-lg-12 col-xl-2 col-12 d-flex align-items-center mb-0">
-                        <button class="btn btn-outline-danger btn-xl" data-repeater-delete>
-                          <i class="ri-close-line ri-24px me-1"></i>
-                          <span class="align-middle">Delete</span>
-                        </button>
-                      </div>
+                      <hr class="mt-0">
                     </div>
-                    <hr class="mt-0">
-                  </div>
+                  }
+
                 </div>
                 <div class="mb-0">
                   <button type="button" class="btn btn-primary" data-repeater-create>
@@ -92,3 +177,7 @@
     </div>
   </div>
 </div>
+
+@functions {
+
+}
