@@ -1,5 +1,4 @@
 using AspnetCoreStarter.Entities.Articles;
-using Humanizer;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 

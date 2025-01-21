@@ -1,6 +1,6 @@
 using AspnetCoreStarter.Data;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using System.Data.Entity;
+using Microsoft.EntityFrameworkCore;
 using Attribute = AspnetCoreStarter.Entities.Posts.Attribute;
 
 namespace AspnetCoreStarter.Pages.Apps.Posts;

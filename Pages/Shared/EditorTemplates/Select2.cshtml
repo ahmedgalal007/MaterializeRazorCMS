@@ -1,7 +1,8 @@
 @model Guid?
 @using AspnetCoreStarter.Pages.Shared.EditorTemplates;
 @{
-  Select2Model? Select2Model = (Select2Model?)ViewData["Select2Model"];
+  // string? inputName = (string?)ViewData["InputName"];
+  Select2Model? Select2Model = (Select2Model?)(ViewData["Select2Model"]);
 }
 @* <div class="form-floating form-floating-outline"> *@
 <select @(string.IsNullOrWhiteSpace(Select2Model.Id) ? "" : $"id={Select2Model.Id} ")
@@ -15,4 +16,4 @@
     <option value="@item.Value" selected="@Select2Model.IsItemSelected(item.Value)"> @item.Key </option>
   }
 </select>
-</@* div *@>
+@* </div > *@

@@ -3,7 +3,7 @@ namespace AspnetCoreStarter.Pages.Shared.EditorTemplates;
 
 public class Select2Model
 {
-  public Select2Model(string inputName, List<KeyValuePair<string, string>> options,bool isMultiple=false, bool isDisabled=false, string[]? selectedValues = default, string id = "")
+  public Select2Model(string inputName, List<KeyValuePair<string, string>> options,string cssClass="",bool isMultiple=false, bool isDisabled=false, string[]? selectedValues = default, string id = "")
   {
     Name = inputName;
     Options = options;

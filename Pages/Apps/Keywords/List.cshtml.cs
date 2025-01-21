@@ -2,8 +2,6 @@ using AspnetCoreStarter.Common;
 using AspnetCoreStarter.Data;
 using AspnetCoreStarter.Entities.Keywords;
 using AspnetCoreStarter.Entities.Locals;
-using System.Data.Entity;
-using System.Linq.Expressions;
 
 namespace AspnetCoreStarter.Pages.Apps.Keywords;
 

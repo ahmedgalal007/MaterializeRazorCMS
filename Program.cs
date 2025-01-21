@@ -5,6 +5,7 @@ using AspnetCoreStarter.Common;
 using AspnetCoreStarter.Models;
 using AspnetCoreStarter.Endpoints;
 using AspnetCoreStarter.Auth;
+using AspnetCoreStarter.Extenssions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,9 +15,18 @@ builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddRazorPages();
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-{
-  options.UseSqlite(builder.Configuration.GetConnectionString("ApplicationDbContext") ?? throw new InvalidOperationException("Connection string 'ApplicationDbContext' not found."));
-}, ServiceLifetime.Scoped);
+  {
+    //options.UseSqlite(
+    //  builder.Configuration.GetConnectionString("ApplicationDbContext") ??
+    //  throw new InvalidOperationException("Connection string 'ApplicationDbContext' not found.")
+    //)
+    //.EnableSensitiveDataLogging()
+    //.EnableDetailedErrors();
+    options.UseSqlServer(builder.Configuration.GetConnectionString("MSSQL"))
+    .EnableSensitiveDataLogging()
+    .EnableDetailedErrors();
+  },
+ServiceLifetime.Scoped);
 
 builder.Services.AddEndpointsApiExplorer();
 
@@ -28,12 +38,13 @@ builder.Services.AddSingleton<IISOLanguages, ISOLanguages>();
 
 var app = builder.Build();
 
-using (var scope = app.Services.CreateScope())
-{
-  var services = scope.ServiceProvider;
+//using (var scope = app.Services.CreateScope())
+//{
+//  var services = scope.ServiceProvider;
 
-  SeedData.Initialize(services);
-}
+//  SeedData.Initialize(services);
+//}
+app.CreateDbIfNotExists();
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

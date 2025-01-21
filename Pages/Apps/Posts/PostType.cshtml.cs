@@ -10,7 +10,7 @@ namespace AspnetCoreStarter.Pages.Apps.Posts
 {
   public class PostTypeModel : CRUDPageModel<PostType, Guid>
   {
-    public List<Entities.Posts.Attribute> AttributeTypes { get; set; }
+    public List<Entities.Posts.Attribute> AttributeTypes { get; set; } = new();
     public override async Task OnGetAsync(int page = 1, int take = 10)
     {
       CurrentPage = page;
@@ -22,6 +22,12 @@ namespace AspnetCoreStarter.Pages.Apps.Posts
         .Skip(Start)
         .Take(take)
         .ToListAsync();
+    }
+
+    public override Task<Boolean> BeforeCreate(PostType entity)
+    {
+      entity.Slug =  CommonHelpers.GenerateSlug(entity.Name);
+      return base.BeforeCreate(entity);
     }
     public PostTypeModel(ApplicationDbContext context) : base(context)
     {

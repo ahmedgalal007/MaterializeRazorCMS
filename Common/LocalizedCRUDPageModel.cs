@@ -3,7 +3,6 @@ using Microsoft.EntityFrameworkCore;
 using AspnetCoreStarter.Entities;
 using System;
 using System.Reflection;
-using NuGet.Versioning;
 
 namespace AspnetCoreStarter.Common;
 
