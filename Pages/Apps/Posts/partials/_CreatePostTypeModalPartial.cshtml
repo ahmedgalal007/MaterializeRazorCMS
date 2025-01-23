@@ -121,9 +121,20 @@
     <label for="form-repeater-1-2">Password</label>
     </div>
     </div>*@
-        <div class="mb-1 col-lg-6 col-xl-2 col-12 mb-0">
+        <div class="mb-1 col-lg-6 col-xl-3 col-12 mb-0">
           <div class="form-floating form-floating-outline mb-5">
-            @Html.Select2EditorFor(x => x.NewEntry.Attributes[idx].TypeID, "TypeID", attributes, "Type", $"createPostType_Attributes[{idx}]_TypeID")
+            @Html.Select2EditorFor(
+                 x => x.NewEntry.Attributes[idx].TypeID,
+                 "TypeID",
+                 attributes,
+                 "",
+                 $"createPostType_Attributes[{idx}]_TypeID",
+                 "",
+                 new Dictionary<string, object>{
+                  {"data-entity", "NewEntry.Attributes"},
+                  {"data-idx", $"{idx}"},
+                  {"data-field", "TypeID"},
+            })
           </div>
         </div>
         <div class="mb-1 col-lg-6 col-xl-3 col-12 mb-0">
@@ -143,7 +154,12 @@
             })
               </div>
               <div>
-                @Html.Select2EditorFor(x => x.NewEntry.Attributes[idx].ReferenceId, "ReferenceId", postTypes, "", $"createPostType_Attributes[{idx}]_ReferenceId")
+                @Html.Select2EditorFor(x => x.NewEntry.Attributes[idx].ReferenceId, "ReferenceId", postTypes, "", $"createPostType_Attributes[{idx}]_ReferenceId", "", new Dictionary<string, object>
+            {
+            {"data-entity", "NewEntry.Attributes"},
+            {"data-idx", $"{idx}"},
+            {"data-field", "ReferenceId"},
+            })
               </div>
             </div>
           </div>

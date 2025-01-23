@@ -9,7 +9,11 @@
         name="@Select2Model.Name"
         class="select2 form-select"
         data-allow-clear="true"
-@(Select2Model.IsDisabled ? "disabled" : "")>
+        @foreach (var item in Select2Model.Attributes)
+        {
+          @Html.Raw($"{item.Key}=\"{item.Value}\"")
+        }
+        @(Select2Model.IsDisabled ? "disabled" : "")>
   <option value="">Select Option...</option>
   @foreach (var item in Select2Model.Options)
   {

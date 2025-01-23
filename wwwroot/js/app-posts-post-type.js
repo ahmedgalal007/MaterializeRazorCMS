@@ -185,6 +185,13 @@ const SetupFormRepeater = function () {
     });
     $item.find('button[data-bs-toggle="collapse"]').attr("data-bs-target", `#collapse-attribute-menu-${row}`).attr("aria-controls", `collapse-attribute-menu-${row}`);
     $item.find('[id^="collapse-attribute-menu-"]').attr("id", `collapse-attribute-menu-${row}`);
+
+    $item.find('.select2').each(function () {
+      const $select2 = $(this);
+      $select2.select2({
+        dropdownParent: $select2.parent()
+      });
+    });
   }
   //todo Setup Forms Reprater
   var formRepeater = $(".form-repeater");
