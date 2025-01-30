@@ -12,15 +12,15 @@ const Field = class {
     this.className = className;
     this.type = type;
     this.targets = targets;
-    this.searchable = searchable?? false;
-    this.orderable = orderable??false;
-    this.responsivePriority = responsivePriority??1;
+    this.searchable = searchable ?? false;
+    this.orderable = orderable ?? false;
+    this.responsivePriority = responsivePriority ?? 1;
     this.visible = visible ?? true;
     this.render = render;
   }
 }
 
-let f1 = new Field("Name","String",2);
+let f1 = new Field("Name", "String", 2);
 const PageFactory = (function ($, options) {
   const InputPrefix = options.InputPrefix ?? "NewEntry";
   const entryNameStartWithSelector = options.entryNameStartWithSelector ?? ".post-type-name-";
@@ -70,11 +70,15 @@ const PageFactory = (function ($, options) {
 
     MasterPage: {
       Columns: GenerateColumns(this.RenderRowControl, options.MasterPage.Columns),
+      CreateHandler: options.MasterPage.CreateHandler,
+      EditHandler: options.MasterPage.EditHandler,
       CreateFormValidatorsFields: options.MasterPage?.CreateFormValidatorsFields ?? [],
       EditFormValidatorsFields: options.MasterPage?.EditFormValidatorsFields ?? [],
     },
     DetailsPage: {
       Columns: GenerateColumns(this.RenderRowControl, options.DetailsPage.Columns),
+      CreateHandler: options.DetailsPage.CreateHandler,
+      EditHandler: options.DetailsPage.EditHandler,
       CreateFormValidatorsFields: options.DetailsPage?.CreateFormValidatorsFields ?? [],
       EditFormValidatorsFields: options.DetailsPage?.EditFormValidatorsFields ?? [],
     }
@@ -101,7 +105,12 @@ const PageFactory = (function ($, options) {
 
       $(document).ready(function () {
         ready();
-        SetupMainPage(_options.EntityName, _options.PageUrl, _options.MasterPage.CreateFormValidatorsFields, _options.MasterPage.EditFormValidatorsFields);
+        SetupMainPage(
+          _options.EntityName,
+          _options.PageUrl,
+          _options.MasterPage.EditHandler,
+          _options.MasterPage.CreateFormValidatorsFields,
+          _options.MasterPage.EditFormValidatorsFields);
         PageLoaded();
         this.loaded();
       });
@@ -130,7 +139,7 @@ const SetupMainPage = function (entityName, pageUrl, EditEntityHandler, createFo
     createEntityForm,
     createFormValidatorsFields);
 
-  DataTableFactory.Generate("#" + entityName +"Table", {
+  DataTableFactory.Generate("#" + entityName + "Table", {
     columnDefs: dataTableColumnsDefs,
     buttons: [{
       text: '<i class="ri-add-line ri-16px me-0 me-sm-1_5"></i><span class="d-none d-sm-inline-block">Add ' + entityName + '</span>',

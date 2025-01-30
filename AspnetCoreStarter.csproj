@@ -65,5 +65,15 @@
     <None Include="wwwroot\js\common\crud-page-factory.dist.js" />
     <None Include="wwwroot\js\common\crud-page-factory.js" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Update="wwwroot\js\common\crud-page-helper.dist.js">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\js\common\crud-page-helper.js">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
 
 </Project>
