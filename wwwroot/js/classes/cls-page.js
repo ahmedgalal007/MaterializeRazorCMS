@@ -8,6 +8,8 @@ import clsPageFormsManager from './cls-page-forms-manager.js';
 import clsPageNotifications from './cls-page-notifications.js'
 import clsPageDataTable from './cls-page-data-table.js'
 import clsPageRepeater from './cls-page-repeater.js'
+import clsPageFormsEdit from './cls-page-forms-edit.js'
+import clsPageFormsCreate from './cls-page-forms-create.js'
 class clsPage {
   _pageRepeater = null;
   constructor(
@@ -25,18 +27,18 @@ class clsPage {
   ) {
     this.That = that;
     this.Config = config;
-    this.entityName = entityName;
+    this.EntityName = entityName;
     this.BaseUrl = baseUrl;
-    this.entryNameSelector = entryNameSelector;
+    this.EntryNameSelector = entryNameSelector;
     this.EditHandler = editHandler;
     this.FormValidation = frmValidation;
     this.DataTableOptions = dataTableOptions;
     this.CreateValidationFields = createValidationFields;
     this.EditValidationFields = editValidationFields;
     this.Notifications = new clsPageNotifications(entityName, entryNameSelector);
-    this.FormManager = new clsPageFormsManager(this);
+    // this.FormManager = new clsPageFormsManager(this);
     this.PageDataTable = new clsPageDataTable(dataTableSelector, this);
-    
+    this.EditForm = new clsPageFormsEdit(this);
   }
 
   ready(fn, ticks = 1) {
