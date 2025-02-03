@@ -15,7 +15,27 @@ export class clsPageDataTable {
 
   init() {
     const $ = window.jQuery;
+    if (this.Page.DataTableOptions.controlColumn?.visible) {
+      this.Page.DataTableOptions.columnDefs = this.Page.DataTableOptions.columnDefs
+        .slice()
+        .unshift(this.getControlColumn(this.Page.DataTableOptions.controlColumn?.render));
+    }
     $(this.Selector).DataTable({ ...this.defaultDataTableOptions, ...this.Page.DataTableOptions })
+  }
+
+  getControlColumn(renderFunction) {
+    return {
+      // For Responsive Popup Button (plus icon)
+      className: 'control',
+      searchable: false,
+      orderable: false,
+      responsivePriority: 2,
+      targets: 0,
+      visible: true,
+      render: renderFunction || function (data, type, full, meta) {
+        return '';
+      }
+    };
   }
 
   defaultDataTableOptions = {
@@ -234,6 +254,7 @@ export class clsPageDataTable {
         }
       }
     }
+
   }
 
 

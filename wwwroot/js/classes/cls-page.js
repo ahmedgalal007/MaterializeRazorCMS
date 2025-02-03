@@ -7,7 +7,9 @@
 import clsPageFormsManager from './cls-page-forms-manager.js';
 import clsPageNotifications from './cls-page-notifications.js'
 import clsPageDataTable from './cls-page-data-table.js'
+import clsPageRepeater from './cls-page-repeater.js'
 class clsPage {
+  _pageRepeater = null;
   constructor(
     that,
     config,
@@ -19,7 +21,8 @@ class clsPage {
     dataTableOptions,
     createValidationFields = {},
     editValidationFields = {},
-    entryNameSelector = ".post-type-name-") {
+    entryNameSelector = ".post-type-name-"
+  ) {
     this.That = that;
     this.Config = config;
     this.entityName = entityName;
@@ -32,10 +35,11 @@ class clsPage {
     this.EditValidationFields = editValidationFields;
     this.Notifications = new clsPageNotifications(entityName, entryNameSelector);
     this.FormManager = new clsPageFormsManager(this);
-    this.PageDataTable = new clsPageDataTable(dataTableSelector,this);
+    this.PageDataTable = new clsPageDataTable(dataTableSelector, this);
+    
   }
 
-  ready(fn, ticks=1) {
+  ready(fn, ticks = 1) {
     // see if DOM is already available
     if (document.readyState === "complete" || document.readyState === "interactive") {
       // call on next available tick
@@ -59,6 +63,11 @@ class clsPage {
         headingColor: this.Config.colors.headingColor
       }
     }
+  }
+
+  setPageRepeater(selector, fnOnShow, fnOnHide) {
+    this._pageRepeater = new clsPageRepeater(selector, this, fnOnShow, fnOnHide);
+    return this._pageRepeater;
   }
 }
 
