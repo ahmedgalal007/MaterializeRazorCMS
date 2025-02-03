@@ -32,7 +32,7 @@
   <script src="~/vendor/libs/&#64;form-validation/auto-focus.dist.js"></script>
   <script src="~/vendor/libs/cleavejs/cleave.dist.js"></script>
   <script src="~/vendor/libs/cleavejs/cleave-phone.dist.js"></script>
-    <script src="~/vendor/libs/jquery-repeater/jquery-repeater.dist.js"></script>
+  <script src="~/vendor/libs/jquery-repeater/jquery-repeater.dist.js"></script>
   <script src="~/vendor/libs/perfect-scrollbar/perfect-scrollbar.dist.js"></script>
   <script src="~/vendor/libs/select2/select2.dist.js"></script>
   <script src="~/vendor/libs/pickr/pickr.dist.js"></script>
@@ -42,86 +42,97 @@
   <script type="module" src="~/js/app-posts-post-type2.js"></script>
 }
 
-@* Attributes DataTable *@
-@if (Model.TableItems != null && Model.TableItems.Count > 0)
-{
-  <div class="card">
-    <div class="card-header pb-0">
-      <h5 class="card-title">Search Filter</h5>
-    </div>
-    <div class="card-datatable table-responsive">
-      <table id="PostTypesTable" class="table">
-        <thead class="table-light">
-          <tr>
-            <th></th>
-            <th>Id</th>
-            <th>Name</th>
-            <th>Action</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-          @foreach (var item in Model.TableItems.Select((value, i) => new { i, value }))
-          {
-            var entity = item.value;
-            var index = item.i;
-            <tr idx="@index">
-              <td></td>
-              <td>@entity.Id</td>
-              <td class="text-nowrap post-type-name">@entity.Name</td>
-              <td class="text-nowrap">
-                @* Edit Button *@
-                <button class="btn btn-sm btn-icon edit-post-type-button" data-bs-toggle="modal"
-                        data-bs-target="#editPostTypeModal" id="@entity.Id--editPostType">
-                  <i class="ri-edit-box-line ri-20px"></i>
-                </button>
-                @* Delete Button *@
-                <form method="post" asp-page-handler="Delete" asp-route-id="@entity.Id" id="@entity.Id--deleteForm"
-                      onsubmit="showSuccessAlert('Deleted');" class="d-inline">
-                  <button class="btn btn-sm btn-icon" id="@entity.Id-deletePostType" onclick="showDeleteConfirmation('@entity.Id')">
-                    <i class="ri-delete-bin-7-line ri-20px"></i>
-                  </button>
-                </form>
-                @* Dropdown Button *@
-              </td>
-              <td>
-                <button class="btn btn-sm btn-icon dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
-                  <i class="ri-more-2-line ri-20px"></i>
-                </button>
-                <div class="dropdown-menu dropdown-menu-end m-0">
-                  <a href="/Apps/Categories/View/Account" class="dropdown-item">View</a>
-                  <a href="javascript:void(0);" class="dropdown-item">Suspend</a>
-                </div>
-
-              </td>
+<div id="app-page">
+  @* Attributes DataTable *@
+  @if (Model.TableItems != null && Model.TableItems.Count > 0)
+  {
+    <div class="card">
+      <div class="card-header pb-0">
+        <h5 class="card-title">Search Filter</h5>
+      </div>
+      <div class="card-datatable table-responsive">
+        <table id="PostTypesTable" class="table">
+          <thead class="table-light">
+            <tr>
+              <th></th>
+              <th>Id</th>
+              <th>Name</th>
+              <th>Action</th>
+              <th></th>
             </tr>
-          }
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            @foreach (var item in Model.TableItems.Select((value, i) => new { i, value }))
+            {
+              var entity = item.value;
+              var index = item.i;
+              <tr idx="@index">
+                <td></td>
+                <td>@entity.Id</td>
+                <td class="text-nowrap post-type-name">@entity.Name</td>
+                <td class="text-nowrap">
+                  @* Edit Button *@
+                  <button class="btn btn-sm btn-icon edit-post-type-button" data-bs-toggle="modal"
+                          data-bs-target="#editPostTypeModal" id="@entity.Id--editPostType">
+                    <i class="ri-edit-box-line ri-20px"></i>
+                  </button>
+                  @* Delete Button *@
+                  <form method="post" asp-page-handler="Delete" asp-route-id="@entity.Id" id="@entity.Id--deleteForm"
+                        onsubmit="showSuccessAlert('Deleted');" class="d-inline">
+                    <button class="btn btn-sm btn-icon" id="@entity.Id-deletePostType" onclick="showDeleteConfirmation('@entity.Id')">
+                      <i class="ri-delete-bin-7-line ri-20px"></i>
+                    </button>
+                  </form>
+                  @* Dropdown Button *@
+                </td>
+                <td>
+                  <button class="btn btn-sm btn-icon dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                    <i class="ri-more-2-line ri-20px"></i>
+                  </button>
+                  <div class="dropdown-menu dropdown-menu-end m-0">
+                    <a href="/Apps/Categories/View/Account" class="dropdown-item">View</a>
+                    <a href="javascript:void(0);" class="dropdown-item">Suspend</a>
+                  </div>
+
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
     </div>
-  </div>
-}
-else
-{
-  <div class="card">
-    <div class="card-header">
-      <h5 class="card-title mb-0">Search Filter</h5>
+  }
+  else
+  {
+    <div class="card">
+      <div class="card-header">
+        <h5 class="card-title mb-0">Search Filter</h5>
+      </div>
+      <div class="card-datatable table-responsive">
+        <table id="PostTypesTable" class="table">
+          <thead>
+            <tr>
+              <th></th>
+              <th>Id</th>
+              <th>Name</th>
+              <th>Action</th>
+              <th></th>
+            </tr>
+          </thead>
+        </table>
+      </div>
     </div>
-    <div class="card-datatable table-responsive">
-      <table id="PostTypesTable" class="table">
-        <thead>
-          <tr>
-            <th></th>
-            <th>Id</th>
-            <th>Name</th>
-            <th>Action</th>
-            <th></th>
-          </tr>
-        </thead>
-      </table>
-    </div>
-  </div>
-}
+  }
+
+
+  @* Create Attribute Form Offcanvas Partial*@
+  @* @await Html.PartialAsync("partials/_CreatePostTypeModalPartial") *@
+  @* @await Html.PartialAsync("partials/_EditPostTypeModalPartial") *@
+
+  @* Edit Attribute Form Offcanvas Partial*@
+  @* @await Html.PartialAsync("partials/_EditAttributeOffcanvasPartial") *@
+
+</div>
 
 @functions
 {
@@ -132,15 +143,9 @@ else
   //     <div class="visually-hidden-focusable parentId">@parent.Id.ToString().ToUpper()</div>
   //     <div class="parentName">@parent.GetLocal(langIsoCode)?.Name</div>
   //   }
-  // }
+    // }
 }
 
-@* Create Attribute Form Offcanvas Partial*@
-@await Html.PartialAsync("partials/_CreatePostTypeModalPartial")
-@await Html.PartialAsync("partials/_EditPostTypeModalPartial")
-
-@* Edit Attribute Form Offcanvas Partial*@
-@* @await Html.PartialAsync("partials/_EditAttributeOffcanvasPartial") *@
 
 
 

@@ -15,23 +15,30 @@ export class clsPageFormsBase extends HTMLDivElement {
     this.IsModal = isModal;
     this.TriggerSelector = "";
     this.FormType = "Base";
-    //this.Page.ready(this.init.bind(this),1000);
-    this.init();
+    this.Page.ready(this.init.bind(this),1000);
+    //this.init();
   }
 
   init() {
     this.IsModal?this._initModel():this._initOffCanvase();
-    document.body.appendChild(this);
+    //document.body.appendChild(this);
+    this.Page.Element.appendChild(this);
     this.id = this._getId();
+
+    this.addEventListener('hide.bs.modal', function(event){
+      const buttonElement = document.activeElement; // as HTMLElement; // Get the currently focused element
+      buttonElement.blur();
+      this.blur();
+    });
   }
 
   _initModel(/** @type {Array<HTMLDivElement> | undefined} */childrens, size = "xl"){
     let dialog = document.createElement('div'),
       content = document.createElement('div');
-      this.className = "modal-backdrop fade";
+      this.className = "modal fade";
       this.setAttribute('tabindex', '-1');
       this.setAttribute('aria-labelledby', 'modalScrollableTitle');
-      this.setAttribute('aria-hidden', true);
+      // this.setAttribute('aria-hidden', true);
       dialog.className = "modal-dialog modal-dialog-scrollable modal-" + size;
       dialog.setAttribute('role', 'document');
       content.className = "modal-content";

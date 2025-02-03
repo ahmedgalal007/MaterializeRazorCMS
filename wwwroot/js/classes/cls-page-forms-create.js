@@ -10,5 +10,6 @@ export class clsPageFormsCreate extends clsPageFormsBase {
     this.FormType = "Create";
   }
 }
+window.customElements.define('cls-page-forms-create', clsPageFormsCreate, { extends: 'div' });
 
 export default clsPageFormsCreate;

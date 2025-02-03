@@ -65,7 +65,7 @@ const dataTableOptions = {
 };
 $(document).ready(function () {
   console.log("Page Loaded");
-  const page = new Page(this, config, entityName, "/Apps/Posts/PostType", editHandler, FormValidation, "#PostTypesTable", dataTableOptions);
+  const page = new Page(this,'#app-page', config, entityName, "/Apps/Posts/PostType", editHandler, FormValidation, "#PostTypesTable", dataTableOptions);
   const { borderColor, bodyBg, headingColor } = page.getConfigColors(isDarkStyle);
   PageLoaded();
   page.setPageRepeater(".form-repeater").on('page-repeater-show', (e, item) => {

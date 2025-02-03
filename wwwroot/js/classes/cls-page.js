@@ -14,6 +14,7 @@ class clsPage {
   _pageRepeater = null;
   constructor(
     that,
+    selector,
     config,
     entityName,
     baseUrl,
@@ -26,6 +27,7 @@ class clsPage {
     entryNameSelector = ".post-type-name-"
   ) {
     this.That = that;
+    this.Element = {};
     this.Config = config;
     this.EntityName = entityName;
     this.BaseUrl = baseUrl;
@@ -38,7 +40,13 @@ class clsPage {
     this.Notifications = new clsPageNotifications(entityName, entryNameSelector);
     // this.FormManager = new clsPageFormsManager(this);
     this.PageDataTable = new clsPageDataTable(dataTableSelector, this);
-    this.EditForm = new clsPageFormsEdit(this);
+
+    this.ready(() => {
+      this.Element = document.querySelector(selector);
+      // this.EditForm = new clsPageFormsEdit(this);
+      this.CreateForm = new clsPageFormsCreate(this);
+    });
+    
   }
 
   ready(fn, ticks = 1) {
