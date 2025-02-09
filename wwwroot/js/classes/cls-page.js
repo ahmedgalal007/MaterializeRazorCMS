@@ -1,5 +1,5 @@
 /**
- * Class page 
+ * Class page
  */
 
 'use strict';
@@ -8,10 +8,8 @@ import clsPageFormsManager from './cls-page-forms-manager.js';
 import clsPageNotifications from './cls-page-notifications.js'
 import clsPageDataTable from './cls-page-data-table.js'
 import clsPageRepeater from './cls-page-repeater.js'
-import clsPageFormsEdit from './cls-page-forms-edit.js'
-import clsPageFormsCreate from './cls-page-forms-create.js'
 class clsPage {
-  _pageRepeater = null;
+  
   constructor(
     that,
     selector,
@@ -27,7 +25,7 @@ class clsPage {
     entryNameSelector = ".post-type-name-"
   ) {
     this.That = that;
-    this.Element = {};
+    this.Element = document.querySelector(selector);
     this.Config = config;
     this.EntityName = entityName;
     this.BaseUrl = baseUrl;
@@ -39,14 +37,13 @@ class clsPage {
     this.EditValidationFields = editValidationFields;
     this.Notifications = new clsPageNotifications(entityName, entryNameSelector);
     // this.FormManager = new clsPageFormsManager(this);
-    this.PageDataTable = new clsPageDataTable(dataTableSelector, this);
-
+    this.PageDataTable = new clsPageDataTable(dataTableSelector, this,false);
+    this._pageRepeater = null;
     this.ready(() => {
-      this.Element = document.querySelector(selector);
-      // this.EditForm = new clsPageFormsEdit(this);
-      this.CreateForm = new clsPageFormsCreate(this);
+      //this.Element = document.querySelector(selector);
+      
     });
-    
+
   }
 
   ready(fn, ticks = 1) {
@@ -75,7 +72,7 @@ class clsPage {
     }
   }
 
-  setPageRepeater(selector, fnOnShow, fnOnHide) {
+  setRepeater(selector, fnOnShow, fnOnHide) {
     this._pageRepeater = new clsPageRepeater(selector, this, fnOnShow, fnOnHide);
     return this._pageRepeater;
   }

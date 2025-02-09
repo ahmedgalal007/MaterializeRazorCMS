@@ -6,10 +6,11 @@
 
 import clsPageFormsForm from './cls-page-forms-form.js';
 export class clsPageFormsBase extends HTMLDivElement {
-  constructor(page, isModal = true) {
+  constructor(page, id, isModal = false) {
   //constructor() {
     super();
     this.Page = page;
+    this.id = id;
     this.Form = new clsPageFormsForm(this);
     /** @type {boolean | undefined} */
     this.IsModal = isModal;
@@ -20,7 +21,7 @@ export class clsPageFormsBase extends HTMLDivElement {
   }
 
   init() {
-    this.IsModal?this._initModel():this._initOffCanvase();
+    this.IsModal?this._initModel():this._initOffCanvas();
     //document.body.appendChild(this);
     this.Page.Element.appendChild(this);
     this.id = this._getId();
@@ -57,7 +58,7 @@ export class clsPageFormsBase extends HTMLDivElement {
     */
   }
 
-  _initOffCanvase = function(){
+  _initOffCanvas = function(){
      this.className = "offcanvas offcanvas-end";
       this.setAttribute('tabindex', '-1');
       this.setAttribute('aria-labelledby', 'createAttributeOffcanvasLabel');
@@ -67,7 +68,7 @@ export class clsPageFormsBase extends HTMLDivElement {
   }
 
   _getId = function() {
-    return this.FormType.toLowerCase()+this.Page.EntityName+ (this.IsModal?"Modal":"OffCanvase");
+    return this.FormType.toLowerCase()+this.Page.EntityName+ (this.IsModal?"Modal":"OffCanvas");
   }
 
 
@@ -92,6 +93,10 @@ export class clsPageFormsBase extends HTMLDivElement {
     this.parentElement.removeChild(this);
   }
 
+  setRepeater(selector, fnOnShow, fnOnHide) {
+    this._pageRepeater = new clsPageRepeater(selector, this, fnOnShow, fnOnHide);
+    return this._pageRepeater;
+  }
   toElement = function () {
     // var string = '<div id="cardId" class="card c9"></div>'
     var string = this.outerHTML;

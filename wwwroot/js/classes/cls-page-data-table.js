@@ -4,12 +4,19 @@
 
 'use strict';
 
+import clsPageFormsEdit from './cls-page-forms-edit.js'
+import clsPageFormsCreate from './cls-page-forms-create.js'
 export class clsPageDataTable {
 
-  constructor(selector, page) {
+  constructor(selector, page, isModal) {
     this.Selector = selector;
     this.Page = page;
-    this.Page.DataTableOptions.buttons = [...this.defaultDataTableOptions.buttons, ...this.Page.DataTableOptions.buttons];
+    this.IsModal = !!isModal?true:page.IsModal||false;
+    this.EditForm = new clsPageFormsEdit(this.Page, this.generateFormId('edit'), this.IsModal);
+    this.CreateForm = new clsPageFormsCreate(this.Page, this.generateFormId('create'), this.IsModal);
+    this.Page.DataTableOptions.buttons = [...this.defaultDataTableOptions.buttons, ...this.Page.DataTableOptions.buttons, ...this._getCreateButton()];
+    //this.Page.DataTableOptions.buttons = this.Page.DataTableOptions.buttons
+    //  .slice().unshift(this._getCreateButton());
     this.Page.ready(this.init.bind(this));
   }
 
@@ -36,6 +43,18 @@ export class clsPageDataTable {
         return '';
       }
     };
+  }
+  generateFormId = (prefix) => prefix + this.Page.EntityName + (this.IsModal ? 'Modal' : 'OffCanvas')
+  _getCreateButton = function() {
+    return [{
+      text: '<i class="ri-add-line ri-16px me-0 me-sm-1_5"></i><span class="d-none d-sm-inline-block">Add ' + this.Page.EntityName + '</span>',
+      className: 'add-new btn btn-primary waves-effect waves-light',
+      attr: {
+        'data-bs-toggle': this.IsModal ? 'modal' :'offcanvas',
+        'data-bs-target': '#' +  this.generateFormId('create')
+      }
+      //, action : SetupFormRepeater
+    }];
   }
 
   defaultDataTableOptions = {

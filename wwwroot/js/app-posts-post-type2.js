@@ -10,7 +10,7 @@ function editHandler(btn, page) { }
 let entityName = "PostType";
 const dataTableOptions = {
   controlColumn: {
-    visible: true
+    visible: false
   },
   columnDefs: [
     {
@@ -40,10 +40,8 @@ const dataTableOptions = {
       responsivePriority: 1
     }
   ],
-  controlColumn: {
-    visible: false
-  },
-  buttons: [{
+  buttons: [
+    /*{
     text: '<i class="ri-add-line ri-16px me-0 me-sm-1_5"></i><span class="d-none d-sm-inline-block">Add ' + entityName + '</span>',
     className: 'add-new btn btn-primary waves-effect waves-light',
     attr: {
@@ -51,14 +49,15 @@ const dataTableOptions = {
       'data-bs-target': '#create' + entityName + 'Modal'
     },
     // action : SetupFormRepeater
-  }],
+  }*/
+  ],
   "fnInitComplete": function (oSettings, json) {
     $('.select2').each(function () {
       const $select2 = $(this);
       $select2.select2({
         dropdownParent: $select2.parent(),
         //placeholder: 'select..',
-        //allowClear: true 
+        //allowClear: true
       });
     });
   }
@@ -68,13 +67,21 @@ $(document).ready(function () {
   const page = new Page(this,'#app-page', config, entityName, "/Apps/Posts/PostType", editHandler, FormValidation, "#PostTypesTable", dataTableOptions);
   const { borderColor, bodyBg, headingColor } = page.getConfigColors(isDarkStyle);
   PageLoaded();
-  page.setPageRepeater(".form-repeater").on('page-repeater-show', (e, item) => {
+  page.setRepeater(".form-repeater")
+    .on('page-repeater-show', (e, item) => {
     console.log("Repeater", e.data.repeater);
     debugger
     e.data.repeater.UpdateRepeaterControls(item);
     e.data.repeater.row++;
     console.log("RowItem", item);
   });
+  let scroller = document.getElementById('vertical-scrollbar');
+  if(scroller){
+    new PerfectScrollbar(scroller, {
+      wheelPropagation: false
+    });
+  }
+
   //console.log(borderColor, bodyBg, headingColor);
 
 });

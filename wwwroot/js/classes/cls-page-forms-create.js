@@ -5,8 +5,8 @@
 'use strict';
 import clsPageFormsBase from './helpers/cls-page-forms-base.js'
 export class clsPageFormsCreate extends clsPageFormsBase {
-  constructor(page) {
-    super(page);
+  constructor(page, id, isModal) {
+    super(page, id, isModal);
     this.FormType = "Create";
   }
 }

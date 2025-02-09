@@ -1,25 +1,25 @@
 /**
  * Class page repeater
  */
- 
+/// <reference path="cls-page.js" />
 'use strict';
-
 export class clsPageRepeater {
-  
+
   constructor(selector, page) {
     this.Selector = selector;
     this.Page = page;
     this.row = 1;
     this.$ = window.jQuery;
+    this._config=this.Page.That._config;
     this.element = $(selector);
-    if (this.element) {
+    if (this.element.length>0) {
       this.element.repeater({
         show: this._show,
         hide: this._hide,
         ready: function (setIndexes) {
           console.log('drop', this.ready);
         },
-      })
+      });
     }
   }
   _show = function () {
