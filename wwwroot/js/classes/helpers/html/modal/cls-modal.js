@@ -3,7 +3,7 @@
  */
 import clsModalHeader from './cls-modal-header.js'
 import clsModalFooter from './cls-modal-footer.js'
-export class clsHelpersHtmlModal extends HTMLElement{
+export class clsHelpersHtmlModal extends HTMLDivElement{
   constructor(page, size="xl") {
     super();
     this.Page = page;
@@ -11,6 +11,7 @@ export class clsHelpersHtmlModal extends HTMLElement{
     this.Header = new clsModalHeader(this);
     this.Footer = new clsModalFooter(this);
     this.Page.ready(this.render.bind(this));
+    // this.Childrens = new NodeList();
   }
 
   render = function () {
@@ -29,7 +30,12 @@ export class clsHelpersHtmlModal extends HTMLElement{
     modalBody.height = 150;
     modalBody.className = "modal-body";
     content.appendChild(modalBody);
-    childrens ? content.appendChild(childrens) : null;
+    this.childNodes.forEach(nd => {
+      content.appendChild(nd);
+    })
+      
+
+    
     dialog.appendChild(content);
     this.Page.Element.appendChild(this);
   }
@@ -38,5 +44,6 @@ export class clsHelpersHtmlModal extends HTMLElement{
     this.parentElement.removeChild(this);
   }
 }
+window.customElements.define('cls-helpers-html-modal', clsHelpersHtmlModal, { extends: 'div' });
 
 export default clsHelpersHtmlModal;

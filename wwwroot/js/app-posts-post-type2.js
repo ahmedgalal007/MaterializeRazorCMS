@@ -8,6 +8,7 @@
 import Page from '/js/classes/cls-page.js';
 function editHandler(btn, page) { }
 let entityName = "PostType";
+
 const dataTableOptions = {
   controlColumn: {
     visible: false
@@ -62,6 +63,7 @@ const dataTableOptions = {
     });
   }
 };
+
 $(document).ready(function () {
   console.log("Page Loaded");
   const page = new Page(this,'#app-page', config, entityName, "/Apps/Posts/PostType", editHandler, FormValidation, "#PostTypesTable", dataTableOptions);

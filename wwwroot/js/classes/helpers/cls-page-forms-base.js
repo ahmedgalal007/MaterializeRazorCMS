@@ -35,7 +35,7 @@ export class clsPageFormsBase extends HTMLDivElement {
   }
 
   _initModel(/** @type {Array<HTMLDivElement> | undefined} */childrens, size = "xl") {
-    let modal = new clsModal();
+    let modal = new clsModal(this.Page);
     modal.render();
     /*let dialog = document.createElement('div'),
       content = document.createElement('div');

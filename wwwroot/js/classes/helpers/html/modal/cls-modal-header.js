@@ -2,7 +2,7 @@
  *  class html modal header
  */
 
-export class clsHelpersHtmlModalHeader extends HTMLElement {
+export class clsHelpersHtmlModalHeader extends HTMLDivElement {
   constructor(modal) {
     super();
   }
@@ -24,5 +24,7 @@ export class clsHelpersHtmlModalHeader extends HTMLElement {
       return header;
     }
 }
+
+window.customElements.define('cls-helpers-html-modal-header', clsHelpersHtmlModalHeader, { extends: 'div' });
 
 export default clsHelpersHtmlModalHeader;
