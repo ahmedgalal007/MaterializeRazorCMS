@@ -5,6 +5,7 @@
 'use strict';
 
 import clsPageFormsForm from './cls-page-forms-form.js';
+import { clsModal } from './html/index.js';
 export class clsPageFormsBase extends HTMLDivElement {
   constructor(page, id, isModal = false) {
   //constructor() {
@@ -33,8 +34,10 @@ export class clsPageFormsBase extends HTMLDivElement {
     });
   }
 
-  _initModel(/** @type {Array<HTMLDivElement> | undefined} */childrens, size = "xl"){
-    let dialog = document.createElement('div'),
+  _initModel(/** @type {Array<HTMLDivElement> | undefined} */childrens, size = "xl") {
+    let modal = new clsModal();
+    modal.render();
+    /*let dialog = document.createElement('div'),
       content = document.createElement('div');
       this.className = "modal fade";
       this.setAttribute('tabindex', '-1');
@@ -51,7 +54,7 @@ export class clsPageFormsBase extends HTMLDivElement {
       content.appendChild(modalBody);
       childrens?content.appendChild(childrens):null;
       dialog.appendChild(content);
-      this.appendChild(dialog);
+      this.appendChild(dialog);*/
     /*`<div class="modal fade" id="createPostTypeModal" tabindex="-1" aria-labelledby="modalScrollableTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-scrollable modal-xl" role="document">
           <div class="modal-content">`

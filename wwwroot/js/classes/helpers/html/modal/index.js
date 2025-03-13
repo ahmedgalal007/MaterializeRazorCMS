@@ -1,5 +1,5 @@
-﻿import clsHelpersHtmlModal from './cls-modal';
+import clsHelpersHtmlModal from './cls-modal.js';
 
-export default {
+export {
   clsHelpersHtmlModal
 }

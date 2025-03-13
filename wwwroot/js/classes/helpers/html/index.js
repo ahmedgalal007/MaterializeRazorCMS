@@ -1,5 +1,5 @@
-﻿import modal from './modal/index.js';
+import { clsHelpersHtmlModal } from './modal/index.js';
 
-export default {
-  modal
+export {
+  clsHelpersHtmlModal as clsModal
 }

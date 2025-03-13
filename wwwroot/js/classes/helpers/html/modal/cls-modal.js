@@ -1,8 +1,8 @@
 /*
  *  class html modal 
  */
-import clsModalHeader from './cls-modal-header'
-import clsModalFooter from './cls-modal-footer'
+import clsModalHeader from './cls-modal-header.js'
+import clsModalFooter from './cls-modal-footer.js'
 export class clsHelpersHtmlModal extends HTMLElement{
   constructor(page, size="xl") {
     super();
@@ -23,7 +23,7 @@ export class clsHelpersHtmlModal extends HTMLElement{
     dialog.className = "modal-dialog modal-dialog-scrollable modal-" + this.Size;
     dialog.setAttribute('role', 'document');
     content.className = "modal-content";
-    content.appendChild(this._generateModalHeader('Bye', 'Add ' + this.Page.EntityName));
+    // content.appendChild(this._generateModalHeader('Bye', 'Add ' + this.Page.EntityName));
     let modalBody = document.createElement('div')
     modalBody.width = 500;
     modalBody.height = 150;
