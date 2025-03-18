@@ -4,27 +4,25 @@
 import clsModalHeader from './cls-modal-header.js'
 import clsModalFooter from './cls-modal-footer.js'
 export class clsHelpersHtmlModal extends HTMLDivElement{
-  constructor(page, size="xl") {
+  constructor(form, size="xl") {
     super();
-    this.Page = page;
+    this.Form = form;
     this.Size = size;
-    this.Header = new clsModalHeader(this);
+    this.Header = new clsModalHeader(this, true, 'Add ' + this.Form.Page.EntityName);
     this.Footer = new clsModalFooter(this);
-    this.Page.ready(this.render.bind(this));
+    // this.Page.ready(this.render.bind(this));
+    this.render();
     // this.Childrens = new NodeList();
   }
 
   render = function () {
-    let dialog = document.createElement('div'),
-      content = document.createElement('div');
-    this.className = "modal fade";
-    this.setAttribute('tabindex', '-1');
-    this.setAttribute('aria-labelledby', 'modalScrollableTitle');
+    let  content = document.createElement('div');
     // this.setAttribute('aria-hidden', true);
-    dialog.className = "modal-dialog modal-dialog-scrollable modal-" + this.Size;
-    dialog.setAttribute('role', 'document');
+    this.className = "modal-dialog modal-dialog-scrollable modal-" + this.Size;
+    this.setAttribute('role', 'document');
     content.className = "modal-content";
     // content.appendChild(this._generateModalHeader('Bye', 'Add ' + this.Page.EntityName));
+    content.appendChild(this.Header);
     let modalBody = document.createElement('div')
     modalBody.width = 500;
     modalBody.height = 150;
@@ -34,10 +32,9 @@ export class clsHelpersHtmlModal extends HTMLDivElement{
       content.appendChild(nd);
     })
       
-
-    
-    dialog.appendChild(content);
-    this.Page.Element.appendChild(this);
+    content.appendChild(this.Footer);
+    this.appendChild(content);
+    this.Form.appendChild(this);
   }
 
   remove = function () {

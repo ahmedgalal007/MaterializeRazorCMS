@@ -3,25 +3,28 @@
  */
 
 export class clsHelpersHtmlModalHeader extends HTMLDivElement {
-  constructor(modal) {
+  constructor(modal,isModal, title) {
     super();
+    this.IsModal = isModal
+    this.render(title);
   }
 
-  render = function (lable, text) {
-      let header = document.createElement('div'),
-        title = document.createElement('h5'),
+  render = function (text) {
+
+    this.className = this.IsModal ? "modal-header" : "offcanvas-header border-bottom";
+    // let header = document.createElement('div'),
+        let title = document.createElement('h5'),
         btnClose = document.createElement('button');
-      header.className = this.IsModal ? "modal-header" : "offcanvas-header border-bottom";
       title.id = "modalScrollableTitle";
       title.className = this.IsModal ? "modal-title" : "offcanvas-title";
       title.innerText = text;
-      header.appendChild(title);
+      this.appendChild(title);
       btnClose.className = this.IsModal ? "btn-close" : "btn-close text-reset";
       btnClose.setAttribute('type', 'button');
       btnClose.setAttribute('data-bs-dismiss', this.IsModal ? 'modal' : 'offcanvas');
-      btnClose.setAttribute('aria-label', lable ?? 'Close');
-      header.appendChild(btnClose);
-      return header;
+      btnClose.setAttribute('aria-label', 'Close');
+      this.appendChild(btnClose);
+      // return header;
     }
 }
 

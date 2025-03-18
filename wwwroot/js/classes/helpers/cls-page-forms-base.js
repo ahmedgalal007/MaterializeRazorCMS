@@ -35,13 +35,14 @@ export class clsPageFormsBase extends HTMLDivElement {
   }
 
   _initModel(/** @type {Array<HTMLDivElement> | undefined} */childrens, size = "xl") {
-    let modal = new clsModal(this.Page);
-    modal.render();
+
+    this.className = "modal fade";
+    this.setAttribute('tabindex', '-1');
+    this.setAttribute('aria-labelledby', 'modalScrollableTitle');
+    let modal = new clsModal(this);
+    // modal.render();
     /*let dialog = document.createElement('div'),
       content = document.createElement('div');
-      this.className = "modal fade";
-      this.setAttribute('tabindex', '-1');
-      this.setAttribute('aria-labelledby', 'modalScrollableTitle');
       // this.setAttribute('aria-hidden', true);
       dialog.className = "modal-dialog modal-dialog-scrollable modal-" + size;
       dialog.setAttribute('role', 'document');
