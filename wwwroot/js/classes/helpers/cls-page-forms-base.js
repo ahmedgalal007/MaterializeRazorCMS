@@ -5,7 +5,7 @@
 'use strict';
 
 import clsPageFormsForm from './cls-page-forms-form.js';
-import { clsModal } from './html/index.js';
+import { clsModal, inputs } from './html/index.js';
 export class clsPageFormsBase extends HTMLDivElement {
   constructor(page, id, isModal = false) {
   //constructor() {
