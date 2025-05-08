@@ -1,5 +1,6 @@
-import { clsInputText } from './cls-input-text';
+import { clsInputText } from './cls-input-text.js';
 
-export const inputs = {
-  clsInputText as TextField
+const inputs = {
+  // clsInputText as TextField
 }
+export default { inputs };
