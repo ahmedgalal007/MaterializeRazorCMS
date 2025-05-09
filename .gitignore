@@ -405,3 +405,4 @@ FodyWeavers.xsd
 
 /Data/Application.Data.db-shm
 /Data/Application.Data.db-wal
+*.dist.css
