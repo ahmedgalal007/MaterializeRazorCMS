@@ -7,7 +7,7 @@
  */
 'use strict';
 
-import { lodash } from '../../../../../vendor/js/lodash.js/lodash.js'
+//import { lodash } from '../../../../../vendor/js/lodash.js/lodash.js'
 export class clsInputBaseOptions {
   /**
 * Creates a new InputBase object.
@@ -27,6 +27,8 @@ export class clsInputBaseOptions {
     this.rounded = rounded;
     this.className = className;
     this.style = style;
+    this._ = require('../../../../../vendor/js/lodash.js/lodash.js');
+    console.log(_);
   }
 }
 
@@ -40,7 +42,7 @@ export class clsInputBase extends HTMLDivElement {
  * @param {string} type - The input type attribute value.
  */
   constructor(form, name, options = null, type='text') {
-
+    super();
     if (options === null) { options = new clsInputBaseOptions(); }
     this.className = "mb-3"
     ///////////////////////////////////////////////

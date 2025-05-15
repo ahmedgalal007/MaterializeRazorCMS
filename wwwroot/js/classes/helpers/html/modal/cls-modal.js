@@ -3,6 +3,7 @@
  */
 import clsModalHeader from './cls-modal-header.js'
 import clsModalFooter from './cls-modal-footer.js'
+import { inputs } from '../html/index.js';
 export class clsHelpersHtmlModal extends HTMLDivElement{
   constructor(form, size="xl") {
     super();
@@ -27,6 +28,8 @@ export class clsHelpersHtmlModal extends HTMLDivElement{
     modalBody.width = 500;
     modalBody.height = 150;
     modalBody.className = "modal-body";
+    var txt = new inputs.TextField(this.Form, "TestName", {});
+    modalBody.appendChild(txt);
     content.appendChild(modalBody);
     this.childNodes.forEach(nd => {
       content.appendChild(nd);

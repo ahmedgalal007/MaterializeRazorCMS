@@ -17,11 +17,12 @@ export class clsPageFormsBase extends HTMLDivElement {
     this.IsModal = isModal;
     this.TriggerSelector = "";
     this.FormType = "Base";
-    this.Page.ready(this.init.bind(this),1000);
+    this.Page.ready(this.init.bind(this), 1000);
     //this.init();
   }
 
   init() {
+    
     this.IsModal?this._initModel():this._initOffCanvas();
     //document.body.appendChild(this);
     this.Page.Element.appendChild(this);
@@ -35,11 +36,12 @@ export class clsPageFormsBase extends HTMLDivElement {
   }
 
   _initModel(/** @type {Array<HTMLDivElement> | undefined} */childrens, size = "xl") {
-
+    
     this.className = "modal fade";
     this.setAttribute('tabindex', '-1');
     this.setAttribute('aria-labelledby', 'modalScrollableTitle');
     let modal = new clsModal(this);
+    
     // modal.render();
     /*let dialog = document.createElement('div'),
       content = document.createElement('div');
