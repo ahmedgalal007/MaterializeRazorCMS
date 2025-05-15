@@ -27,6 +27,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.Web.LibraryManager.Build" Version="3.0.71" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.9.0" />
     <PackageReference Include="System.Data.SQLite.Core" Version="1.0.119" />
     <!--<PackageReference Include="Microsoft.IdentityModel.JsonWebTokens" Version="6.35.0" />
