@@ -3,7 +3,7 @@
  */
 import clsModalHeader from './cls-modal-header.js'
 import clsModalFooter from './cls-modal-footer.js'
-import { inputs } from '../html/index.js';
+import { inputs } from '../index.js';
 export class clsHelpersHtmlModal extends HTMLDivElement{
   constructor(form, size="xl") {
     super();

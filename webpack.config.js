@@ -100,6 +100,7 @@ const webpackConfig = {
     pace: '"pace-progress"',
     chartist: 'Chartist',
     'popper.js': 'Popper',
+    lodash: '_',
 
     // blueimp-gallery plugin
     './blueimp-helper': 'jQuery',

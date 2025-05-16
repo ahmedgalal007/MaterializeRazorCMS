@@ -5,9 +5,14 @@
  *   <input id="largeInput" class="form-control form-control-lg" type="text" placeholder=".form-control-lg" />
  * </div>
  */
+;
 'use strict';
+import('../../../../../vendor/js/lodash.js/lodash.js')
+.then((mod2) => {
+  // Logs "then() called"
+  console.log(_.map); // false
+});
 
-//import { lodash } from '../../../../../vendor/js/lodash.js/lodash.js'
 export class clsInputBaseOptions {
   /**
 * Creates a new InputBase object.
@@ -27,8 +32,6 @@ export class clsInputBaseOptions {
     this.rounded = rounded;
     this.className = className;
     this.style = style;
-    this._ = require('../../../../../vendor/js/lodash.js/lodash.js');
-    console.log(_);
   }
 }
 
@@ -43,6 +46,9 @@ export class clsInputBase extends HTMLDivElement {
  */
   constructor(form, name, options = null, type='text') {
     super();
+
+    //this._ = require('../../../../../vendor/js/lodash.js/lodash.js');
+
     if (options === null) { options = new clsInputBaseOptions(); }
     this.className = "mb-3"
     ///////////////////////////////////////////////
