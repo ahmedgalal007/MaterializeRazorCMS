@@ -7,51 +7,23 @@
  */
 ;
 'use strict';
-import('../../../../../vendor/js/lodash.js/lodash.js')
+import { clsInputBaseOptions, clsInputBase } from '../cls-input-base.js'
+import('../../../../../../vendor/js/lodash.js/lodash.js')
 .then((mod2) => {
   // Logs "then() called"
   console.log(_.merge); // false
 });
 
-export class clsInputGroupOptions {
-  constructor(type = 'merge', text = '', prepend = true, icon = '')
-  {
-    this.type = type;
-    this.text = text;
-    this.prepend = prepend;
-    this.icon = icon;
-  }
-}
-export class clsInputBaseOptions {
-  /**
-* Creates a new InputBase object.
-* @param {string} id - The form object.
-* @param {string} caption - The name of the input.
-* @param {string} placeholder - The name of the person.
-* @param {string} size - The value "" for normal(default) | "sm" for small | "lg" for large.
-* @param {boolean} rounded - The input frame rounding false(default) | true. 
-* @param {Array<string>} className - The input type attribute value.
-* @param {JSON} style - The input type attribute value.
-* @param {clsInputGroupOptions} group - The input group options.
-*/
-  constructor(id = "", caption = "", placeholder = "", size = "", rounded = false, className = [], style = {}, group=null) {
-    this.id = id;
-    this.caption = caption;
-    this.placeholder = placeholder;
-    this.size = size;
-    this.rounded = rounded;
-    this.className = className;
-    this.style = style;
-    this.group = group;
-  }
-}
 
-export class clsInputBase extends HTMLDivElement {
+
+
+
+export class clsInputGroupBase extends HTMLDivElement {
  /**
  * Creates a new InputBase object.
  * @param {HTMLFormElement} form - The form object.
  * @param {string} name - The name of the input.
- * @param {clsInputBaseOptions} options - The class extra options.
+ * @param {clsInputGroupBaseOptions} options - The class extra options.
  * @param {string} type - The input type attribute value.
  */
   constructor(form, name, options = null, type='text') {
@@ -60,7 +32,7 @@ export class clsInputBase extends HTMLDivElement {
     //this._ = require('../../../../../vendor/js/lodash.js/lodash.js');
 
     if (options === null) { options = new clsInputBaseOptions(); }
-    this.className = "mb-3"
+    this.className = "input-group input-group-merge"
     ///////////////////////////////////////////////
     let label = document.createElement('div');
     if (options.id) { label.setAttribute("for", options.id); }
@@ -75,12 +47,29 @@ export class clsInputBase extends HTMLDivElement {
     input.setAttribute("type", type,);
     input.setAttribute("placeholder", ".form-control-lg");
     if (options.size == "lg" || options.size == "sm") {
-      input.className = input.className + " form-control-"+ size;
+      input.className = input.className + " form-control-" + size;
     }
     if (options.rounded) {
       input.className = input.className + " rounded-pill";
     }
-    this.appendChild(input);
+
+    ///////////////////////////////////////////////
+    if (options.group.text.length > 0 || options.group.icon.length > 0) {
+      let text = document.createElement('span');
+      text.className = 'input-group-text';
+      if (options.group.text.length > 0) text.innerHTML = options.group.text;
+      if (options.group.icon.length > 0) {
+        let icon = document.createElement('i');
+        icon.className = options.group.icon;
+        text.appendChild(icon);
+      }
+      if (options.group.prepend) this.appendChild(text);
+      this.appendChild(input);
+      if (!options.group.prepend) this.appendChild(text);
+    } else {
+      this.appendChild(input);
+    }
+
     if (options.parent) {
       parent.appendChild(this);
     } else {
@@ -89,5 +78,5 @@ export class clsInputBase extends HTMLDivElement {
   }
 }
 
-window.customElements.define('input-base', clsInputBase, { extends: 'div' });
-export default clsInputBase;
+window.customElements.define('input-group-base', clsInputGroupBase, { extends: 'div' });
+export default clsInputGroupBase;

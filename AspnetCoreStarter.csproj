@@ -67,6 +67,10 @@
     <None Include="wwwroot\js\common\crud-page-factory.js" />
   </ItemGroup>
   <ItemGroup>
+    <Content Update="wwwroot\js\classes\helpers\cls-page-forms-grid.js">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
     <Content Update="wwwroot\js\common\crud-page-helper.dist.js">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
