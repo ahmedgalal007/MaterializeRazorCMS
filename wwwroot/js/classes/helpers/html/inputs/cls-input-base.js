@@ -42,7 +42,17 @@ export class clsInputBaseOptions {
     this.rounded = rounded;
     this.className = className;
     this.style = style;
-    this.group = group;
+    if (group == null || Object.keys(group).length < 1) {
+      this.group = new clsInputGroupOptions();
+    } else {
+      this.group = group;
+    }
+    // this.group = isNullOrEmpty(group)? new clsInputGroupOptions() : group;
+  }
+
+  isNullOrEmpty = function (obj) {
+    if (obj == null || Object.keys(obj).length <1) return true;
+    return false;
   }
 }
 

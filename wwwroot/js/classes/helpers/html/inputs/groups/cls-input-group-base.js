@@ -9,36 +9,37 @@
 'use strict';
 import { clsInputBaseOptions, clsInputBase } from '../cls-input-base.js'
 import('../../../../../../vendor/js/lodash.js/lodash.js')
-.then((mod2) => {
-  // Logs "then() called"
-  console.log(_.merge); // false
-});
+  .then((mod2) => {
+    // Logs "then() called"
+    console.log(_.merge); // false
+  });
 
 
 
 
 
 export class clsInputGroupBase extends HTMLDivElement {
- /**
- * Creates a new InputBase object.
- * @param {HTMLFormElement} form - The form object.
- * @param {string} name - The name of the input.
- * @param {clsInputGroupBaseOptions} options - The class extra options.
- * @param {string} type - The input type attribute value.
- */
-  constructor(form, name, options = null, type='text') {
+  /**
+  * Creates a new InputBase object.
+  * @param {HTMLFormElement} form - The form object.
+  * @param {string} name - The name of the input.
+  * @param {clsInputBaseOptions} options - The class extra options.
+  * @param {string} type - The input type attribute value.
+  */
+  constructor(form, name, options = null, type = 'text') {
     super();
-
+    this.form = form;
+    this.name = name;
+    if (options === null || Object.keys(options).length < 1) { options = new clsInputBaseOptions(); }
+    this.options = options;
+    this.type = type;
     //this._ = require('../../../../../vendor/js/lodash.js/lodash.js');
 
-    if (options === null) { options = new clsInputBaseOptions(); }
+    
     this.className = "input-group input-group-merge"
     ///////////////////////////////////////////////
-    let label = document.createElement('div');
-    if (options.id) { label.setAttribute("for", options.id); }
-    label.className = "form-label";
-    label.innerText = options.caption ? options.caption : name;
-    this.appendChild(label);
+    this.createLabel();
+    if (this.label) this.appendChild(this.label);
     ///////////////////////////////////////////////
     let input = document.createElement('input');
     input.className = "form-control";
@@ -76,6 +77,34 @@ export class clsInputGroupBase extends HTMLDivElement {
       form.appendChild(this);
     }
   }
+
+  createLabel = function () {
+    this.label = document.createElement('div');
+    if (this.options.id) { this.label.setAttribute("for", this.options.id); }
+    this.label.className = "form-label";
+    this.label.innerText = this.options.caption ? this.options.caption : this.name;
+  }
+  createInput = function (caption) {
+
+  }
+  createPrepend = function (caption) {
+
+  }
+
+  createAppend = function (caption) {
+
+  }
+  isNullOrEmptyObject = function (variable) {
+    return variable === null || (typeof variable === 'object' && Object.keys(variable).length === 0);
+  }
+
+  isObjectEmpty = function (objectName){
+    return (
+      objectName &&
+      Object.keys(objectName).length === 0 &&
+      objectName.constructor === Object
+    );
+  };
 }
 
 window.customElements.define('input-group-base', clsInputGroupBase, { extends: 'div' });
