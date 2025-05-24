@@ -29,6 +29,7 @@ export class clsInputGroupPendOptions {
     return this.text === '' && this.iconClasses.length === 0;
   }
 }
+
 export class clsInputGroupOptions {
   /**
 * Creates a new InputBase object.
@@ -44,6 +45,18 @@ export class clsInputGroupOptions {
   }
 
 }
+
+export class clsInputValidationOptions {
+ /**
+* Creates a new InputBase object.
+* @param {string} text - The validation text.
+*/
+  constructor(text = '') {
+    this.text = text;
+  }
+
+}
+
 export class clsInputBaseOptions {
   /**
 * Creates a new InputBase object.
@@ -53,16 +66,18 @@ export class clsInputBaseOptions {
 * @param {string} size - The value "" for normal(default) | "sm" for small | "lg" for large.
 * @param {boolean} rounded - The input frame rounding false(default) | true. 
 * @param {Array<string>} className - The input type attribute value.
+* @param {clsInputValidationOptions} validation - The input validation otions.
 * @param {JSON} style - The input type attribute value.
 * @param {clsInputGroupOptions} group - The input group options.
 */
-  constructor(id = "", caption = "", placeholder = "", size = "", rounded = false, className = [], style = {}, group = {}) {
+  constructor(id = "", caption = "", placeholder = "", size = "", rounded = false, className = [], validation = {}, style = {}, group = {}) {
     this.id = id;
     this.caption = caption;
     this.placeholder = placeholder;
     this.size = size;
     this.rounded = rounded;
     this.className = className;
+    this.validation = { ...(new clsInputValidationOptions()), ...validation };
     this.style = style;
     this.group = { ...(new clsInputGroupOptions()), ...group };
     //if (group == null || Object.keys(group).length < 1) {
@@ -74,6 +89,10 @@ export class clsInputBaseOptions {
   }
   isGroup = function () {
     return !this.group.prepend.isEmpty() || !this.group.append.isEmpty();
+  }
+  hasValidation = function () {
+    if (this.validation && this.validation.text.length > 0) return true;
+    return false;
   }
   isNullOrEmpty = function (obj) {
     if (obj == null || Object.keys(obj).length <1) return true;
