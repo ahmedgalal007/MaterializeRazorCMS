@@ -4,7 +4,7 @@
 
 'use strict';
 
-import { clsInputBase, clsInputBaseOptions } from './cls-input-base.js';
+import { clsInputBase, clsInputBaseOptions } from './base/cls-input-base.js';
 
 export class clsInputNumber extends clsInputBase {
 
@@ -16,7 +16,7 @@ export class clsInputNumber extends clsInputBase {
 * @param {clsInputBaseOptions} options - The class extra options.
 * @param {string} type - The input type attribute value.
 */
-  constructor(form, name, options = {}, type = 'date') {
+  constructor(form, name, options = {}, type = 'number') {
     super(form, name, options);
   }
 }

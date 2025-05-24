@@ -29,7 +29,7 @@ export class clsHelpersHtmlModal extends HTMLDivElement{
     modalBody.height = 150;
     modalBody.className = "modal-body";
     // var txt = new inputs.TextField(this.Form, "TestName", {});
-    var txt = new inputs.Groups.TextField(this.Form, "TestName", {});
+    var txt = new inputs.Groups.TextField(this.Form, "TestName"/*, { group: { prepend: { text: '@' } } }*/);
     modalBody.appendChild(txt);
     content.appendChild(modalBody);
     this.childNodes.forEach(nd => {

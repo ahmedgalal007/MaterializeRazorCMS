@@ -7,20 +7,42 @@
  */
 ;
 'use strict';
-import('../../../../../vendor/js/lodash.js/lodash.js')
+import('../../../../../../../vendor/js/lodash.js/lodash.js')
 .then((mod2) => {
   // Logs "then() called"
   console.log(_.merge); // false
 });
 
+export class clsInputGroupPendOptions {
+  /**
+* Creates a new InputBase object.
+* @param {string} text - The form object.
+* @param {Array<string>} iconClasses - The name of the input.
+* @param {boolean} iconFirst - The name of the input.
+*/
+  constructor( text = '', iconClasses = [], iconFirst = false) {
+    this.text = text;
+    this.iconClasses = iconClasses;
+    this.iconFirst = iconFirst;
+  }
+  isEmpty = function () {
+    return this.text === '' && this.iconClasses.length === 0;
+  }
+}
 export class clsInputGroupOptions {
-  constructor(type = 'merge', text = '', prepend = true, icon = '')
+  /**
+* Creates a new InputBase object.
+* @param {string} type - The form object.
+* @param {clsInputGroupPendOptions} prepend - The name of the input.
+* @param {clsInputGroupPendOptions} append - The name of the input.
+*/
+  constructor(type = 'merge', prepend = {}, append = {})
   {
     this.type = type;
-    this.text = text;
-    this.prepend = prepend;
-    this.icon = icon;
+    this.prepend = { ...(new clsInputGroupPendOptions()), ...prepend } ;
+    this.append = { ...(new clsInputGroupPendOptions()), ...append };
   }
+
 }
 export class clsInputBaseOptions {
   /**
@@ -34,7 +56,7 @@ export class clsInputBaseOptions {
 * @param {JSON} style - The input type attribute value.
 * @param {clsInputGroupOptions} group - The input group options.
 */
-  constructor(id = "", caption = "", placeholder = "", size = "", rounded = false, className = [], style = {}, group=null) {
+  constructor(id = "", caption = "", placeholder = "", size = "", rounded = false, className = [], style = {}, group = {}) {
     this.id = id;
     this.caption = caption;
     this.placeholder = placeholder;
@@ -42,14 +64,17 @@ export class clsInputBaseOptions {
     this.rounded = rounded;
     this.className = className;
     this.style = style;
-    if (group == null || Object.keys(group).length < 1) {
-      this.group = new clsInputGroupOptions();
-    } else {
-      this.group = group;
-    }
+    this.group = { ...(new clsInputGroupOptions()), ...group };
+    //if (group == null || Object.keys(group).length < 1) {
+    //  this.group = new clsInputGroupOptions();
+    //} else {
+    //  this.group = group;
+    //}
     // this.group = isNullOrEmpty(group)? new clsInputGroupOptions() : group;
   }
-
+  isGroup = function () {
+    return !this.group.prepend.isEmpty() || !this.group.append.isEmpty();
+  }
   isNullOrEmpty = function (obj) {
     if (obj == null || Object.keys(obj).length <1) return true;
     return false;

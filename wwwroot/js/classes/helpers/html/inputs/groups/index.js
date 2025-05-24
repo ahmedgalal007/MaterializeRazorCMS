@@ -1,4 +1,4 @@
-import { } from './cls-input-group-base.js';
+import { } from '../base/cls-input-group-base.js';
 
 import { clsGroupInputText } from './cls-input-group-text.js';
 

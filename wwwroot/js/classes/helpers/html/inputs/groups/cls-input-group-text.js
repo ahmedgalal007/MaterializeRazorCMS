@@ -3,8 +3,8 @@
  */
 
 'use strict';
-import { clsInputBaseOptions, clsInputBase } from '../cls-input-base.js';
-import { clsInputGroupBase } from './cls-input-group-base.js';
+import { clsInputBaseOptions, clsInputBase } from '../base/cls-input-base.js';
+import { clsInputGroupBase } from '../base/cls-input-group-base.js';
 
 export class clsGroupInputText extends clsInputGroupBase {
 

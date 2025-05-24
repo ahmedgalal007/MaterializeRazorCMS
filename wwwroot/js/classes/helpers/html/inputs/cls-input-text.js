@@ -4,7 +4,7 @@
 
 'use strict';
 
-import { clsInputBase, clsInputBaseOptions } from './cls-input-base.js';
+import { clsInputBase, clsInputBaseOptions } from './base/cls-input-base.js';
 
 export class clsInputText extends clsInputBase {
 

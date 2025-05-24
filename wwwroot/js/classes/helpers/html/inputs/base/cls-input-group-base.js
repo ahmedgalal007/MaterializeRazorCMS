@@ -7,8 +7,8 @@
  */
 ;
 'use strict';
-import { clsInputBaseOptions, clsInputBase } from '../cls-input-base.js'
-import('../../../../../../vendor/js/lodash.js/lodash.js')
+import { clsInputBaseOptions, clsInputBase } from './cls-input-base.js'
+import('../../../../../../../../vendor/js/lodash.js/lodash.js')
   .then((mod2) => {
     // Logs "then() called"
     console.log(_.merge); // false
@@ -30,12 +30,17 @@ export class clsInputGroupBase extends HTMLDivElement {
     super();
     this.form = form;
     this.name = name;
-    if (options === null || Object.keys(options).length < 1) { options = new clsInputBaseOptions(); }
-    this.options = options;
+    //if (options === null || Object.keys(options).length < 1) { options = new clsInputBaseOptions(); }
+    // this.options = { ...(new clsInputBaseOptions()), ...options};
+    this.options = _.merge((new clsInputBaseOptions()), options);
     this.type = type;
     //this._ = require('../../../../../vendor/js/lodash.js/lodash.js');
 
-    
+    if (this.options.isGroup()) {
+      console.log('The input is Group !!!');
+    } else {
+      console.log('The input is not a Group !!!');
+    }
     this.className = "input-group input-group-merge"
     ///////////////////////////////////////////////
     this.createLabel();
