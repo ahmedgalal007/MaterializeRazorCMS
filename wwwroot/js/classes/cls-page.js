@@ -8,7 +8,7 @@ import clsPageFormsManager from './cls-page-forms-manager.js';
 import clsPageNotifications from './cls-page-notifications.js'
 import clsPageDataTable from './cls-page-data-table.js'
 import clsPageRepeater from './cls-page-repeater.js'
-class clsPage {
+export class clsPage {
   
   constructor(
     that,

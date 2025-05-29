@@ -1,13 +1,68 @@
 @page
 @model AspnetCoreStarter.Pages.Page2Model
 @{
-
+  Layout = "";
   ViewData["Title"] = "Page 2 - Starter Kit";
 }
 
-@* ************** Content ************** *@
-<h4 class="py-4 mb-6">Page 2</h4>
-<p>Sample page.<br />For more layout options, refer <a href='https://demos.pixinvent.com/materialize-html-admin-template/documentation/net-core-init-layout.html' target="_blank" class="fw-medium">Layout docs</a>.</p>
-<script type="text/javascript">
-  PageLoaded();
-</script>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Responsive Web Page</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+  <link href="~/css/main.dist.css" rel="stylesheet" />
+</head>
+<body>
+  <header>
+   
+    <div class="container header-content">
+      <div class="logo">MyBrand</div>
+      <nav>
+        <ul>
+          <li><a href="#">Home</a></li>
+          <li><a href="#">About</a></li>
+          <li><a href="#">Services</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="container">
+      <section class="hero-section">
+        <h1>Welcome to Our Responsive Page</h1>
+        <p>This is a demonstration of a web page built with SCSS, designed to look great on any device.</p>
+        <a href="#" class="hero-button">Learn More</a>
+      </section>
+
+      <section class="grid-section">
+        <div class="grid-item">
+          <h3>Feature One</h3>
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+        </div>
+        <div class="grid-item">
+          <h3>Feature Two</h3>
+          <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+        </div>
+        <div class="grid-item">
+          <h3>Feature Three</h3>
+          <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+        </div>
+        <div class="grid-item">
+          <h3>Feature Four</h3>
+          <p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>&copy; 2025 My Responsive Page. All rights reserved.</p>
+    </div>
+  </footer>
+</body>
+</html>

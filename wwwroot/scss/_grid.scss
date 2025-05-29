@@ -1,0 +1,310 @@
+// --- Variables ---
+$grid-columns: 12; // Total columns in your grid
+$grid-gap: 20px; // Gap between grid items
+
+// Breakpoints (adjust as needed)
+/*$breakpoint-xs: 480px;
+$breakpoint-sm: 768px;
+$breakpoint-md: 992px;
+$breakpoint-lg: 1200px;*/
+
+// --- Mixins ---
+
+// Media Query Mixin
+@mixin media-up($breakpoint) {
+  @media (min-width: $breakpoint) {
+    @content;
+  }
+}
+
+@mixin media-down($breakpoint) {
+  @media (max-width: $breakpoint - 1) { // -1 to avoid overlap with 'up'
+    @content;
+  }
+}
+
+// Column Sizing Mixin
+@mixin make-col($size: auto, $offset: 0) {
+  flex: 0 0 calc((#{$size} / #{$grid-columns}) * 100%);
+  max-width: calc((#{$size} / #{$grid-columns}) * 100%);
+
+  @if $offset > 0 {
+    margin-left: calc((#{$offset} / #{$grid-columns}) * 100%);
+  }
+}
+
+
+// --- Grid System ---
+
+.container {
+  width: 100%;
+  padding-right: calc($grid-gap / 2);
+  padding-left: calc($grid-gap / 2);
+  margin-right: auto;
+  margin-left: auto;
+  // Max width for container on larger screens
+  @include media-up($breakpoint-lg) {
+    max-width: 1140px; // Or whatever max width you prefer
+  }
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  margin-right: calc(calc(-1 * $grid-gap) / 2);
+  margin-left: calc(calc(-1 *$grid-gap) / 2);
+}
+
+.col {
+  padding-right: calc($grid-gap / 2);
+  padding-left: calc($grid-gap / 2);
+  flex-grow: 1; // Allow columns to grow if there's extra space
+  // Default for extra small screens (mobile-first)
+  @include make-col($grid-columns); // Full width by default
+  // Responsive column classes
+  // Each breakpoint inherits from the one below it
+  // Extra Small (e.g., phone portrait)
+  &.col-xs-1 {
+    @include make-col(1);
+  }
+
+  &.col-xs-2 {
+    @include make-col(2);
+  }
+
+  &.col-xs-3 {
+    @include make-col(3);
+  }
+
+  &.col-xs-4 {
+    @include make-col(4);
+  }
+
+  &.col-xs-5 {
+    @include make-col(5);
+  }
+
+  &.col-xs-6 {
+    @include make-col(6);
+  }
+
+  &.col-xs-7 {
+    @include make-col(7);
+  }
+
+  &.col-xs-8 {
+    @include make-col(8);
+  }
+
+  &.col-xs-9 {
+    @include make-col(9);
+  }
+
+  &.col-xs-10 {
+    @include make-col(10);
+  }
+
+  &.col-xs-11 {
+    @include make-col(11);
+  }
+
+  &.col-xs-12 {
+    @include make-col(12);
+  }
+  // Small (e.g., phone landscape, small tablets)
+  @include media-up($breakpoint-sm) {
+    &.col-sm-1 {
+      @include make-col(1);
+    }
+
+    &.col-sm-2 {
+      @include make-col(2);
+    }
+
+    &.col-sm-3 {
+      @include make-col(3);
+    }
+
+    &.col-sm-4 {
+      @include make-col(4);
+    }
+
+    &.col-sm-5 {
+      @include make-col(5);
+    }
+
+    &.col-sm-6 {
+      @include make-col(6);
+    }
+
+    &.col-sm-7 {
+      @include make-col(7);
+    }
+
+    &.col-sm-8 {
+      @include make-col(8);
+    }
+
+    &.col-sm-9 {
+      @include make-col(9);
+    }
+
+    &.col-sm-10 {
+      @include make-col(10);
+    }
+
+    &.col-sm-11 {
+      @include make-col(11);
+    }
+
+    &.col-sm-12 {
+      @include make-col(12);
+    }
+  }
+  // Medium (e.g., tablets, small desktops)
+  @include media-up($breakpoint-md) {
+    &.col-md-1 {
+      @include make-col(1);
+    }
+
+    &.col-md-2 {
+      @include make-col(2);
+    }
+
+    &.col-md-3 {
+      @include make-col(3);
+    }
+
+    &.col-md-4 {
+      @include make-col(4);
+    }
+
+    &.col-md-5 {
+      @include make-col(5);
+    }
+
+    &.col-md-6 {
+      @include make-col(6);
+    }
+
+    &.col-md-7 {
+      @include make-col(7);
+    }
+
+    &.col-md-8 {
+      @include make-col(8);
+    }
+
+    &.col-md-9 {
+      @include make-col(9);
+    }
+
+    &.col-md-10 {
+      @include make-col(10);
+    }
+
+    &.col-md-11 {
+      @include make-col(11);
+    }
+
+    &.col-md-12 {
+      @include make-col(12);
+    }
+  }
+  // Large (e.g., desktops)
+  @include media-up($breakpoint-lg) {
+    &.col-lg-1 {
+      @include make-col(1);
+    }
+
+    &.col-lg-2 {
+      @include make-col(2);
+    }
+
+    &.col-lg-3 {
+      @include make-col(3);
+    }
+
+    &.col-lg-4 {
+      @include make-col(4);
+    }
+
+    &.col-lg-5 {
+      @include make-col(5);
+    }
+
+    &.col-lg-6 {
+      @include make-col(6);
+    }
+
+    &.col-lg-7 {
+      @include make-col(7);
+    }
+
+    &.col-lg-8 {
+      @include make-col(8);
+    }
+
+    &.col-lg-9 {
+      @include make-col(9);
+    }
+
+    &.col-lg-10 {
+      @include make-col(10);
+    }
+
+    &.col-lg-11 {
+      @include make-col(11);
+    }
+
+    &.col-lg-12 {
+      @include make-col(12);
+    }
+  }
+  // Offset classes (example for small screens, extend for others as needed)
+  &.offset-xs-1 {
+    @include make-col($offset: 1);
+  }
+
+  &.offset-xs-2 {
+    @include make-col($offset: 2);
+  }
+  // ... add more offsets for different sizes and breakpoints
+
+  @include media-up($breakpoint-sm) {
+    &.offset-sm-1 {
+      @include make-col($offset: 1);
+    }
+    // ...
+  }
+}
+
+// --- Example Usage (in your HTML/ERB/Pug etc.) ---
+/*
+<div class="container">
+  <div class="row">
+    <div class="col col-xs-12 col-sm-6 col-md-4">
+      <div class="item">Item 1</div>
+    </div>
+    <div class="col col-xs-12 col-sm-6 col-md-4">
+      <div class="item">Item 2</div>
+    </div>
+    <div class="col col-xs-12 col-sm-6 col-md-4">
+      <div class="item">Item 3</div>
+    </div>
+    <div class="col col-xs-12 col-sm-6 col-md-6 offset-md-3">
+      <div class="item">Item 4 (Centered on medium screens)</div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .item {
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    padding: 20px;
+    margin-bottom: $grid-gap; // Add bottom margin for visual separation
+    text-align: center;
+  }
+</style>
+**/

@@ -11,22 +11,47 @@ let entityName = "PostType";
 
 const dataTableOptions = {
   controlColumn: {
-    visible: false
+    visible: true
   },
   columnDefs: [
     {
       // For Id
-      targets: 1,
-      responsivePriority: 9
+      targets: 2,
+      responsivePriority: 9,
+      options: {
+        id: 'id',
+        name: "Id",
+        typeName: 'TextField',
+        size: 'lg'
+      }
     },
     {
       // For Name
-      targets: 2,
-      responsivePriority: 3
+      targets: 3,
+      responsivePriority: 3,
+      options: {
+        id: 'name',
+        name: "name",
+        typeName: 'TextField'
+      }
+    },
+
+    {
+      // For Email
+      targets: 4,
+      responsivePriority: 3,
+      options: {
+        id: 'email',
+        name: "emal",
+        typeName: 'TextField',
+        group: {
+          prepend: { text: '@' }
+        }
+      }
     },
     {
       // For Actions
-      targets: 3,
+      targets: 5,
       searchable: false,
       orderable: false,
       responsivePriority: 1,

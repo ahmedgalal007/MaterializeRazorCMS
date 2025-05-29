@@ -1,0 +1,59 @@
+
+// _mixins.scss
+// ---
+// Contains reusable mixins for media queries and other common styles.
+
+@mixin respond-to($breakpoint) {
+  @if $breakpoint == xs {
+    @media (max-width: ($breakpoint-xs - 1)) {
+      @content;
+    }
+    // For mobile-first approach, use min-width for larger breakpoints
+  }
+  @else if $breakpoint == sm {
+    @media (min-width: $breakpoint-xs) {
+      @content;
+    }
+  }
+  @else if $breakpoint == md {
+    @media (min-width: $breakpoint-sm) {
+      @content;
+    }
+  }
+  @else if $breakpoint == lg {
+    @media (min-width: $breakpoint-md) {
+      @content;
+    }
+  }
+  @else if $breakpoint == xl { // You might want an extra-large breakpoint
+    @media (min-width: $breakpoint-lg) {
+      @content;
+    }
+  }
+}
+
+// Another way to define media query mixins for different ranges
+@mixin mobile-only {
+  @media (max-width: ($breakpoint-sm - 1)) { // Up to small tablets
+    @content;
+  }
+}
+
+@mixin tablet-and-up {
+  @media (min-width: $breakpoint-sm) { // From small tablets up
+    @content;
+  }
+}
+
+@mixin desktop-and-up {
+  @media (min-width: $breakpoint-md) { // From desktops up
+    @content;
+  }
+}
+
+// Flexbox mixin (optional, but very useful)
+@mixin flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

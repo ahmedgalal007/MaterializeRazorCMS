@@ -1,0 +1,13 @@
+// main.scss
+// ---
+// The main entry point for compiling all SCSS partials.
+
+@import 'variables';
+@import 'mixins';
+@import 'base';
+@import 'layout';
+@import 'grid';
+
+// Import other component files as needed
+// @import 'components/buttons';
+// @import 'components/forms';

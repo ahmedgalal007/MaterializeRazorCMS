@@ -3,8 +3,15 @@
  */
 import clsModalHeader from './cls-modal-header.js'
 import clsModalFooter from './cls-modal-footer.js'
+import { clsPageFormsBase } from '../../cls-page-forms-base.js'
+import { clsDynamicFormEngine  } from '../../../forms/engine/index.js';
 import { inputs } from '../index.js';
 export class clsHelpersHtmlModal extends HTMLDivElement{
+  /**
+   * 
+   * @param {clsPageFormsBase} form
+   * @param {string} size
+   */
   constructor(form, size="xl") {
     super();
     this.Form = form;
@@ -28,10 +35,17 @@ export class clsHelpersHtmlModal extends HTMLDivElement{
     modalBody.width = 500;
     modalBody.height = 150;
     modalBody.className = "modal-body";
-    // var txt = new inputs.TextField(this.Form, "TestName", {});
-    var txt = new inputs.Groups.TextField(this.Form, "TestName", { validation: { text: 'this is a reguired field!' } });
-    // var txt = new inputs.Groups.TextField(this.Form, "TestName", { validation: {text:'this is a reguired field!'} , group: { prepend: { text: '@' } } });
-    modalBody.appendChild(txt);
+
+    new clsDynamicFormEngine(this.Form, modalBody);
+    //let bTxt = new inputs.Basic.TextField(this.Form, "BasicTestName", {});
+    //modalBody.appendChild(bTxt);
+    //let bDate = new inputs.Basic.DateField(this.Form, "BasicDateField", {size:'lg'});
+    //modalBody.appendChild(bDate);
+    //let gTxt = new inputs.Groups.TextField(this.Form, "GroupTestName", { validation: { text: 'this is a reguired field!' } });
+    //modalBody.appendChild(gTxt);
+    //let vTxt = new inputs.Groups.TextField(this.Form, "TestName", { validation: { text: 'this is a reguired field!' }, group: { prepend: { text: '@' } } });
+    //modalBody.appendChild(vTxt);
+
     content.appendChild(modalBody);
     this.childNodes.forEach(nd => {
       content.appendChild(nd);

@@ -52,17 +52,20 @@
   <ItemGroup>
     <Content Remove="Pages\Shared\DisplayTemplates\BaseLocalizedEntity.cshtml" />
     <Content Remove="Pages\Shared\EditorTemplates\BaseLocalizedEntity.cshtml" />
+    <Content Remove="wwwroot\css\framework.scss" />
     <Content Remove="wwwroot\js\common\crud-page-factory.dist.js" />
     <Content Remove="wwwroot\js\common\crud-page-factory.js" />
   </ItemGroup>
   <ItemGroup>
     <UpToDateCheckInput Remove="Pages\Shared\DisplayTemplates\BaseLocalizedEntity.cshtml" />
     <_ContentIncludedByDefault Remove="Pages\Shared\DisplayTemplates\BaseLocalizedEntity.cshtml" />
+    <_ContentIncludedByDefault Remove="wwwroot\css\framework.scss" />
     <_ContentIncludedByDefault Remove="wwwroot\js\common\crud-page-factory.js" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Pages\Shared\DisplayTemplates\BaseLocalizedEntity.cshtml" />
     <None Include="Pages\Shared\EditorTemplates\BaseLocalizedEntity.cshtml" />
+    <None Include="wwwroot\css\framework.scss" />
     <None Include="wwwroot\js\common\crud-page-factory.dist.js" />
     <None Include="wwwroot\js\common\crud-page-factory.js" />
   </ItemGroup>

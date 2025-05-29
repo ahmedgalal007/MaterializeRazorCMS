@@ -56,7 +56,7 @@ export class clsInputGroupBase extends HTMLDivElement {
 
   render = function () {
     let isGroup = this.options.isGroup();
-    this.className = isGroup ? "input-group input-group-merge" : "form-floating form-floating-outline";
+    this.className = isGroup ? "mb-3 input-group input-group-merge" : "mb-3 form-floating form-floating-outline";
     if (isGroup && this.prepend) this.appendChild(this.prepend);
     let container = isGroup ? document.createElement('div') : this;
     if (isGroup) container.className = "form-floating form-floating-outline";
@@ -88,7 +88,7 @@ export class clsInputGroupBase extends HTMLDivElement {
   createInput = function () {
     let input = document.createElement('input');
     input.className = "form-control";
-    if (this.options.id) { input.setAttribute("id", id); }
+    if (this.options.id) { input.setAttribute("id", this.options.id); }
     input.setAttribute("name", this.name);
     input.setAttribute("type", this.type,);
     input.setAttribute("placeholder", ".form-control-lg");
@@ -130,7 +130,7 @@ export class clsInputGroupBase extends HTMLDivElement {
     }
   }
   isNullOrEmptyObject = function (variable) {
-    return variable === null || (typeof variable === 'object' && Object.keys(variable).length === 0);
+    return variable === null || ((typeof variable === 'object' || typeof variable === 'string') && Object.keys(variable).length === 0);
   }
 
   isObjectEmpty = function (objectName){

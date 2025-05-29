@@ -4,9 +4,9 @@
 
 'use strict';
 
-import { clsInputBase, clsInputBaseOptions } from './base/cls-input-base.js';
+import { clsInputBase, clsInputBaseOptions } from '../base/cls-input-base.js';
 
-export class clsInputText extends clsInputBase {
+export class clsBasicInputText extends clsInputBase {
 
   /**
 * Creates a new InputBase object.
@@ -21,5 +21,5 @@ export class clsInputText extends clsInputBase {
   }
 }
 
-window.customElements.define('input-text', clsInputText, { extends: 'div' });
-export default clsInputText;
+window.customElements.define('input-text', clsBasicInputText, { extends: 'div' });
+export default clsBasicInputText;

@@ -5,13 +5,22 @@
 'use strict';
 
 import clsPageFormsForm from './cls-page-forms-form.js';
+import { clsPage } from '../cls-page.js';
 import { clsModal, inputs } from './html/index.js';
 export class clsPageFormsBase extends HTMLDivElement {
-  constructor(page, id, isModal = false) {
+   /**
+    * 
+    * @param {clsPage} page
+    * @param {string} id
+    * @param {Array<inputs.Options>} fields
+    * @param {boolean} isModal
+    */
+  constructor(page, id, fields = [], isModal = false) {
   //constructor() {
     super();
     this.Page = page;
     this.id = id;
+    this.fields = fields;
     this.Form = new clsPageFormsForm(this);
     /** @type {boolean | undefined} */
     this.IsModal = isModal;

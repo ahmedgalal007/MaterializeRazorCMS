@@ -65,21 +65,27 @@ export class clsInputBaseOptions {
 * @param {string} placeholder - The name of the person.
 * @param {string} size - The value "" for normal(default) | "sm" for small | "lg" for large.
 * @param {boolean} rounded - The input frame rounding false(default) | true. 
-* @param {Array<string>} className - The input type attribute value.
+* @param {boolean} outlined - The input frame rounding false(default) | true. 
+* @param {boolean} filled - The input frame rounding false(default) | true. 
+* @param {Array<string>} classList - The input type attribute value.
 * @param {clsInputValidationOptions} validation - The input validation otions.
 * @param {JSON} style - The input type attribute value.
 * @param {clsInputGroupOptions} group - The input group options.
+* @param {string} typeName - The reguired object type namet.
 */
-  constructor(id = "", caption = "", placeholder = "", size = "", rounded = false, className = [], validation = {}, style = {}, group = {}) {
+  constructor(id = "", caption = "", placeholder = "", size = "", outlined = true, filled = false, rounded = false, classList = [], validation = {}, style = {}, group = {}, typeName='TextField') {
     this.id = id;
     this.caption = caption;
     this.placeholder = placeholder;
     this.size = size;
+    this.outlined = outlined;
+    this.filled = filled;
     this.rounded = rounded;
-    this.className = className;
+    if(classList.length > 0) this.classList.add(...classList);
     this.validation = { ...(new clsInputValidationOptions()), ...validation };
     this.style = style;
     this.group = { ...(new clsInputGroupOptions()), ...group };
+    this.typeName = typeName;
     //if (group == null || Object.keys(group).length < 1) {
     //  this.group = new clsInputGroupOptions();
     //} else {
@@ -110,36 +116,54 @@ export class clsInputBase extends HTMLDivElement {
  */
   constructor(form, name, options = null, type='text') {
     super();
+    this.label = null;
+    this.input = null;
+    this.form = form;
+    this.name = name;
+    this.options = _.merge((new clsInputBaseOptions()), options);
+    this.type = type;
+    this.parent = options.parent ? options.parent : form;
+    //Flags
+    this.labelFirst = this.options.size ? true : false;
 
-    //this._ = require('../../../../../vendor/js/lodash.js/lodash.js');
+    this.render();
 
-    if (options === null) { options = new clsInputBaseOptions(); }
-    this.className = "mb-3"
-    ///////////////////////////////////////////////
-    let label = document.createElement('div');
-    if (options.id) { label.setAttribute("for", options.id); }
-    label.className = "form-label";
-    label.innerText = options.caption ? options.caption : name;
-    this.appendChild(label);
-    ///////////////////////////////////////////////
+  }
+
+  render = function () {
+    this.className = this.options.outlined ? "mb-4 form-floating form-floating-outline" : "mb-4";
+    this.createLabel();
+    this.createInput();
+
+    if (this.labelFirst) this.appendChild(this.label);
+    this.appendChild(this.input);
+    if (!this.labelFirst) this.appendChild(this.label);
+
+    this.parent.appendChild(this);
+  }
+  createLabel = function () {
+    this.label = document.createElement('label');
+    if (this.options.id) { this.label.setAttribute("for", this.options.id); }
+    this.label.className = "floatingInput";
+    this.label.innerText = this.options.caption ? this.options.caption : this.name;
+  }
+  createInput = function () {
     let input = document.createElement('input');
-    input.className = "form-control";
-    if (options.id) { input.setAttribute("id", id); }
-    input.setAttribute("name", name);
-    input.setAttribute("type", type,);
+    input.classList.add("form-control");
+    if (this.options.id) { input.setAttribute("id", this.options.id); }
+    
+    if (this.options.size == "lg" || this.options.size == "sm") {
+      this.classList.remove("form-floating", "form-floating-outline");
+      input.classList.add("form-control-" + this.options.size);
+    }
+    if (this.options.rounded) {
+      input.classList.add("rounded-pill");
+    }
+
+    input.setAttribute("name", this.name);
+    input.setAttribute("type", this.type,);
     input.setAttribute("placeholder", ".form-control-lg");
-    if (options.size == "lg" || options.size == "sm") {
-      input.className = input.className + " form-control-"+ size;
-    }
-    if (options.rounded) {
-      input.className = input.className + " rounded-pill";
-    }
-    this.appendChild(input);
-    if (options.parent) {
-      parent.appendChild(this);
-    } else {
-      form.appendChild(this);
-    }
+    this.input = input;
   }
 }
 

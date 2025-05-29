@@ -1,0 +1,212 @@
+// Variables for breakpoints
+$breakpoint-small: 576px;
+$breakpoint-medium: 768px;
+$breakpoint-large: 992px;
+$breakpoint-xlarge: 1200px;
+
+// Mixin for responsive media queries
+@mixin respond-to($media) {
+  @if $media == 'small' {
+    @media (min-width: $breakpoint-small) {
+      @content;
+    }
+  }
+  @else if $media == 'medium' {
+    @media (min-width: $breakpoint-medium) {
+      @content;
+    }
+  }
+  @else if $media == 'large' {
+    @media (min-width: $breakpoint-large) {
+      @content;
+    }
+  }
+  @else if $media == 'xlarge' {
+    @media (min-width: $breakpoint-xlarge) {
+      @content;
+    }
+  }
+  @else if $media == 'upto-small' {
+    @media (max-width: ($breakpoint-small - 1)) {
+      @content;
+    }
+  }
+  @else if $media == 'upto-medium' {
+    @media (max-width: ($breakpoint-medium - 1)) {
+      @content;
+    }
+  }
+  @else if $media == 'upto-large' {
+    @media (max-width: ($breakpoint-large - 1)) {
+      @content;
+    }
+  }
+  @else if $media == 'upto-xlarge' {
+    @media (max-width: ($breakpoint-xlarge - 1)) {
+      @content;
+    }
+  }
+  @else {
+    @error "Unknown media breakpoint: #{$media}";
+  }
+}
+
+// Global Styles (Mobile First)
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.container {
+  width: 100%;
+  padding: 15px;
+}
+
+h1 {
+  font-size: 2em;
+  text-align: center;
+}
+
+p {
+  font-size: 1em;
+  line-height: 1.5;
+}
+
+.header {
+  background-color: #333;
+  color: white;
+  padding: 10px 0;
+  text-align: center;
+}
+
+.nav-menu {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column; // Stack vertically on small screens
+  align-items: center;
+
+  li {
+    margin: 10px 0;
+  }
+
+  a {
+    color: white;
+    text-decoration: none;
+    padding: 5px 10px;
+    display: block;
+  }
+}
+
+.main-content {
+  padding: 20px;
+}
+
+.card-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center; // Center cards on smaller screens
+}
+
+.card {
+  background-color: #f4f4f4;
+  border: 1px solid #ddd;
+  padding: 20px;
+  text-align: center;
+  width: 100%; // Full width on small screens
+  box-sizing: border-box;
+}
+
+.footer {
+  background-color: #333;
+  color: white;
+  text-align: center;
+  padding: 20px 0;
+  margin-top: 30px;
+}
+
+// Responsive Styles (Applying the mixin)
+
+// Small devices (landscape phones, 576px and up)
+@include respond-to('small') {
+  .container {
+    max-width: 540px;
+    margin: 0 auto;
+  }
+
+  .nav-menu {
+    flex-direction: row; // Horizontal on small and up
+    justify-content: center;
+
+    li {
+      margin: 0 15px;
+    }
+  }
+
+  .card {
+    width: calc(50% - 10px); // Two cards per row
+  }
+}
+
+// Medium devices (tablets, 768px and up)
+@include respond-to('medium') {
+  .container {
+    max-width: 720px;
+  }
+
+  h1 {
+    font-size: 2.5em;
+  }
+
+  .card {
+    width: calc(33.333% - 13.333px); // Three cards per row
+  }
+}
+
+// Large devices (desktops, 992px and up)
+@include respond-to('large') {
+  .container {
+    max-width: 960px;
+  }
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+  }
+
+  .nav-menu {
+    margin-right: 20px;
+  }
+
+  .card {
+    width: calc(25% - 15px); // Four cards per row
+  }
+}
+
+// X-Large devices (large desktops, 1200px and up)
+@include respond-to('xlarge') {
+  .container {
+    max-width: 1140px;
+  }
+
+  .card {
+    width: calc(20% - 16px); // Five cards per row
+  }
+}
+
+// Example of using 'upto' breakpoints for specific mobile-only styles
+@include respond-to('upto-small') {
+  .header h1 {
+    font-size: 1.8em;
+  }
+
+  .nav-menu {
+    border-top: 1px solid #555; // Add a separator for mobile menu
+    padding-top: 10px;
+  }
+}

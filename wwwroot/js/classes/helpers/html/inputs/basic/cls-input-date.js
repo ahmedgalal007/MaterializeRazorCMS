@@ -4,9 +4,9 @@
 
 'use strict';
 
-import { clsInputBase, clsInputBaseOptions } from './base/cls-input-base.js';
+import { clsInputBase, clsInputBaseOptions } from '../base/cls-input-base.js';
 
-export class clsInputDate extends clsInputBase {
+export class clsBasicInputDate extends clsInputBase {
 
   /**
 * Creates a new InputBase object.
@@ -21,5 +21,5 @@ export class clsInputDate extends clsInputBase {
   }
 }
 
-window.customElements.define('input-date', clsInputDate, { extends: 'div' });
-export default clsInputDate;
+window.customElements.define('input-date', clsBasicInputDate, { extends: 'div' });
+export default clsBasicInputDate;
