@@ -11,7 +11,7 @@ let entityName = "PostType";
 
 const dataTableOptions = {
   controlColumn: {
-    visible: true
+    visible: false
   },
   columnDefs: [
     {

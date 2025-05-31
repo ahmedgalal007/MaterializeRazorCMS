@@ -37,7 +37,7 @@ export class clsPage {
     this.EditValidationFields = editValidationFields;
     this.Notifications = new clsPageNotifications(entityName, entryNameSelector);
     // this.FormManager = new clsPageFormsManager(this);
-    this.PageDataTable = new clsPageDataTable(dataTableSelector, this,true);
+    this.PageDataTable = new clsPageDataTable(dataTableSelector, this,false);
     this._pageRepeater = null;
     this.ready(() => {
       //this.Element = document.querySelector(selector);

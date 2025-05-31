@@ -1,0 +1,265 @@
+@page
+@model AspnetCoreStarter.Pages.Page4Model
+@{
+  Layout = "";
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dynamic Bootstrap Form Grid</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" xintegrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #f0f4f8; /* Light background */
+    }
+
+    .container-wrapper {
+      background-color: #ffffff;
+      border-radius: 0.75rem; /* rounded-xl */
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); /* shadow-lg */
+      padding: 2rem;
+      margin-top: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    .form-label {
+      font-weight: 500; /* Medium font weight */
+    }
+
+    .form-control, .form-select {
+      border-radius: 0.5rem; /* rounded-lg */
+      border-color: #d1d5db; /* gray-300 */
+    }
+
+    .btn-primary {
+      background-color: #4f46e5; /* indigo-600 */
+      border-color: #4f46e5;
+      border-radius: 0.5rem;
+      transition: background-color 0.3s ease;
+    }
+
+      .btn-primary:hover {
+        background-color: #4338ca; /* indigo-700 */
+        border-color: #4338ca;
+      }
+  </style>
+</head>
+<body class="p-4 md:p-8">
+  <div class="flex items-center justify-center min-h-screen">
+    <div class="container-wrapper max-w-4xl w-full">
+      <h1 class="text-3xl font-bold text-center text-gray-800 mb-6">Dynamic Form Generator</h1>
+      <p class="text-center text-gray-600 mb-8">
+        Enter your form parameters below to dynamically generate a Bootstrap-gridded form.
+      </p>
+
+      <div class="mb-6">
+        <label for="formParamsInput" class="form-label block text-gray-700 mb-2">
+          Form Parameters (JSON Array of Objects):
+        </label>
+        <textarea id="formParamsInput" rows="10" class="form-control w-full p-3 border rounded-lg focus:ring-indigo-500 focus:border-indigo-500">
+[
+    {"label": "Full Name", "type": "text", "name": "fullName", "placeholder": "John Doe", "colSize": 6},
+    {"label": "Email Address", "type": "email", "name": "email", "placeholder": "john.doe@example.com", "colSize": 6},
+    {"label": "Password", "type": "password", "name": "password", "placeholder": "********", "colSize": 6},
+    {"label": "Confirm Password", "type": "password", "name": "confirmPassword", "placeholder": "********", "colSize": 6},
+    {"label": "Age", "type": "number", "name": "age", "placeholder": "e.g., 30", "colSize": 4},
+    {"label": "Country", "type": "select", "name": "country", "options": ["USA", "Canada", "Mexico", "Other"], "colSize": 4},
+    {"label": "Accept Terms", "type": "checkbox", "name": "acceptTerms", "colSize": 4},
+    {"label": "Bio", "type": "textarea", "name": "bio", "placeholder": "Tell us about yourself...", "colSize": 12}
+]
+</textarea>
+        <div class="text-sm text-gray-500 mt-2">
+          Each object should have 'label', 'type', 'name', 'placeholder' (optional), and 'colSize' (optional, 1-12, defaults to 12).
+          For 'select' type, include an 'options' array.
+        </div>
+      </div>
+      <div class="flex justify-center mb-8">
+        <button id="generateFormBtn" class="btn btn-primary px-6 py-3 text-lg">Generate Form</button>
+      </div>
+
+      <div id="formContainer" class="mt-8 p-4 border border-gray-200 rounded-lg bg-gray-50">
+        <h2 class="text-xl font-semibold text-gray-700 mb-4">Generated Form:</h2>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" xintegrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eGYV7RzR+K6bYqQ" crossorigin="anonymous"></script>
+
+  <script>
+    // Ensure the DOM is fully loaded before running scripts
+    window.onload = function () {
+      const formContainer = document.getElementById('formContainer');
+      const formParamsInput = document.getElementById('formParamsInput');
+      const generateFormBtn = document.getElementById('generateFormBtn');
+
+      /**
+       * Displays a simple message box to the user.
+       * This replaces `alert()` for better UX in an iframe environment.
+       * @@param {string} message - The message to display.
+       * @@param {string} type - 'success', 'danger', 'warning', 'info' for styling.
+       */
+      function showMessageBox(message, type = 'info') {
+        const messageBox = document.createElement('div');
+        messageBox.className = `alert alert-${type} alert-dismissible fade show rounded-lg shadow-md mb-4`;
+        messageBox.setAttribute('role', 'alert');
+        messageBox.innerHTML = `
+                        <div>${message}</div>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    `;
+        // Prepend to the form container for visibility
+        formContainer.insertBefore(messageBox, formContainer.firstChild);
+
+        // Automatically close after 5 seconds
+        setTimeout(() => {
+          const bsAlert = new bootstrap.Alert(messageBox);
+          bsAlert.close();
+        }, 5000);
+      }
+
+      /**
+       * Generates a Bootstrap grid-based form from an array of input parameters.
+       * Each parameter object should have:
+       * - label (string): The label for the input field.
+       * - type (string): The input type (e.g., 'text', 'email', 'password', 'number', 'textarea', 'select', 'checkbox').
+       * - name (string): The name attribute for the input field.
+       * - placeholder (string, optional): The placeholder text for input/textarea.
+       * - options (array of strings, optional): For 'select' type, an array of option values.
+       * - colSize (number, optional): The Bootstrap column size (1-12). Defaults to 12.
+       * @@param {Array<Object>} params - An array of objects defining the form inputs.
+       * @@returns {HTMLFormElement} The generated form element.
+       */
+      function generateBootstrapForm(params) {
+        const form = document.createElement('form');
+        form.className = 'row g-3'; // Bootstrap row with gutter spacing
+
+        params.forEach(param => {
+          // Create a column div for each input, using colSize or defaulting to col-12
+          const colDiv = document.createElement('div');
+          // Use `col-md-${param.colSize}` for medium and larger screens,
+          // and `col-12` for small screens to ensure responsiveness.
+          const colClass = param.colSize ? `col-12 col-md-${param.colSize}` : 'col-12';
+          colDiv.className = colClass;
+
+          const formGroup = document.createElement('div');
+          formGroup.className = 'mb-3'; // Bootstrap margin-bottom for form groups
+
+          let inputElement;
+          let labelElement = document.createElement('label');
+          labelElement.className = 'form-label';
+          labelElement.textContent = param.label;
+          labelElement.setAttribute('for', param.name); // Associate label with input
+
+          switch (param.type) {
+            case 'textarea':
+              inputElement = document.createElement('textarea');
+              inputElement.className = 'form-control rounded-lg';
+              inputElement.setAttribute('rows', '3');
+              break;
+            case 'select':
+              inputElement = document.createElement('select');
+              inputElement.className = 'form-select rounded-lg';
+              if (param.options && Array.isArray(param.options)) {
+                param.options.forEach(optionText => {
+                  const option = document.createElement('option');
+                  option.value = optionText;
+                  option.textContent = optionText;
+                  inputElement.appendChild(option);
+                });
+              }
+              break;
+            case 'checkbox':
+              // For checkboxes, the label wraps the input
+              formGroup.className = 'form-check mb-3';
+              inputElement = document.createElement('input');
+              inputElement.className = 'form-check-input rounded-md';
+              inputElement.type = 'checkbox';
+              inputElement.id = param.name; // Checkbox needs an ID for the label's 'for' attribute
+              labelElement.className = 'form-check-label'; // Bootstrap class for checkbox label
+              labelElement.setAttribute('for', param.name); // Link label to checkbox ID
+
+              formGroup.appendChild(inputElement);
+              formGroup.appendChild(labelElement);
+              // Skip adding label/input separately later for checkbox
+              break;
+            default: // text, email, password, number, etc.
+              inputElement = document.createElement('input');
+              inputElement.className = 'form-control rounded-lg';
+              inputElement.type = param.type;
+          }
+
+          // Set common attributes
+          if (param.type !== 'checkbox') {
+            inputElement.name = param.name;
+            inputElement.id = param.name; // Set ID for label association
+            if (param.placeholder) {
+              inputElement.placeholder = param.placeholder;
+            }
+            formGroup.appendChild(labelElement);
+            formGroup.appendChild(inputElement);
+          }
+
+          colDiv.appendChild(formGroup);
+          form.appendChild(colDiv);
+        });
+
+        // Add a submit button
+        const submitColDiv = document.createElement('div');
+        submitColDiv.className = 'col-12 text-center mt-4'; // Full width, centered
+        const submitButton = document.createElement('button');
+        submitButton.type = 'submit';
+        submitButton.className = 'btn btn-primary px-6 py-3 text-lg';
+        submitButton.textContent = 'Submit Form';
+        submitColDiv.appendChild(submitButton);
+        form.appendChild(submitColDiv);
+
+        // Add a simple event listener for form submission (for demonstration)
+        form.addEventListener('submit', function (event) {
+          event.preventDefault(); // Prevent default form submission
+          const formData = new FormData(form);
+          const data = {};
+          for (let [key, value] of formData.entries()) {
+            data[key] = value;
+          }
+          showMessageBox('Form submitted! Check console for data.', 'success');
+          console.log('Form Data:', data);
+        });
+
+        return form;
+      }
+
+      // Event listener for the "Generate Form" button
+      generateFormBtn.addEventListener('click', function () {
+        formContainer.innerHTML = '<h2 class="text-xl font-semibold text-gray-700 mb-4">Generated Form:</h2>'; // Clear previous form and reset title
+        try {
+          const paramsString = formParamsInput.value;
+          // Check if the string is empty or just whitespace before parsing
+          if (!paramsString.trim()) {
+            throw new Error("Form parameters cannot be empty. Please provide a valid JSON array.");
+          }
+          const formParams = JSON.parse(paramsString);
+
+          if (!Array.isArray(formParams)) {
+            throw new Error("Input must be a JSON array.");
+          }
+
+          const generatedForm = generateBootstrapForm(formParams);
+          formContainer.appendChild(generatedForm);
+          showMessageBox('Form generated successfully!', 'success');
+
+        } catch (error) {
+          console.error("Error parsing form parameters or generating form:", error);
+          showMessageBox(`Error: Invalid JSON or parameters. ${error.message}`, 'danger');
+        }
+      });
+
+      // Automatically generate the form on page load with the default parameters
+      generateFormBtn.click();
+    };
+  </script>
+</body>
+</html>

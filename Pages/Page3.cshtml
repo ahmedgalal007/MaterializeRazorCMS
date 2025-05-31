@@ -1,0 +1,317 @@
+@page
+@model AspnetCoreStarter.Pages.Page3Model
+@{
+  Layout = "";
+  ViewData["Title"] = "Page 3 - Resposive Table";
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>@ViewData["Title"]</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      margin: 20px;
+    }
+
+    .responsive-table-container {
+      max-width: 100%; /* Ensure it doesn't overflow its parent */
+      overflow-x: auto; /* Enable horizontal scrolling */
+      max-height: 400px; /* Optional: Set a max height for vertical scrolling */
+      overflow-y: auto; /* Enable vertical scrolling */
+      border: 1px solid #ccc;
+      position: relative; /* Needed for sticky positioning context */
+    }
+
+    .responsive-table {
+      width: 100%; /* Important for tables inside overflow containers */
+      border-collapse: collapse; /* For clean borders */
+      min-width: 800px; /* Adjust based on your content to force scrolling */
+    }
+
+      .responsive-table th,
+      .responsive-table td {
+        padding: 12px 15px;
+        border: 1px solid #ddd;
+        text-align: left;
+        white-space: nowrap; /* Prevent text wrapping in cells if desired */
+      }
+
+      .responsive-table thead th {
+        background-color: #f2f2f2;
+        font-weight: bold;
+      }
+
+    /* Sticky Header (Rows) */
+    .sticky-header {
+      /* Only apply sticky if the 'active-sticky-header' class is present */
+      /* top: 0; */ /* These properties will be applied when active-sticky-header is present */
+      background-color: #f2f2f2;
+      z-index: 2;
+    }
+
+    .active-sticky-header {
+      position: sticky;
+      top: 0;
+    }
+
+    /* Sticky Column */
+    .sticky-column {
+      /* Only apply sticky if the 'active-sticky-column' class is present */
+      /* left: 0; */ /* These properties will be applied when active-sticky-column is present */
+      background-color: #f9f9f9;
+      z-index: 1;
+    }
+
+    .active-sticky-column {
+      position: sticky;
+      left: 0;
+    }
+
+    tr :nth-child(4) {
+      position: sticky;
+      left: 185px;
+    }
+    /* Sticky Corner (Intersection of fixed header and fixed column) */
+    .sticky-header.sticky-column {
+      z-index: 3;
+      background-color: #e6e6e6;
+    }
+
+    .active-sticky-header.active-sticky-column { /* Ensure both active classes are present for the corner */
+      position: sticky;
+      top: 0;
+      left: 0;
+    }
+
+    tr :nth-child(4).active-sticky-header.active-sticky-column { /* Ensure both active classes are present for the corner */
+      position: sticky;
+      left: 185px;
+    }
+
+    /* Optional: Zebra striping */
+    .responsive-table tbody tr:nth-child(even) {
+      background-color: #f9f9f9;
+    }
+  </style>
+</head>
+<body>
+<h1>Resposive Table</h1>
+<hr/>
+<div class="responsive-table-container">
+  <table class="responsive-table">
+    <thead>
+      <tr>
+        <th class="sticky-header sticky-column">Header 1 (Fixed)</th>
+        <th class="sticky-header">Header 2</th>
+        <th class="sticky-header">Header 3</th>
+        <th class="sticky-header sticky-column">Header 4</th>
+        <th class="sticky-header">Header 5</th>
+        <th class="sticky-header">Header 6</th>
+        <th class="sticky-header">Header 7</th>
+        <th class="sticky-header">Header 8</th>
+        <th class="sticky-header">Header 9</th>
+        <th class="sticky-header">Header 10</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="sticky-column">Row 1, Col 1 (Fixed)</td>
+        <td>Row 1, Col 2</td>
+        <td>Row 1, Col 3</td>
+          <td class="sticky-column">Row 1, Col 4</td>
+        <td>Row 1, Col 5</td>
+        <td>Row 1, Col 6</td>
+        <td>Row 1, Col 7</td>
+        <td>Row 1, Col 8</td>
+        <td>Row 1, Col 9</td>
+        <td>Row 1, Col 10</td>
+      </tr>
+      <tr>
+        <td class="sticky-column">Row 2, Col 1 (Fixed)</td>
+        <td>Row 2, Col 2</td>
+        <td>Row 2, Col 3</td>
+          <td class="sticky-column">Row 2, Col 4</td>
+        <td>Row 2, Col 5</td>
+        <td>Row 2, Col 6</td>
+        <td>Row 2, Col 7</td>
+        <td>Row 2, Col 8</td>
+        <td>Row 2, Col 9</td>
+        <td>Row 2, Col 10</td>
+      </tr>
+      <tr>
+        <td class="sticky-column">Row 3, Col 1 (Fixed)</td>
+        <td>Row 3, Col 2</td>
+        <td>Row 3, Col 3</td>
+          <td class="sticky-column">Row 3, Col 4</td>
+        <td>Row 3, Col 5</td>
+        <td>Row 3, Col 6</td>
+        <td>Row 3, Col 7</td>
+        <td>Row 3, Col 8</td>
+        <td>Row 3, Col 9</td>
+        <td>Row 3, Col 10</td>
+      </tr>
+      <tr>
+        <td class="sticky-column">Row 4, Col 1 (Fixed)</td>
+        <td>Row 4, Col 2</td>
+        <td>Row 4, Col 3</td>
+          <td class="sticky-column">Row 4, Col 4</td>
+        <td>Row 4, Col 5</td>
+        <td>Row 4, Col 6</td>
+        <td>Row 4, Col 7</td>
+        <td>Row 4, Col 8</td>
+        <td>Row 4, Col 9</td>
+        <td>Row 4, Col 10</td>
+      </tr>
+      <tr>
+        <td class="sticky-column">Row 5, Col 1 (Fixed)</td>
+        <td>Row 5, Col 2</td>
+        <td>Row 5, Col 3</td>
+          <td class="sticky-column">Row 5, Col 4</td>
+        <td>Row 5, Col 5</td>
+        <td>Row 5, Col 6</td>
+        <td>Row 5, Col 7</td>
+        <td>Row 5, Col 8</td>
+        <td>Row 5, Col 9</td>
+        <td>Row 5, Col 10</td>
+      </tr>
+      <tr>
+        <td class="sticky-column">Row 6, Col 1 (Fixed)</td>
+        <td>Row 6, Col 2</td>
+        <td>Row 6, Col 3</td>
+          <td class="sticky-column">Row 6, Col 4</td>
+        <td>Row 6, Col 5</td>
+        <td>Row 6, Col 6</td>
+        <td>Row 6, Col 7</td>
+        <td>Row 6, Col 8</td>
+        <td>Row 6, Col 9</td>
+        <td>Row 6, Col 10</td>
+      </tr>
+      <tr>
+        <td class="sticky-column">Row 7, Col 1 (Fixed)</td>
+        <td>Row 7, Col 2</td>
+        <td>Row 7, Col 3</td>
+          <td class="sticky-column">Row 7, Col 4</td>
+        <td>Row 7, Col 5</td>
+        <td>Row 7, Col 6</td>
+        <td>Row 7, Col 7</td>
+        <td>Row 7, Col 8</td>
+        <td>Row 7, Col 9</td>
+        <td>Row 7, Col 10</td>
+      </tr>
+      <tr>
+        <td class="sticky-column">Row 8, Col 1 (Fixed)</td>
+        <td>Row 8, Col 2</td>
+        <td>Row 8, Col 3</td>
+          <td class="sticky-column">Row 8, Col 4</td>
+        <td>Row 8, Col 5</td>
+        <td>Row 8, Col 6</td>
+        <td>Row 8, Col 7</td>
+        <td>Row 8, Col 8</td>
+        <td>Row 8, Col 9</td>
+        <td>Row 8, Col 10</td>
+      </tr>
+      <tr>
+        <td class="sticky-column">Row 9, Col 1 (Fixed)</td>
+        <td>Row 9, Col 2</td>
+        <td>Row 9, Col 3</td>
+          <td class="sticky-column">Row 9, Col 4</td>
+        <td>Row 9, Col 5</td>
+        <td>Row 9, Col 6</td>
+        <td>Row 9, Col 7</td>
+        <td>Row 9, Col 8</td>
+        <td>Row 9, Col 9</td>
+        <td>Row 9, Col 10</td>
+      </tr>
+      <tr>
+        <td class="sticky-column">Row 10, Col 1 (Fixed)</td>
+        <td>Row 10, Col 2</td>
+        <td>Row 10, Col 3</td>
+          <td class="sticky-column">Row 10, Col 4</td>
+        <td>Row 10, Col 5</td>
+        <td>Row 10, Col 6</td>
+        <td>Row 10, Col 7</td>
+        <td>Row 10, Col 8</td>
+        <td>Row 10, Col 9</td>
+        <td>Row 10, Col 10</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<script type="text/javascript">
+    document.addEventListener('DOMContentLoaded', () => {
+      const tableContainer = document.querySelector('.responsive-table-container');
+      const table = document.querySelector('.responsive-table');
+
+      // Function to enable/disable sticky columns
+      function toggleStickyColumn(enable) {
+        const stickyCells = table.querySelectorAll('.sticky-column');
+        stickyCells.forEach(cell => {
+          if (enable) {
+            cell.classList.add('active-sticky-column'); // Add a class to activate sticky behavior
+          } else {
+            cell.classList.remove('active-sticky-column');
+          }
+        });
+      }
+
+      // Function to enable/disable sticky headers
+      function toggleStickyHeader(enable) {
+        const stickyHeaders = table.querySelectorAll('.sticky-header');
+        stickyHeaders.forEach(header => {
+          if (enable) {
+            header.classList.add('active-sticky-header'); // Add a class to activate sticky behavior
+          } else {
+            header.classList.remove('active-sticky-header');
+          }
+        });
+      }
+
+      // Example Usage (you'd typically tie these to UI elements like checkboxes)
+      // For demonstration, let's assume you have buttons to toggle:
+
+      // Initially enable both for demonstration
+      toggleStickyColumn(true);
+      toggleStickyHeader(true);
+
+
+      // You could add UI controls like this:
+
+      const toggleColumnBtn = document.createElement('button');
+      toggleColumnBtn.textContent = 'Toggle Fixed Column';
+      document.body.prepend(toggleColumnBtn);
+      let columnFixed = true;
+      toggleColumnBtn.addEventListener('click', () => {
+          columnFixed = !columnFixed;
+          toggleStickyColumn(columnFixed);
+      });
+
+      const toggleHeaderBtn = document.createElement('button');
+      toggleHeaderBtn.textContent = 'Toggle Fixed Header';
+      document.body.prepend(toggleHeaderBtn);
+      let headerFixed = true;
+      toggleHeaderBtn.addEventListener('click', () => {
+          headerFixed = !headerFixed;
+          toggleStickyHeader(headerFixed);
+      });
+
+
+      // Important: Re-apply sticky properties on scroll if needed for complex layouts
+      // (though position:sticky usually handles this implicitly)
+      // For general responsiveness and potential issues, you might want to re-evaluate on resize
+      let resizeTimer;
+      window.addEventListener('resize', () => {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(() => {
+          // Potentially re-calculate min-width or re-apply sticky classes
+          // if you have dynamic content or complex sticky scenarios
+          console.log("Window resized, table responsiveness re-evaluated.");
+        }, 250);
+      });
+    });
+  </script>
+</body>
+</html>
