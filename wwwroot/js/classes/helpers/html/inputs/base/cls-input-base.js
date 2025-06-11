@@ -8,10 +8,10 @@
 ;
 'use strict';
 import('../../../../../../../vendor/js/lodash.js/lodash.js')
-.then((mod2) => {
-  // Logs "then() called"
-  console.log(_.merge); // false
-});
+  .then((mod2) => {
+    // Logs "then() called"
+    console.log(_.merge); // false
+  });
 
 export class clsInputGroupPendOptions {
   /**
@@ -20,7 +20,7 @@ export class clsInputGroupPendOptions {
 * @param {Array<string>} iconClasses - The name of the input.
 * @param {boolean} iconFirst - The name of the input.
 */
-  constructor( text = '', iconClasses = [], iconFirst = false) {
+  constructor(text = '', iconClasses = [], iconFirst = false) {
     this.text = text;
     this.iconClasses = iconClasses;
     this.iconFirst = iconFirst;
@@ -37,20 +37,19 @@ export class clsInputGroupOptions {
 * @param {clsInputGroupPendOptions} prepend - The name of the input.
 * @param {clsInputGroupPendOptions} append - The name of the input.
 */
-  constructor(type = 'merge', prepend = {}, append = {})
-  {
+  constructor(type = 'merge', prepend = {}, append = {}) {
     this.type = type;
-    this.prepend = { ...(new clsInputGroupPendOptions()), ...prepend } ;
+    this.prepend = { ...(new clsInputGroupPendOptions()), ...prepend };
     this.append = { ...(new clsInputGroupPendOptions()), ...append };
   }
 
 }
 
 export class clsInputValidationOptions {
- /**
-* Creates a new InputBase object.
-* @param {string} text - The validation text.
-*/
+  /**
+ * Creates a new InputBase object.
+ * @param {string} text - The validation text.
+ */
   constructor(text = '') {
     this.text = text;
   }
@@ -64,6 +63,7 @@ export class clsInputBaseOptions {
 * @param {string} caption - The name of the input.
 * @param {string} placeholder - The name of the person.
 * @param {string} size - The value "" for normal(default) | "sm" for small | "lg" for large.
+* @param {number} colSize - The value "" for normal(default) | "sm" for small | "lg" for large.
 * @param {boolean} rounded - The input frame rounding false(default) | true. 
 * @param {boolean} outlined - The input frame rounding false(default) | true. 
 * @param {boolean} filled - The input frame rounding false(default) | true. 
@@ -72,20 +72,23 @@ export class clsInputBaseOptions {
 * @param {JSON} style - The input type attribute value.
 * @param {clsInputGroupOptions} group - The input group options.
 * @param {string} typeName - The reguired object type namet.
+* @param {Object | null} parent - The reguired object type namet.
 */
-  constructor(id = "", caption = "", placeholder = "", size = "", outlined = true, filled = false, rounded = false, classList = [], validation = {}, style = {}, group = {}, typeName='TextField') {
+  constructor(id = "", caption = "", placeholder = "", size = "", colSize = 12, outlined = true, filled = false, rounded = false, classList = [], validation = {}, style = {}, group = {}, typeName = 'TextField', parent=null) {
     this.id = id;
     this.caption = caption;
     this.placeholder = placeholder;
     this.size = size;
+    this.colSize = colSize;
     this.outlined = outlined;
     this.filled = filled;
     this.rounded = rounded;
-    if(classList.length > 0) this.classList.add(...classList);
+    if (classList.length > 0) this.classList.add(...classList);
     this.validation = { ...(new clsInputValidationOptions()), ...validation };
     this.style = style;
     this.group = { ...(new clsInputGroupOptions()), ...group };
     this.typeName = typeName;
+    this.parent = parent;
     //if (group == null || Object.keys(group).length < 1) {
     //  this.group = new clsInputGroupOptions();
     //} else {
@@ -101,20 +104,21 @@ export class clsInputBaseOptions {
     return false;
   }
   isNullOrEmpty = function (obj) {
-    if (obj == null || Object.keys(obj).length <1) return true;
+    if (obj == null || Object.keys(obj).length < 1) return true;
     return false;
   }
 }
 
 export class clsInputBase extends HTMLDivElement {
- /**
- * Creates a new InputBase object.
- * @param {HTMLFormElement} form - The form object.
- * @param {string} name - The name of the input.
- * @param {clsInputBaseOptions} options - The class extra options.
- * @param {string} type - The input type attribute value.
- */
-  constructor(form, name, options = null, type='text') {
+  #value = null;
+  /**
+  * Creates a new InputBase object.
+  * @param {HTMLFormElement} form - The form object.
+  * @param {string} name - The name of the input.
+  * @param {clsInputBaseOptions} options - The class extra options.
+  * @param {string} type - The input type attribute value.
+  */
+  constructor(form, name, options = null, type = 'text') {
     super();
     this.label = null;
     this.input = null;
@@ -141,6 +145,16 @@ export class clsInputBase extends HTMLDivElement {
 
     this.parent.appendChild(this);
   }
+
+  get value() {
+    this.#value = this.input.value
+    return this.#value;
+  }
+  set value(val) {
+    this.#value = val;
+    this.input.value = this.#value;
+  }
+
   createLabel = function () {
     this.label = document.createElement('label');
     if (this.options.id) { this.label.setAttribute("for", this.options.id); }
@@ -151,7 +165,7 @@ export class clsInputBase extends HTMLDivElement {
     let input = document.createElement('input');
     input.classList.add("form-control");
     if (this.options.id) { input.setAttribute("id", this.options.id); }
-    
+
     if (this.options.size == "lg" || this.options.size == "sm") {
       this.classList.remove("form-floating", "form-floating-outline");
       input.classList.add("form-control-" + this.options.size);

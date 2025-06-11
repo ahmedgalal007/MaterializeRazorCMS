@@ -42,7 +42,6 @@
     <Folder Include="Controllers\User\" />
     <Folder Include="Endpoints\Auth\" />
     <Folder Include="Endpoints\Roles\" />
-    <Folder Include="Endpoints\Posts\" />
     <Folder Include="Localization\" />
     <Folder Include="Models\Keyword\" />
     <Folder Include="Models\User\" />

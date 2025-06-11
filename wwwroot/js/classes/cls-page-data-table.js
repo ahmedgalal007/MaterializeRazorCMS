@@ -4,18 +4,20 @@
 
 'use strict';
 
-import clsPageFormsEdit from './cls-page-forms-edit.js'
-import clsPageFormsCreate from './cls-page-forms-create.js'
+import clsPageFormsEdit from './forms/cls-page-forms-edit.js'
+import clsPageFormsCreate from './forms/cls-page-forms-create.js'
 export class clsPageDataTable {
 
-  constructor(selector, page, isModal) {
+  constructor(selector, page, isModal, enableSelectRows=true) {
     this.Selector = selector;
     this.Page = page;
     this.IsModal = !!isModal ? true : page.IsModal || false;
+    this.enableSelectRows = enableSelectRows;
     let fields = this.getFormFieldsOptions();
     this.EditForm = new clsPageFormsEdit(this.Page, this.generateFormId('edit'), fields, this.IsModal);
     this.CreateForm = new clsPageFormsCreate(this.Page, this.generateFormId('create'), fields, this.IsModal);
     this.Page.DataTableOptions.buttons = [...this.defaultDataTableOptions.buttons, ...this.Page.DataTableOptions.buttons, ...this._getCreateButton()];
+    this.$DataTable = null;
     //this.Page.DataTableOptions.buttons = this.Page.DataTableOptions.buttons
     //  .slice().unshift(this._getCreateButton());
     this.Page.ready(this.init.bind(this));
@@ -28,12 +30,37 @@ export class clsPageDataTable {
         .slice()
         .unshift(this.getControlColumn(this.Page.DataTableOptions.controlColumn?.render));
     }
-    $(this.Selector).DataTable({ ...this.defaultDataTableOptions, ...this.Page.DataTableOptions })
+    this.$DataTable = $(this.Selector).DataTable({ ...this.defaultDataTableOptions, ...this.Page.DataTableOptions })
+    //this.$DataTable = $(this.Selector).DataTable({
+    //  ajax: `/api/PostType/?page=1&take=10`,
+    //  dataSrc: 'data',
+    //  columns: [
+    //    { data: 'select', title:'Sicoooo' },
+    //    { data: 'id' },
+    //    { data: 'name' },
+    //    { data: 'email' },
+    //    { data: 'actions' },
+    //    { data: 'extra' }
+    //  ],
+    //  columnsDef: [
+    //    {
+    //      targets: [1, 4, 5],
+    //      responsivePriority: 9
+    //    }
+    //  ],
+    //  processing: true,
+    //  serverSide: true
+    //});
   }
 
   getFormFieldsOptions() {
     let options = [];
-    this.Page.DataTableOptions.columnDefs.map(field => {
+    //this.Page.DataTableOptions.columnDefs.map(field => {
+    //  if (field.options != null && field.options != undefined && Object.keys(field.options).length > 0) {
+    //    options.push(field.options);
+    //  }
+    //});
+    this.Page.DataTableOptions.columns.map(field => {
       if (field.options != null && field.options != undefined && Object.keys(field.options).length > 0) {
         options.push(field.options);
       }
@@ -96,16 +123,21 @@ export class clsPageDataTable {
         extend: 'collection',
         className: 'btn btn-outline-secondary dropdown-toggle me-4 waves-effect waves-light',
         text: '<i class="ri-download-line ri-16px me-1"></i> <span class="d-none d-sm-inline-block">Export</span>',
-        buttons: this.exportButtons()
+        buttons: this.exportButtons([1,2,3])
       }
     ],
     responsive: true,
+    serverSide: true,
+    ajax: '',
+    dataSrc:'',
     // For responsive popup
     rowReorder: {
       selector: 'td:nth-child(2)'
     },
     // For responsive popup button and responsive priority for Attribute name
     columnDefs: [],
+    // columns: [ ],
+    processing: false,
     responsive: {
       details: {
         display: this.responsiveDisplay,
@@ -153,7 +185,7 @@ export class clsPageDataTable {
     }
   })
 
-  exportButtons() {
+  exportButtons(exportColumns=[1,2]) {
     return [
       {
         extend: 'print',
@@ -178,7 +210,7 @@ export class clsPageDataTable {
           $(win.document.body).find('h1').css('text-align', 'center');
         },
         exportOptions: {
-          columns: [1, 2, 3, 4, 5, 6, 7],
+          columns: exportColumns,
           format: {
             body: function (data, row, column, node) {
               if (column === 1) {
@@ -202,7 +234,7 @@ export class clsPageDataTable {
         text: '<i class="ri-file-text-line me-1" ></i>Csv',
         className: 'dropdown-item',
         exportOptions: {
-          columns: [1, 2, 3, 4, 5, 6, 7],
+          columns: exportColumns,
           format: {
             body: function (data, row, column, node) {
               if (column === 1) {
@@ -226,7 +258,7 @@ export class clsPageDataTable {
         text: '<i class="ri-file-excel-line me-1"></i>Excel',
         className: 'dropdown-item',
         exportOptions: {
-          columns: [1, 2, 3, 4, 5, 6, 7],
+          columns: exportColumns,
           format: {
             body: function (data, row, column, node) {
               if (column === 1) {
@@ -250,7 +282,7 @@ export class clsPageDataTable {
         text: '<i class="ri-file-pdf-line me-1"></i>Pdf',
         className: 'dropdown-item',
         exportOptions: {
-          columns: [1, 2, 3, 4, 5, 6, 7],
+          columns: exportColumns,
           format: {
             body: function (data, row, column, node) {
               if (column === 1) {
@@ -274,7 +306,7 @@ export class clsPageDataTable {
         text: '<i class="ri-file-copy-line me-1"></i>Copy',
         className: 'dropdown-item',
         exportOptions: {
-          columns: [1, 2, 3, 4, 5, 6, 7],
+          columns: exportColumns,
           format: {
             body: function (data, row, column, node) {
               if (column === 1) {

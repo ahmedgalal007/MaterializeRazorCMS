@@ -19,6 +19,7 @@ import('../../../../../../../../vendor/js/lodash.js/lodash.js')
 
 
 export class clsInputGroupBase extends HTMLDivElement {
+  #value = null;
   /**
   * Creates a new InputBase object.
   * @param {HTMLFormElement} form - The form object.
@@ -35,7 +36,6 @@ export class clsInputGroupBase extends HTMLDivElement {
     this.options = _.merge((new clsInputBaseOptions()), options);
     this.type = type;
 
-    
     
     ///////////////////////////////////////////////
     this.createLabel();
@@ -74,10 +74,12 @@ export class clsInputGroupBase extends HTMLDivElement {
   }
 
   get value() {
-    return this.input.value;
+    this.#value = this.input.value
+    return this.#value;
   }
   set value(val) {
-    this.input.value = val;
+    this.#value = val;
+    this.input.value = this.#value;
   }
   createLabel = function () {
     this.label = document.createElement('label');

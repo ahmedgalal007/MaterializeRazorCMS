@@ -7,6 +7,9 @@
 import clsPageFormsForm from './cls-page-forms-form.js';
 import { clsPage } from '../cls-page.js';
 import { clsModal, inputs } from './html/index.js';
+await import('../../../vendor/libs/axios/axios.js').then((ax) => {
+  console.log('Load Axios: ', window.axios);
+});
 export class clsPageFormsBase extends HTMLDivElement {
    /**
     * 
@@ -15,15 +18,18 @@ export class clsPageFormsBase extends HTMLDivElement {
     * @param {Array<inputs.Options>} fields
     * @param {boolean} isModal
     */
-  constructor(page, id, fields = [], isModal = false) {
+  constructor(page, id, fields = [], isModal = false, dataItem = {}) {
   //constructor() {
     super();
     this.Page = page;
     this.id = id;
     this.fields = fields;
-    this.Form = new clsPageFormsForm(this);
-    /** @type {boolean | undefined} */
     this.IsModal = isModal;
+    this.dataItem = dataItem;
+    dataItem.name = "Ahmed Galal";
+    dataItem.Id = 123456789;
+    dataItem.email = 'ahmedgalal007@gmail.com';
+    this.Form = new clsPageFormsForm(this);
     this.TriggerSelector = "";
     this.FormType = "Base";
     this.Page.ready(this.init.bind(this), 1000);
@@ -32,7 +38,8 @@ export class clsPageFormsBase extends HTMLDivElement {
 
   init() {
     
-    this.IsModal?this._initModel():this._initOffCanvas();
+    this.IsModal ? this._initModel() : this._initOffCanvas();
+    let modal = new clsModal(this);
     //document.body.appendChild(this);
     this.Page.Element.appendChild(this);
     this.id = this._getId();
@@ -49,7 +56,7 @@ export class clsPageFormsBase extends HTMLDivElement {
     this.className = "modal fade";
     this.setAttribute('tabindex', '-1');
     this.setAttribute('aria-labelledby', 'modalScrollableTitle');
-    let modal = new clsModal(this);
+    // let modal = new clsModal(this);
     
     // modal.render();
     /*let dialog = document.createElement('div'),

@@ -4,7 +4,7 @@
  */
 
 'use strict';
-import clsPageFormsBase from './helpers/cls-page-forms-base.js'
+import clsPageFormsBase from '../helpers/cls-page-forms-base.js'
 export class clsPageFormsEdit extends clsPageFormsBase {
   constructor(page, id, fields, isModal) {
     super(page, id, fields, isModal);

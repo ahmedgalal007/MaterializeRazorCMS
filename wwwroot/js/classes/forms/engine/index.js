@@ -1,5 +1,5 @@
 
-import('../../../../vendor/js/lodash.js/lodash.js')
+await import('../../../../vendor/js/lodash.js/lodash.js')
 import { inputs, clsModal } from '../../helpers/html/index.js';
 export class clsDynamicFormEngine {
   constructor(formBase, parent) {
@@ -26,9 +26,32 @@ export class clsDynamicFormEngine {
 
   _generateFormFields = function () {
     this.formContainer.innerHTML = ''; // Clear previous fields
+    let rowUsedCols = 0;
+    let rowDiv
     this.formContainer.fields.forEach((field) => {
       const fieldObj = this._generateFormFieldHTML(field);
-      if (fieldObj) this.dynamicForm.appendChild(fieldObj);
+      /// populate item
+      let item = this.formContainer?.dataItem
+      let propName = field.name;
+      if (item && item[propName]) fieldObj.value = item[propName];
+      if (fieldObj) {
+        rowUsedCols = field.colSize ? rowUsedCols + field.colSize : 12;
+        // Create a column div for each input, using colSize or defaulting to col-12
+        const colDiv = document.createElement('div');
+        const colClass = field.colSize ? `col-12 col-md-${field.colSize}` : 'col-12';
+        colDiv.className = colClass; { }
+        colDiv.appendChild(fieldObj)
+        if (!rowDiv || rowUsedCols > 12) {
+          rowDiv = document.createElement('div');
+          rowDiv.className = 'row g-6'
+          this.dynamicForm.appendChild(rowDiv);
+          rowUsedCols = rowUsedCols > 12 ? 0 : rowUsedCols ;
+        }
+
+        rowDiv.appendChild(colDiv);
+        
+       
+      }
       // const fieldHTML = generateFormFieldHTML(field);
       // formContainer.insertAdjacentHTML('beforeend', fieldHTML);
     });

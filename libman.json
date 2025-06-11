@@ -3,9 +3,12 @@
   "defaultProvider": "cdnjs",
   "libraries": [
     {
-      "provider": "cdnjs",
       "library": "lodash.js@4.17.21",
       "destination": "wwwroot/vendor/js/lodash.js/"
+    },
+    {
+      "library": "axios@1.9.0",
+      "destination": "wwwroot/vendor/libs/axios/"
     }
   ]
 }

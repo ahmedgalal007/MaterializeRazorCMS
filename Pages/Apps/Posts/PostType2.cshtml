@@ -57,6 +57,7 @@
               <th></th>
               <th>Id</th>
               <th>Name</th>
+              <th>Email</th>
               <th>Action</th>
               <th></th>
             </tr>
@@ -70,6 +71,7 @@
                 <td></td>
                 <td>@entity.Id</td>
                 <td class="text-nowrap post-type-name">@entity.Name</td>
+                <td class="text-nowrap post-type-name">@entity.Slug</td>
                 <td class="text-nowrap">
                   @* Edit Button *@
                   <button class="btn btn-sm btn-icon edit-post-type-button" data-bs-toggle="modal"
@@ -113,9 +115,12 @@
           <thead>
             <tr>
               <th></th>
+              <th></th>
               <th>Id</th>
               <th>Name</th>
-              <th>Action</th>
+              <th>Parent</th>
+              <th>Email</th>
+              <th></th>
               <th></th>
             </tr>
           </thead>

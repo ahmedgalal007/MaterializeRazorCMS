@@ -10,60 +10,75 @@ function editHandler(btn, page) { }
 let entityName = "PostType";
 
 const dataTableOptions = {
+  ajax: { url: `/api/PostType?entityName=${entityName}`, type:'GET' },
   controlColumn: {
-    visible: false
+    visible: true
   },
-  columnDefs: [
+  columns: [
+    { data: 'id', className: 'control', render: data => '' },
+    { data: 'id', title: 'Select', render: data => '<input type="checkbox" value="' + data + '" />' },
     {
-      // For Id
-      targets: 2,
-      responsivePriority: 9,
+      data: 'id',
       options: {
         id: 'id',
         name: "Id",
         typeName: 'TextField',
-        size: 'lg'
+        size: 'lg',
+        colSize: 8
       }
+    },
+    {
+      data: 'name',
+      options: {
+        id: 'name',
+        name: "name",
+        typeName: 'TextField',
+        colSize: 6
+      }
+    },
+    {
+      data: 'parent', render: function (data) {
+        return 'ID=' + data.id + ', Name=' + data.name;
+      }
+    },
+    {
+      data: 'email',
+      options: {
+        id: 'emailObj',
+        name: "email",
+        typeName: 'TextField',
+        group: {
+          prepend: { text: '@' }
+        },
+        colSize: 6
+      }
+    },
+    { data: 'id', title: 'actions', searchable: false, orderable: false, render: () => '' },
+    { data: 'id', title: 'extra', searchable: false, orderable: false, render: () => '' }
+  ],
+  columnDefs: [
+    {
+      // For Id
+      targets: 2,
+      responsivePriority: 4
+
     },
     {
       // For Name
       targets: 3,
-      responsivePriority: 3,
-      options: {
-        id: 'name',
-        name: "name",
-        typeName: 'TextField'
-      }
+      responsivePriority: 2
     },
-
     {
       // For Email
       targets: 4,
-      responsivePriority: 3,
-      options: {
-        id: 'email',
-        name: "emal",
-        typeName: 'TextField',
-        group: {
-          prepend: { text: '@' }
-        }
-      }
+      responsivePriority: 3
+
     },
     {
       // For Actions
-      targets: 5,
-      searchable: false,
-      orderable: false,
+      targets: [5,6],
       responsivePriority: 1,
       visible: true
-    },
-
-    {
-      // For DropDown
-      targets: -2,
-      searchable: false,
-      orderable: false,
-      responsivePriority: 1
     }
   ],
   buttons: [
@@ -91,19 +106,19 @@ const dataTableOptions = {
 
 $(document).ready(function () {
   console.log("Page Loaded");
-  const page = new Page(this,'#app-page', config, entityName, "/Apps/Posts/PostType", editHandler, FormValidation, "#PostTypesTable", dataTableOptions);
+  const page = new Page(this, '#app-page', config, entityName, "/Apps/Posts/PostType", editHandler, FormValidation, "#PostTypesTable", dataTableOptions);
   const { borderColor, bodyBg, headingColor } = page.getConfigColors(isDarkStyle);
   PageLoaded();
   page.setRepeater(".form-repeater")
     .on('page-repeater-show', (e, item) => {
-    console.log("Repeater", e.data.repeater);
-    debugger
-    e.data.repeater.UpdateRepeaterControls(item);
-    e.data.repeater.row++;
-    console.log("RowItem", item);
-  });
+      console.log("Repeater", e.data.repeater);
+      debugger
+      e.data.repeater.UpdateRepeaterControls(item);
+      e.data.repeater.row++;
+      console.log("RowItem", item);
+    });
   let scroller = document.getElementById('vertical-scrollbar');
-  if(scroller){
+  if (scroller) {
     new PerfectScrollbar(scroller, {
       wheelPropagation: false
     });

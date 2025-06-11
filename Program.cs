@@ -11,6 +11,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
+
 // Add services to the container.
 builder.Services.AddRazorPages();
 
@@ -35,6 +36,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IAuthorizationManager, AuthorizationManager>();
 builder.Services.AddScoped<AutoCompeleteHelper>();
 builder.Services.AddSingleton<IISOLanguages, ISOLanguages>();
+builder.Services.AddScoped<DynamicQueryService>();
 
 var app = builder.Build();
 
