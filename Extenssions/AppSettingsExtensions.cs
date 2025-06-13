@@ -1,16 +1,19 @@
 using AspnetCoreStarter.Data;
+using AspnetCoreStarter.Entities;
 using EFCore.AutomaticMigrations;
 using Microsoft.EntityFrameworkCore;
+using AspnetCoreStarter.Services.Interfaces;
+using AspnetCoreStarter.Services;
 
 namespace AspnetCoreStarter.Extenssions;
 
-public static class StartUpDbExtensions
+public static class AppSettingsExtensions
 {
-  public static async Task CreateDbIfNotExists(this IHost host)
+  public static async Task StartSettingsService(this IHost host)
   {
     await using var scope = host.Services.CreateAsyncScope();
     var services = scope.ServiceProvider;
-    await using ApplicationDbContext? dbContext = services.GetService<ApplicationDbContext>();
+    await using ApplicationSettingsDbContext? dbContext = services.GetService<ApplicationSettingsDbContext>();
     if (dbContext is not null)
     {
       //if (await dbContext.Database.EnsureCreatedAsync())
@@ -33,7 +36,20 @@ public static class StartUpDbExtensions
       //Migrator.InitializeDatabase(dbContext);
 
       // Seed Data
-      SeedData.Initialize(services);
+      // SeedData.Initialize(services);
+
+      // Seed initial settings if needed
+      if (!dbContext.AppSettings.Any())
+      {
+        dbContext.AppSettings.Add(new AppSetting { Key = "WelcomeMessage", Value = "Hello from Database!", LastModified = DateTime.UtcNow });
+        dbContext.AppSettings.Add(new AppSetting { Key = "MaxUsers", Value = "100", LastModified = DateTime.UtcNow });
+        dbContext.SaveChanges();
+      }
+
+       ISettingService? appSettings = services.GetService<ISettingService>();
+      if (appSettings is not null) {
+        var st = await appSettings.GetAllSettingsAsync();
+      }
     }
 
     

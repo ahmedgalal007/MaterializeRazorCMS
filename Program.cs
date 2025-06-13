@@ -6,6 +6,8 @@ using AspnetCoreStarter.Models;
 using AspnetCoreStarter.Endpoints;
 using AspnetCoreStarter.Auth;
 using AspnetCoreStarter.Extenssions;
+using AspnetCoreStarter.Services.Interfaces;
+using AspnetCoreStarter.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +16,10 @@ builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
 // Add services to the container.
 builder.Services.AddRazorPages();
+
+builder.Services.AddDbContext<ApplicationSettingsDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("MSSQLSettings"))); // Use .UseSqlite, .UseNpgsql etc.
+
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
   {
@@ -33,9 +39,10 @@ builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddSingleton<IISOLanguages, ISOLanguages>();
 builder.Services.AddScoped<IAuthorizationManager, AuthorizationManager>();
 builder.Services.AddScoped<AutoCompeleteHelper>();
-builder.Services.AddSingleton<IISOLanguages, ISOLanguages>();
+builder.Services.AddScoped<ISettingService, SettingService>();
 builder.Services.AddScoped<DynamicQueryService>();
 
 var app = builder.Build();
@@ -46,7 +53,8 @@ var app = builder.Build();
 
 //  SeedData.Initialize(services);
 //}
-app.CreateDbIfNotExists();
+await app.StartSettingsService();
+await app.CreateDbIfNotExists();
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
