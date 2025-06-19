@@ -1,17 +1,17 @@
 using AspnetCoreStarter.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 
 namespace AspnetCoreStarter.Data;
 
 
-public class ApplicationSettingsDbContext : DbContext
+public class ApplicationSettingsDbContext(DbContextOptions<ApplicationSettingsDbContext> options)
+      : DbContext(options)
 {
-  public ApplicationSettingsDbContext(DbContextOptions<ApplicationSettingsDbContext> options)
-      : base(options)
-  {
-  }
+
 
   public DbSet<AppSetting> AppSettings { get; set; } = null!;
+  public DbSet<DynamicTableConfig> TablesConfig { get; set; } = null!;
 
   protected override void OnModelCreating(ModelBuilder modelBuilder)
   {
@@ -19,6 +19,7 @@ public class ApplicationSettingsDbContext : DbContext
     modelBuilder.Entity<AppSetting>()
         .HasIndex(s => s.Key)
         .IsUnique();
+
 
     base.OnModelCreating(modelBuilder);
   }

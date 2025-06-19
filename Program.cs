@@ -17,7 +17,8 @@ builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 // Add services to the container.
 builder.Services.AddRazorPages();
 
-builder.Services.AddDbContext<ApplicationSettingsDbContext>(options =>
+
+builder.Services.AddDbContext<ApplicationSettingsDbContext>( options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("MSSQLSettings"))); // Use .UseSqlite, .UseNpgsql etc.
 
 
@@ -66,8 +67,8 @@ if (!app.Environment.IsDevelopment())
 
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+  app.UseSwagger();
+  app.UseSwaggerUI();
 };
 
 app.UseHttpsRedirection();

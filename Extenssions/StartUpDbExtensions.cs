@@ -8,6 +8,7 @@ public static class StartUpDbExtensions
 {
   public static async Task CreateDbIfNotExists(this IHost host)
   {
+
     await using var scope = host.Services.CreateAsyncScope();
     var services = scope.ServiceProvider;
     await using ApplicationDbContext? dbContext = services.GetService<ApplicationDbContext>();

@@ -37,7 +37,7 @@ public static class AppSettingsExtensions
 
       // Seed Data
       // SeedData.Initialize(services);
-
+      await SeedTablesConfig.Initialize(services);
       // Seed initial settings if needed
       if (!dbContext.AppSettings.Any())
       {
