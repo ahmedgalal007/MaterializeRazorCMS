@@ -44,7 +44,7 @@ builder.Services.AddSingleton<IISOLanguages, ISOLanguages>();
 builder.Services.AddScoped<IAuthorizationManager, AuthorizationManager>();
 builder.Services.AddScoped<AutoCompeleteHelper>();
 builder.Services.AddScoped<ISettingService, SettingService>();
-builder.Services.AddScoped<DynamicQueryService>();
+builder.Services.AddScoped<IDynamicQueryService,DynamicQueryService>();
 
 var app = builder.Build();
 

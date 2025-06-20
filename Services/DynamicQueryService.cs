@@ -1,13 +1,14 @@
 using AspnetCoreStarter.Data;
+using AspnetCoreStarter.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Reflection;
 
-namespace AspnetCoreStarter.Endpoints;
+namespace AspnetCoreStarter.Services;
 
-public class DynamicQueryService
+public class DynamicQueryService : IDynamicQueryService
 {
   private readonly ApplicationDbContext _context;
 
@@ -27,7 +28,7 @@ public class DynamicQueryService
   /// <returns>A list of objects that match the criteria. These will be of the actual entity type, but returned as `object`.</returns>
   public async Task<object> GetFilteredEntitiesAsync(
       string entityName,
-      PropertyFilter[] filters, int start = 0, int length = 10, int draw=0)
+      PropertyFilter[] filters, int start = 0, int length = 10, int draw = 0)
   {
     // 1. Get the DbSet for the given entity name using reflection
     var dbSetProperty = GetEntityDbSetInfoByName(_context, entityName);
@@ -47,7 +48,8 @@ public class DynamicQueryService
     int total = await dbSet?.Cast<object>().CountAsync();
     int filtered = await filteredQuery?.Cast<object>().CountAsync();
     var results = await filteredQuery?.Cast<object>().Skip(start).Take(length).ToListAsync();
-    return new {
+    return new
+    {
       Draw = draw,
       RecordsTotal = total,
       RecordsFiltered = filtered,
@@ -60,9 +62,9 @@ public class DynamicQueryService
   {
     public PropertyFilter(string propertyName, object propertyValue, string comparisonType = "Equals")
     {
-      this.PropertyName = propertyName;
-      this.PropertyValue = propertyValue;
-      this.ComparisonType = comparisonType;
+      PropertyName = propertyName;
+      PropertyValue = propertyValue;
+      ComparisonType = comparisonType;
     }
 
     public string PropertyName { get; set; }
@@ -102,7 +104,7 @@ public class DynamicQueryService
   }
 
   #region Helpers
-  private static PropertyInfo? GetEntityDbSetInfoByName(DbContext context, string entityName)
+  public static PropertyInfo? GetEntityDbSetInfoByName(DbContext context, string entityName)
   {
     return context.GetType().GetProperties()
        .FirstOrDefault(p => p.PropertyType.IsGenericType &&
@@ -111,7 +113,7 @@ public class DynamicQueryService
 
   }
 
-  private static IQueryable? GetDbSetByEntityName(DbContext context, Type entityType)
+  public static IQueryable? GetDbSetByEntityName(DbContext context, Type entityType)
   {
     return (IQueryable?)context.GetType().GetMethod("Set", 1, Type.EmptyTypes)
         .MakeGenericMethod(entityType)

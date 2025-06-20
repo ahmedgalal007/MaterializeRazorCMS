@@ -1,9 +1,11 @@
 using AspnetCoreStarter.Common;
 using AspnetCoreStarter.Data;
 using AspnetCoreStarter.Entities;
+using AspnetCoreStarter.Services;
+using AspnetCoreStarter.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using SQLitePCL;
-using static AspnetCoreStarter.Endpoints.DynamicQueryService;
+using static AspnetCoreStarter.Services.DynamicQueryService;
 
 namespace AspnetCoreStarter.Endpoints.Users;
 
@@ -71,7 +73,7 @@ public class PostTypessEndpoints
   {
     //  DataTableRequestColumn[] columns, int start = 1, int length = 10, int draw = 0
     //  /api/PostType/GetAllPostTypes?page=1&take=10
-    _group.MapGet("/", async (HttpRequest request, DynamicQueryService qService) =>
+    _group.MapGet("/", async (HttpRequest request, IDynamicQueryService qService) =>
     {
       // var jsonQyery = await request.ReadFromJsonAsync<DataTableAjaxRequest>();
       // DataTableAjaxRequest dtReq;
@@ -80,7 +82,7 @@ public class PostTypessEndpoints
       // return getFakeResults(dtReq.Draw, dtReq.Start, dtReq.Length);
       var _filters = new PropertyFilter[]
       {
-        new PropertyFilter("name","a", "contains")
+        // new PropertyFilter("name","a", "contains")
       };
       var results = await qService.GetFilteredEntitiesAsync(request.Query["entityName"], _filters, dtReq.Start, dtReq.Length, dtReq.Draw );
       return results;
