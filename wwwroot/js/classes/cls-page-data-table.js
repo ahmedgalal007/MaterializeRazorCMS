@@ -25,12 +25,17 @@ export class clsPageDataTable {
 
   init() {
     const $ = window.jQuery;
-    if (this.Page.DataTableOptions.controlColumn?.visible) {
-      this.Page.DataTableOptions.columnDefs = this.Page.DataTableOptions.columnDefs
-        .slice()
-        .unshift(this.getControlColumn(this.Page.DataTableOptions.controlColumn?.render));
-    }
-    this.$DataTable = $(this.Selector).DataTable({ ...this.defaultDataTableOptions, ...this.Page.DataTableOptions })
+    
+    $.get("/api/Schema/" + this.Page.EntityName, function (data, status) {
+      if (data.controlColumn?.visible && data.controlColumn?.render) {
+        data.columnDefs = data.columnDefs
+          .slice()
+          .unshift(this.getControlColumn(data.controlColumn?.render));
+      }
+      // alert("Data: " + data + "\nStatus: " + status);
+      const options = { ...this.defaultDataTableOptions, ...data };
+      this.$DataTable = $(this.Selector).DataTable(options);
+    }.bind(this));
     //this.$DataTable = $(this.Selector).DataTable({
     //  ajax: `/api/PostType/?page=1&take=10`,
     //  dataSrc: 'data',
@@ -94,7 +99,7 @@ export class clsPageDataTable {
     }];
   }
 
-  defaultDataTableOptions = {
+   defaultDataTableOptions = {
     order: [[1, 'desc']],
     displayLength: 7,
     dom:

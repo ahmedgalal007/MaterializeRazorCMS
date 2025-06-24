@@ -13,6 +13,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System.Reflection.Emit;
 using Microsoft.EntityFrameworkCore.Design;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Reflection;
 
 namespace AspnetCoreStarter.Data;
 public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, ApplicationSettingsDbContext settingsContext)
@@ -33,6 +34,8 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
   public DbSet<PostType> PostTypes { get; set; } = default!;
   public DbSet<Keyword> Keywords { get; set; } = default!;
   public DbSet<Category> Categories { get; set; } = default!;
+  public DbSet<BaseDynamicEntity> DynamicEntities { get; set; }
+
   protected override void OnModelCreating(ModelBuilder modelBuilder)
   {
     base.OnModelCreating(modelBuilder);
@@ -43,9 +46,10 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     foreach (var config in _dynamicTableConfigs)
     {
       // EntityTypeBuilder<BaseDynamicEntity> entityBuilder = modelBuilder.Entity<BaseDynamicEntity>();
-      EntityTypeBuilder entityBuilder = modelBuilder.Entity(config.EntityName);
 
-      // entityBuilder.HasBaseType(typeof(BaseDynamicEntity));
+      EntityTypeBuilder<Dictionary<string, BaseDynamicEntity>> entityBuilder = modelBuilder.SharedTypeEntity<Dictionary<string, BaseDynamicEntity>>(config.EntityName);
+      // EntityTypeBuilder entityBuilder = modelBuilder.Entity(config.EntityName);
+      //entityBuilder.HasBaseType(typeof(BaseDynamicEntity));
       // Configure the table name dynamically
       entityBuilder.ToTable(config.TableName);
 
@@ -88,6 +92,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
         // Example for actual properties on BaseDynamicEntity if they existed and were common
         // if (propConfig.PropertyName == "Name") entityBuilder.Property(e => e.Name);
       }
+
     }
   }
 
@@ -120,7 +125,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     // This is where it gets tricky because the actual 'entityName' is just a configuration.
     // You would typically use `Set<BaseDynamicEntity>()` and then access shadow properties or the DynamicProperties dictionary.
 
-    return Set<T>(); // This will return a DbSet of BaseDynamicEntity
+    return Set<T>(entityType.Name); // This will return a DbSet of BaseDynamicEntity
   }
 }
 

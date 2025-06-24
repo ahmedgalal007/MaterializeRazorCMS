@@ -81,8 +81,8 @@ export class clsPage {
   }
 
   getData() {
-    let table = this.PageDataTable.$DataTable;
-    let oSettings = table.settings;
+    // let table = this.PageDataTable.$DataTable;
+    // let oSettings = table.settings;
     // table.clear();
     //table.columns = [
     //  { data: 'select' },

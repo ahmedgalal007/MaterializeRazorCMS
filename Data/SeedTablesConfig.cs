@@ -26,7 +26,7 @@ namespace AspnetCoreStarter.Data
         if (!configDb.TablesConfig.Any())
         {
           // Seed some sample data
-          var tablesConfig= new DynamicTableConfig[]
+          var tablesConfig = new DynamicTableConfig[]
           {
              new DynamicTableConfig
             {
@@ -34,9 +34,9 @@ namespace AspnetCoreStarter.Data
                 TableName = "Customers",
                 Properties = new List<DynamicPropertyConfig>
                 {
-                    new DynamicPropertyConfig { PropertyName = "Id", PropertyType = "int", IsKey = true, IsRequired = true  },
-                    new DynamicPropertyConfig { PropertyName = "Name", PropertyType = "string", IsRequired = true },
-                    new DynamicPropertyConfig { PropertyName = "Email", PropertyType = "string" , IsRequired = false}
+                    new DynamicPropertyConfig { PropertyName = "Id", PropertyType = "int", IsKey = true, IsRequired = true,ControlName="TextField"  },
+                    new DynamicPropertyConfig { PropertyName = "Name", PropertyType = "string", IsRequired = true ,ControlName="TextField" },
+                    new DynamicPropertyConfig { PropertyName = "Email", PropertyType = "string" , IsRequired = false,ControlName="TextField" }
                 }
             },
             new DynamicTableConfig
@@ -45,9 +45,9 @@ namespace AspnetCoreStarter.Data
               TableName = "Orders",
               Properties = new List<DynamicPropertyConfig>
                 {
-                    new DynamicPropertyConfig { PropertyName = "Id", PropertyType = "int", IsKey = true, IsRequired = true  },
-                    new DynamicPropertyConfig { PropertyName = "OrderDate", PropertyType = "datetime", IsRequired = true },
-                    new DynamicPropertyConfig { PropertyName = "TotalAmount", PropertyType = "decimal", IsRequired = true }
+                    new DynamicPropertyConfig { PropertyName = "Id", PropertyType = "int", IsKey = true, IsRequired = true,ControlName="TextField"   },
+                    new DynamicPropertyConfig { PropertyName = "OrderDate", PropertyType = "datetime", IsRequired = true ,ControlName="TextField" },
+                    new DynamicPropertyConfig { PropertyName = "TotalAmount", PropertyType = "decimal", IsRequired = true,ControlName="TextField"  }
                 }
             }
             // Add more user data as needed below...

@@ -11,6 +11,10 @@ namespace AspnetCoreStarter.Pages.Apps.Posts
   public class PostTypeModel2 : CRUDPageModel<PostType, Guid>
   {
     public List<Entities.Posts.Attribute> AttributeTypes { get; set; } = new();
+
+    public PostTypeModel2(ApplicationDbContext context) : base(context)
+    {
+    }
     public override async Task OnGetAsync(int page = 1, int take = 10)
     {
       CurrentPage = page;
@@ -28,9 +32,6 @@ namespace AspnetCoreStarter.Pages.Apps.Posts
     {
       entity.Slug =  CommonHelpers.GenerateSlug(entity.Name);
       return base.BeforeCreate(entity);
-    }
-    public PostTypeModel2(ApplicationDbContext context) : base(context)
-    {
     }
 
 
