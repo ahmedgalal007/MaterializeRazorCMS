@@ -12,6 +12,7 @@ public class DataTableColumnOptions
 }
 public class DataTableColumn
 {
+  public int Index { get; set; }
   public string Data { get; set; }
   public DataTableColumnOptions Options { get; set; }= new DataTableColumnOptions();
 }

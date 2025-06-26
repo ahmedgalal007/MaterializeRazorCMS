@@ -7,7 +7,7 @@
 
 import Page from '/js/classes/cls-page.js';
 function editHandler(btn, page) { }
-let entityName = "Customer";
+let entityName = "Order"; // "Customer";
 
 const dataTableOptions = {
   ajax: { url: `/api/PostType?entityName=${entityName}`, type:'GET' },

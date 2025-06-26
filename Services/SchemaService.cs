@@ -17,12 +17,13 @@ public class SchemaService(ApplicationSettingsDbContext context) : ISchemaServic
 
     var columns = new List<DataTableColumn> { };
     var columnDefs = new List<DataTableColumnDef> { };
-    foreach (var prp in entity.Properties)
+    foreach (var prp in entity.Properties.OrderBy(e => e.Index))
     {
       columns.Add(new DataTableColumn
       {
-        Data=prp.PropertyName,
-        Options= new DataTableColumnOptions
+        Index = prp.Index,
+        Data = prp.PropertyName,
+        Options = new DataTableColumnOptions
         {
           Id = prp.Id,
           Name = prp.PropertyName,
@@ -40,10 +41,11 @@ public class SchemaService(ApplicationSettingsDbContext context) : ISchemaServic
         });
       }
     }
-    return new DataTableSettings {
+    return new DataTableSettings
+    {
       Ajax = new AjaxOpt($"/api/Entity/{entityName}", "GET"),
       Columns = columns,
-      ColumnDefs= columnDefs
+      ColumnDefs = columnDefs
     };
   }
 }

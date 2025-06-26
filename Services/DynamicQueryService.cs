@@ -34,37 +34,26 @@ public class DynamicQueryService : IDynamicQueryService
   {
     // 1. Get the DbSet for the given entity name using reflection
     var dbSetProperty = GetEntityDbSetInfoByName(_context, entityName);
-    IQueryable dbSet;
-    Type entityType;
-    if (dbSetProperty == null)
+
+    Type? entityType = dbSetProperty is null ?
+                              _context.Model.FindEntityType(entityName)?.ClrType :
+                              dbSetProperty.PropertyType.GenericTypeArguments[0];
+    if (entityType == null)
     {
-      IEntityType? eType = _context.Model.FindEntityType(entityName);
-      if(eType == null)
-      {
-        throw new ArgumentException($"No DbSet found for entity name: {entityName}");
-      };
-    entityType = eType.ClrType;
-      dbSet = _context.Set<Dictionary<string, BaseDynamicEntity>>(entityName);
-      // dbSet = GetDbSetByEntityNameShared(_context, entityType, entityName);
-      
-    }
-    else
-    {
-      entityType = dbSetProperty.PropertyType.GenericTypeArguments[0];
-      // entityType = _context.Model.FindEntityType(entityName).GetType();
-      dbSet = GetDbSetByEntityName(_context, entityType);
-    }
+      throw new ArgumentException($"No DbSet found for entity name: {entityName}");
+    };
 
-
-
+    var dbSet = dbSetProperty is null ?
+                          _context.Set<Dictionary<string, BaseDynamicEntity>>(entityName)!.Cast<Dictionary<string, BaseDynamicEntity>>() :
+                          GetDbSetByEntityName(_context, entityType)!.Cast<object>();
 
     // var filteredQuery = (IQueryable)genericWhereMethod.Invoke(null, new object[] { dbSet, lambda });
-    var filteredQuery = GenerateQueryFilters(dbSet, entityType, entityName, filters);
-    // var filteredQuery = dbSet;
+    IQueryable<object>? filteredQuery = (IQueryable<object>?)GenerateQueryFilters(dbSet, entityType, entityName, filters);
+
     // 4. Execute the query and return results
-    int total = await dbSet.Cast<Dictionary<string, BaseDynamicEntity>>().CountAsync();
-    int filtered = await filteredQuery?.Cast<Dictionary<string, BaseDynamicEntity>>().CountAsync();
-    var results = await filteredQuery?.Cast<Dictionary<string, BaseDynamicEntity>>().Skip(start).Take(length).ToListAsync();
+    int total = await dbSet.CountAsync();
+    int filtered = await filteredQuery?.CountAsync();
+    var results = await filteredQuery?.Skip(start).Take(length).ToListAsync();
     return new
     {
       Draw = draw,
@@ -133,12 +122,6 @@ public class DynamicQueryService : IDynamicQueryService
     return typeInfo;
   }
 
-  public static IQueryable? GetDbSetByEntityNameShared(DbContext context, Type entityType, string entityName)
-  {
-    MethodInfo setMethod = typeof(DbContext).GetMethod(nameof(DbContext.Set),1, BindingFlags.Public | BindingFlags.Instance, null, Type.EmptyTypes, Array.Empty<ParameterModifier>());
-    MethodInfo genericSetMethod = setMethod.MakeGenericMethod(typeof(object));
-    return (IQueryable)genericSetMethod.Invoke(context, null );
-  }
   public static IQueryable? GetDbSetByEntityName(DbContext context, Type entityType)
   {
     return (IQueryable?)context.GetType().GetMethod("Set", 1, Type.EmptyTypes)

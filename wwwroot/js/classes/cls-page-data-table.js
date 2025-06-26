@@ -34,6 +34,11 @@ export class clsPageDataTable {
       }
       // alert("Data: " + data + "\nStatus: " + status);
       const options = { ...this.defaultDataTableOptions, ...data };
+      $(this.Selector).find('tr>th').remove();
+      const sortByIndex = function (a, b) { if (a.index > b.index) { return 1 } else { return -1 } };
+      for (const i of data.columns.sort(sortByIndex) ) {
+        let elem = $(this.Selector).find('tr').append('<th>' + i.data + '</th');
+      }
       this.$DataTable = $(this.Selector).DataTable(options);
     }.bind(this));
     //this.$DataTable = $(this.Selector).DataTable({
