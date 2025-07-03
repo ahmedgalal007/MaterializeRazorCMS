@@ -7,8 +7,7 @@
 import clsPageFormsBase from '../helpers/cls-page-forms-base.js'
 export class clsPageFormsEdit extends clsPageFormsBase {
   constructor(page, id, fields, isModal) {
-    super(page, id, fields, isModal);
-    this.FormType = "Edit";
+    super("Edit", page, id, fields, isModal);
   }
   
 }

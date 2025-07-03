@@ -18,7 +18,7 @@ export class clsPageFormsBase extends HTMLDivElement {
     * @param {Array<inputs.Options>} fields
     * @param {boolean} isModal
     */
-  constructor(page, id, fields = [], isModal = false, dataItem = {}) {
+  constructor(action, page, id, fields = [], isModal = false, dataItem = {}) {
   //constructor() {
     super();
     this.Page = page;
@@ -31,7 +31,7 @@ export class clsPageFormsBase extends HTMLDivElement {
     dataItem.email = 'ahmedgalal007@gmail.com';
     this.Form = new clsPageFormsForm(this);
     this.TriggerSelector = "";
-    this.FormType = "Base";
+    this.FormAction = action || "Base";
     this.Page.ready(this.init.bind(this), 1000);
     //this.init();
   }
@@ -90,7 +90,7 @@ export class clsPageFormsBase extends HTMLDivElement {
   }
 
   _getId = function() {
-    return this.FormType.toLowerCase()+this.Page.EntityName+ (this.IsModal?"Modal":"OffCanvas");
+    return this.FormAction.toLowerCase()+this.Page.EntityName+ (this.IsModal?"Modal":"OffCanvas");
   }
 
 

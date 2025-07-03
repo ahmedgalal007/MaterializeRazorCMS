@@ -6,8 +6,7 @@
 import clsPageFormsBase from '../helpers/cls-page-forms-base.js';
 export class clsPageFormsCreate extends clsPageFormsBase {
   constructor(page, id, fields, isModal) {
-    super(page, id, fields, isModal);
-    this.FormType = "Create";
+    super("Create",page, id, fields, isModal);
   }
 }
 window.customElements.define('cls-page-forms-create', clsPageFormsCreate, { extends: 'div' });
