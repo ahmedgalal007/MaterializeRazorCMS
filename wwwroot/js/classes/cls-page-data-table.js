@@ -13,9 +13,14 @@ export class clsPageDataTable {
     this.Page = page;
     this.IsModal = !!isModal ? true : page.IsModal || false;
     this.enableSelectRows = enableSelectRows;
-    let fields = this.getFormFieldsOptions();
-    this.EditForm = new clsPageFormsEdit(this.Page, this.generateFormId('edit'), fields, this.IsModal);
-    this.CreateForm = new clsPageFormsCreate(this.Page, this.generateFormId('create'), fields, this.IsModal);
+    // let fields = this.getFormFieldsOptions();
+    // this.EditForm = new clsPageFormsEdit(this.Page, this.generateFormId('edit'), fields, this.IsModal);
+    // this.CreateForm = new clsPageFormsCreate(this.Page, this.generateFormId('create'), fields, this.IsModal);
+    this.Forms = [];
+    for (var frm of this.getFormFieldsOptions() ) {
+      this.Forms.push(new clsPageFormsEdit(this.Page, this.generateFormId(frm.name), frm.fields, this.IsModal));
+    }
+
     this.Page.DataTableOptions.buttons = [...this.defaultDataTableOptions.buttons, ...this.Page.DataTableOptions.buttons, ...this._getCreateButton()];
     this.$DataTable = null;
     //this.Page.DataTableOptions.buttons = this.Page.DataTableOptions.buttons
@@ -65,16 +70,21 @@ export class clsPageDataTable {
 
   getFormFieldsOptions() {
     let options = [];
-    //this.Page.DataTableOptions.columnDefs.map(field => {
+    //this.Page.DataTableOptions.columns.map(field => {
     //  if (field.options != null && field.options != undefined && Object.keys(field.options).length > 0) {
     //    options.push(field.options);
     //  }
     //});
-    this.Page.DataTableOptions.columns.map(field => {
-      if (field.options != null && field.options != undefined && Object.keys(field.options).length > 0) {
-        options.push(field.options);
-      }
-    });
+    for (let action of this.Page.DataTableOptions.actions) {
+      // Check if action has columns and iterate through them
+      let fields = [];
+      action.columns.map(field => {
+        if (field.options != null && field.options != undefined && Object.keys(field.options).length > 0) {
+          fields.push(field.options);
+        }
+      });
+      options.push({name: action.name, fields:fields});
+    }
     return options;
   }
   getControlColumn(renderFunction) {

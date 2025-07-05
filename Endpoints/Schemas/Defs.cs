@@ -1,6 +1,12 @@
+using System.Collections.Generic;
 using AspnetCoreStarter.Entities.Posts;
 
 namespace AspnetCoreStarter.Endpoints.Schemas;
+public class DataTableAction
+{
+  public string Name { get; set; }
+  public List<DataTableColumn> Columns { get; set; }
+}
 
 public class DataTableColumnOptions
 {
@@ -26,8 +32,9 @@ public class DataTableColumnDef
 public class DataTableSettings
 {
   public AjaxOpt Ajax { get; set; }
-  public List<DataTableColumn> Columns { get; set; }
-  public List<DataTableColumnDef> ColumnDefs { get; set; }
+  // public List<DataTableColumn> Columns { get; set; }
+  public List<DataTableAction> Actions { get; set; } = new List<DataTableAction>();
+  public List<DataTableColumnDef> ColumnDefs { get; set; } = new List<DataTableColumnDef>();
 }
 
 public record AjaxOpt (string Url, string Type);

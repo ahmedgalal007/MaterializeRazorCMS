@@ -44,7 +44,7 @@ public class SchemaService(ApplicationSettingsDbContext context) : ISchemaServic
     return new DataTableSettings
     {
       Ajax = new AjaxOpt($"/api/Entity/{entityName}", "GET"),
-      Columns = columns,
+      Actions = columns,
       ColumnDefs = columnDefs
     };
   }
