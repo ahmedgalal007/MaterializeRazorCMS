@@ -15,11 +15,13 @@ public class SchemaService(ApplicationSettingsDbContext context) : ISchemaServic
       .Include(e => e.Properties)
       .FirstAsync(e => e.EntityName == entityName);
 
-    var columns = new List<DataTableColumn> { };
+    var createAction = new DataTableAction() { Name = "create"};
+    var UpdateAction = new DataTableAction() { Name = "update" };
+    var _actions = new List<DataTableAction> { createAction , UpdateAction };
     var columnDefs = new List<DataTableColumnDef> { };
     foreach (var prp in entity.Properties.OrderBy(e => e.Index))
     {
-      columns.Add(new DataTableColumn
+      var column=new DataTableColumn
       {
         Index = prp.Index,
         Data = prp.PropertyName,
@@ -30,8 +32,9 @@ public class SchemaService(ApplicationSettingsDbContext context) : ISchemaServic
           TypeName = prp.ControlName,
           ColSize = prp.ColSize,
         }
-      });
-
+      };
+      if (!prp.IsKey) createAction.Columns.Add(column);
+      UpdateAction.Columns.Add(column);
       if (prp.ResponsivePriority > 0)
       {
         columnDefs.Add(new DataTableColumnDef
@@ -44,7 +47,7 @@ public class SchemaService(ApplicationSettingsDbContext context) : ISchemaServic
     return new DataTableSettings
     {
       Ajax = new AjaxOpt($"/api/Entity/{entityName}", "GET"),
-      Actions = columns,
+      Actions = _actions,
       ColumnDefs = columnDefs
     };
   }

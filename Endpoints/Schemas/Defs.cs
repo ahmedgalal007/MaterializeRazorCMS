@@ -5,7 +5,7 @@ namespace AspnetCoreStarter.Endpoints.Schemas;
 public class DataTableAction
 {
   public string Name { get; set; }
-  public List<DataTableColumn> Columns { get; set; }
+  public List<DataTableColumn> Columns { get; set; } = new List<DataTableColumn>();
 }
 
 public class DataTableColumnOptions

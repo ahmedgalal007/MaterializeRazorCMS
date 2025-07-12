@@ -43,7 +43,7 @@ export class clsPage {
     editHandler,
     frmValidation,
     dataTableSelector,
-    dataTableOptions,
+    dataTableOptions = null,
     createValidationFields = {},
     editValidationFields = {},
     entryNameSelector = ".post-type-name-"

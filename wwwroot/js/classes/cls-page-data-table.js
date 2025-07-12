@@ -4,8 +4,9 @@
 
 'use strict';
 
-import clsPageFormsEdit from './forms/cls-page-forms-edit.js'
-import clsPageFormsCreate from './forms/cls-page-forms-create.js'
+// import clsPageFormsEdit from './forms/cls-page-forms-edit.js'
+// import clsPageFormsCreate from './forms/cls-page-forms-create.js'
+import clsPageFormsBase from './helpers/cls-page-forms-base.js';
 export class clsPageDataTable {
 
   constructor(selector, page, isModal, enableSelectRows=true) {
@@ -17,11 +18,8 @@ export class clsPageDataTable {
     // this.EditForm = new clsPageFormsEdit(this.Page, this.generateFormId('edit'), fields, this.IsModal);
     // this.CreateForm = new clsPageFormsCreate(this.Page, this.generateFormId('create'), fields, this.IsModal);
     this.Forms = [];
-    for (var frm of this.getFormFieldsOptions() ) {
-      this.Forms.push(new clsPageFormsEdit(this.Page, this.generateFormId(frm.name), frm.fields, this.IsModal));
-    }
 
-    this.Page.DataTableOptions.buttons = [...this.defaultDataTableOptions.buttons, ...this.Page.DataTableOptions.buttons, ...this._getCreateButton()];
+
     this.$DataTable = null;
     //this.Page.DataTableOptions.buttons = this.Page.DataTableOptions.buttons
     //  .slice().unshift(this._getCreateButton());
@@ -30,22 +28,16 @@ export class clsPageDataTable {
 
   init() {
     const $ = window.jQuery;
-    
-    $.get("/api/Schema/" + this.Page.EntityName, function (data, status) {
-      if (data.controlColumn?.visible && data.controlColumn?.render) {
-        data.columnDefs = data.columnDefs
-          .slice()
-          .unshift(this.getControlColumn(data.controlColumn?.render));
-      }
+    if (this.Page.DataTableOptions) {
       // alert("Data: " + data + "\nStatus: " + status);
-      const options = { ...this.defaultDataTableOptions, ...data };
-      $(this.Selector).find('tr>th').remove();
-      const sortByIndex = function (a, b) { if (a.index > b.index) { return 1 } else { return -1 } };
-      for (const i of data.columns.sort(sortByIndex) ) {
-        let elem = $(this.Selector).find('tr').append('<th>' + i.data + '</th');
-      }
-      this.$DataTable = $(this.Selector).DataTable(options);
-    }.bind(this));
+      this._generateDataTable(this.Page.DataTableOptions);
+    } else {
+      $.get("/api/Schema/" + this.Page.EntityName, function (data, status) {
+        this._generateDataTable(data);
+      }.bind(this));
+    }
+
+    
     //this.$DataTable = $(this.Selector).DataTable({
     //  ajax: `/api/PostType/?page=1&take=10`,
     //  dataSrc: 'data',
@@ -67,7 +59,29 @@ export class clsPageDataTable {
     //  serverSide: true
     //});
   }
+  _generateDataTable(data) {
+    data.columns = data.actions[1].columns;
+    if (data.controlColumn?.visible && data.controlColumn?.render) {
+      data.columnDefs = data.columnDefs
+        .slice()
+        .unshift(this.getControlColumn(data.controlColumn?.render));
+    }
+    // alert("Data: " + data + "\nStatus: " + status);
+    this.Page.DataTableOptions = { ...this.defaultDataTableOptions, ...data };
+    this.Page.DataTableOptions.buttons = [...this.defaultDataTableOptions.buttons, ...this.Page.DataTableOptions.buttons, ...this._getCreateButton()];
 
+    $(this.Selector).find('tr>th').remove();
+    const sortByIndex = function (a, b) { if (a.index > b.index) { return 1 } else { return -1 } };
+    for (const i of data.columns.sort(sortByIndex)) {
+      let elem = $(this.Selector).find('tr').append('<th>' + i.data + '</th');
+    }
+    for (var frm of this.getFormFieldsOptions()) {
+      this.Forms.push(new clsPageFormsBase(frm.name, this.Page, this.generateFormId(frm.name), frm.fields, this.IsModal));
+    }
+
+
+    this.$DataTable = $(this.Selector).DataTable(this.Page.DataTableOptions);
+  }
   getFormFieldsOptions() {
     let options = [];
     //this.Page.DataTableOptions.columns.map(field => {
