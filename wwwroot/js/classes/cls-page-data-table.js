@@ -128,7 +128,7 @@ export class clsPageDataTable {
     }];
   }
 
-   defaultDataTableOptions = {
+  defaultDataTableOptions = {
     order: [[1, 'desc']],
     displayLength: 7,
     dom:

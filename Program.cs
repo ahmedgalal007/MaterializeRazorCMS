@@ -46,6 +46,7 @@ builder.Services.AddScoped<AutoCompeleteHelper>();
 builder.Services.AddScoped<ISettingService, SettingService>();
 builder.Services.AddScoped<ISchemaService, SchemaService>();
 builder.Services.AddScoped<IDynamicQueryService,DynamicQueryService>();
+builder.Services.AddScoped<ISettingsQueryService,SettingsQueryService>();
 
 var app = builder.Build();
 

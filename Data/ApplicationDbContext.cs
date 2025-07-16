@@ -14,6 +14,7 @@ using System.Reflection.Emit;
 using Microsoft.EntityFrameworkCore.Design;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Reflection;
+using AspnetCoreStarter.Entities.Database;
 
 namespace AspnetCoreStarter.Data;
 public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, ApplicationSettingsDbContext settingsContext)
@@ -34,7 +35,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
   public DbSet<PostType> PostTypes { get; set; } = default!;
   public DbSet<Keyword> Keywords { get; set; } = default!;
   public DbSet<Category> Categories { get; set; } = default!;
-  public DbSet<BaseDynamicEntity> DynamicEntities { get; set; }
+  public DbSet<DynamicDbContextConfig> DynamicEntities { get; set; }
 
   protected override void OnModelCreating(ModelBuilder modelBuilder)
   {
@@ -47,7 +48,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     {
       // EntityTypeBuilder<BaseDynamicEntity> entityBuilder = modelBuilder.Entity<BaseDynamicEntity>();
 
-      EntityTypeBuilder<Dictionary<string, BaseDynamicEntity>> entityBuilder = modelBuilder.SharedTypeEntity<Dictionary<string, BaseDynamicEntity>>(config.EntityName);
+      EntityTypeBuilder<Dictionary<string, DynamicDbContextConfig>> entityBuilder = modelBuilder.SharedTypeEntity<Dictionary<string, DynamicDbContextConfig>>(config.EntityName);
       // EntityTypeBuilder entityBuilder = modelBuilder.Entity(config.EntityName);
       //entityBuilder.HasBaseType(typeof(BaseDynamicEntity));
       // Configure the table name dynamically
@@ -111,11 +112,11 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
   }
 
   // Example of how you would query dynamically (using GetType() and shadow properties)
-  public IQueryable<T> QueryDynamicEntity<T>(string entityName) where T : BaseDynamicEntity
+  public IQueryable<T> QueryDynamicEntity<T>(string entityName) where T : DynamicDbContextConfig
   {
     // You would need to find the correct entity type that was configured
     // in OnModelCreating based on your entityName
-    var entityType = this.Model.FindEntityType(typeof(BaseDynamicEntity)); // This needs refinement to find the *specific* dynamic entity mapping for 'entityName'
+    var entityType = this.Model.FindEntityType(typeof(DynamicDbContextConfig)); // This needs refinement to find the *specific* dynamic entity mapping for 'entityName'
     if (entityType == null)
     {
       throw new InvalidOperationException($"No dynamic entity configuration found for '{entityName}'.");

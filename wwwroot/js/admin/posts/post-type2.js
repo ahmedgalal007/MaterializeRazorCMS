@@ -5,6 +5,7 @@
 'use strict';
 
 
+// import Page from '../../classes/cls-page.js';
 import Page from '/js/classes/cls-page.js';
 function editHandler(btn, page) { }
 let entityName = "Customer"; // "Order";

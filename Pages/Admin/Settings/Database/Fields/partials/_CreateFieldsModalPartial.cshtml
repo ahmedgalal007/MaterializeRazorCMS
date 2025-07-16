@@ -1,0 +1,70 @@
+@model AspnetCoreStarter.Pages.Settings.Database.FieldsModel
+@using AspnetCoreStarter.Common;
+@using AspnetCoreStarter.Entities.Posts;
+@{
+  var InputPrefix = "NewEntry";
+  // List<KeyValuePair<string, string>> Attributes = Model.autoCompeleteHelper.Query("", "Attribute").ToList() ?? new();
+  // List<KeyValuePair<string, string>> PostTypes = Model.autoCompeleteHelper.Query("", "PostType").ToList() ?? new();
+}
+<!-- Modal -->
+<div class="modal fade" id="createPostTypeModal" tabindex="-1" aria-labelledby="modalScrollableTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-xl" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalScrollableTitle">New Post Type</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+        </button>
+      </div>
+      <form method="post" id="createPostTypeForm">
+        <div class="modal-body">
+          <div class="row g-6">
+            <div class="col-md-6 col-sm-12">
+              <div class="form-floating form-floating-outline mb-5">
+                <input asp-for="@Model.NewEntity.PropertyName" class="form-control" placeholder="name of Property"
+                       aria-label="name of Property"
+                       value="@Model.NewEntity.PropertyName" />
+                <label for="Property_Name">Property Name</label>
+              </div>
+            </div>
+            <div class="col-md-6 col-sm-12">
+              <div class="form-floating form-floating-outline mb-5">
+                <input asp-for="@Model.NewEntity.PropertyType" class="form-control" placeholder="Type of Property"
+                       aria-label="Type of Property"
+                       value="@Model.NewEntity.PropertyType" disabled />
+                <label for="Property_Type">PropertyType</label>
+              </div>
+            </div>
+            <div class="col-md-6 col-sm-12">
+              <div class="form-floating form-floating-outline mb-5">
+                @Html.Select2EditorFor(x => x.NewEntity.PropertyName, $"NewEntry.ParentId", new(), "Parent PostType", "createCategory_ParentId")
+              </div>
+            </div>
+            <div class="col-sm-12">
+              <div class="card overflow-hidden mb-6 bt-6" style="height: 300px;">
+                <div class="card-body" id="vertical-scrollbar">
+                  <div id="post-type-attributes" class="form-repeater">
+                    <div data-repeater-list="NewEntry.Attributes" class="mt-1">
+
+                    </div>
+                    <div class="mb-0">
+                      <button type="button" class="btn btn-primary" data-repeater-create>
+                        <i class="ri-add-line me-1"></i>
+                        <span class="align-middle">Add</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary waves-effect waves-light">Save changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+

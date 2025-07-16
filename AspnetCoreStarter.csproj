@@ -56,6 +56,13 @@
     <Content Remove="wwwroot\js\common\crud-page-factory.dist.js" />
     <Content Remove="wwwroot\js\common\crud-page-factory.js" />
   </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Pages\Admin\Settings\Database\Fields\app-posts-attribute.dist.js" />
+    <None Remove="Pages\Admin\Settings\Database\Fields\fields.js" />
+    <None Remove="Pages\Admin\Settings\Database\Tables\app-posts-attribute.dist.js" />
+    <None Remove="Pages\Admin\Settings\Database\Tables\tables.js" />
+  </ItemGroup>
   <ItemGroup>
     <UpToDateCheckInput Remove="Pages\Shared\DisplayTemplates\BaseLocalizedEntity.cshtml" />
     <_ContentIncludedByDefault Remove="Pages\Shared\DisplayTemplates\BaseLocalizedEntity.cshtml" />
@@ -66,6 +73,8 @@
     <None Include="Pages\Shared\DisplayTemplates\BaseLocalizedEntity.cshtml" />
     <None Include="Pages\Shared\EditorTemplates\BaseLocalizedEntity.cshtml" />
     <None Include="wwwroot\css\framework.scss" />
+    <None Include="wwwroot\js\admin\settings\database\fields\index.dist.js" />
+    <None Include="wwwroot\js\admin\settings\database\tables\index.dist.js" />
     <None Include="wwwroot\js\common\crud-page-factory.dist.js" />
     <None Include="wwwroot\js\common\crud-page-factory.js" />
   </ItemGroup>

@@ -1,0 +1,30 @@
+@model AspnetCoreStarter.Pages.Settings.Database.TablesModel
+
+<div class="offcanvas offcanvas-end" tabindex="-1" id="createAttributeOffcanvas" aria-labelledby="createAttributeOffcanvasLabel">
+	<div class="offcanvas-header border-bottom">
+		<h5 class="offcanvas-title" id="createAttributeOffcanvasLabel">Create Attribute</h5>
+		<button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+	</div>
+	<div class="offcanvas-body mx-0 flex-grow-0">
+		<form method="post" id="createAttributeForm" >
+			<h6>1. Define Attribute.</h6>
+			<div class="form-floating form-floating-outline mb-5">
+        <input asp-for="NewEntity.TableName" class="form-control" placeholder="name of attribute type Like Integer | String"
+							 aria-label="name of attribute type Like Integer | String"
+               value="@Model.NewEntity.TableName" />
+				<label for="NewAttribute_Attribute">Attribute Name</label>
+			</div>
+			<div class="form-floating form-floating-outline mb-5">
+        <input asp-for="NewEntity.EntityName" class="form-control" placeholder="descripe the attribute data usage"
+               aria-label="Description Text" value="@Model.NewEntity.EntityName">
+				<label for="NewAttribute_Description">Description</label>
+			</div>
+			<div class="row">
+				<div class="col-12">
+					<button type="submit" class="btn btn-primary me-3">Submit</button>
+					<button type="reset" class="btn btn-outline-secondary" data-bs-dismiss="offcanvas">Cancel</button>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>

@@ -1,15 +1,15 @@
 @page
-@model AspnetCoreStarter.Pages.Apps.Categories.CategoryModel
+@model AspnetCoreStarter.Pages.Apps.Posts.PostTypeModel
 @using AspnetCoreStarter.Helpers;
 @using AspnetCoreStarter.Models;
 @using AspnetCoreStarter.Entities;
-@using AspnetCoreStarter.Entities.Categories;
-@using AspnetCoreStarter.Pages.Shared.EditorTemplates;
-@using System.Text.Json
 
 @{
-  ViewData["Title"] = "Categories";
+  ViewData["Title"] = "Post Types -Posts";
 }
+<h1>Post Types</h1>
+
+
 
 @section VendorStyles {
   <link rel="stylesheet" href="~/vendor/libs/datatables-bs5/datatables.bootstrap5.dist.css">
@@ -18,6 +18,7 @@
   <link rel="stylesheet" href="~/vendor/libs/sweetalert2/sweetalert2.dist.css" />
   <link rel="stylesheet" href="~/vendor/libs/&#64;form-validation/form-validation.dist.css" />
   <link rel="stylesheet" href="~/vendor/libs/select2/select2.dist.css" />
+  <link rel="stylesheet" href="~/vendor/libs/perfect-scrollbar/perfect-scrollbar.dist.css" />
   <!-- If you want all three styles, include pickr-themes.css -->
   <link rel="stylesheet" href="~/vendor/libs/pickr/pickr-themes.dist.css" />
 }
@@ -31,16 +32,17 @@
   <script src="~/vendor/libs/&#64;form-validation/auto-focus.dist.js"></script>
   <script src="~/vendor/libs/cleavejs/cleave.dist.js"></script>
   <script src="~/vendor/libs/cleavejs/cleave-phone.dist.js"></script>
-@*   <script src="~/vendor/libs/jquery-repeater/jquery-repeater.dist.js"></script>
- *@  <script src="~/vendor/libs/select2/select2.dist.js"></script>
+    <script src="~/vendor/libs/jquery-repeater/jquery-repeater.dist.js"></script>
+  <script src="~/vendor/libs/perfect-scrollbar/perfect-scrollbar.dist.js"></script>
+  <script src="~/vendor/libs/select2/select2.dist.js"></script>
   <script src="~/vendor/libs/pickr/pickr.dist.js"></script>
 }
 
 @section PageScripts {
   <script src="~/js/common/crud-page-setup.dist.js"></script>
   <script src="~/js/common/data-table-factory.dist.js"></script>
-  <script src="~/js/common/localization-helper.dist.js"></script>
-  <script src="~/js/app-categories-list.dist.js"></script>
+ @*  <script src="~/js/common/localization-helper.dist.js"></script> *@
+  <script src="~/js/admin/posts/post-type.dist.js"></script>
 }
 
 @* Attributes DataTable *@
@@ -51,17 +53,12 @@
       <h5 class="card-title">Search Filter</h5>
     </div>
     <div class="card-datatable table-responsive">
-      <table id="CategoriesTable" class="table">
+      <table id="PostTypesTable" class="table">
         <thead class="table-light">
           <tr>
             <th></th>
             <th>Id</th>
-            <th>CategoryURI</th>
-            <th>Slug</th>
-            <th>Parent</th>
-            <th>Color</th>
-            <th>Locals</th>
-            <th>Childrens</th>
+            <th>Name</th>
             <th>Action</th>
             <th></th>
           </tr>
@@ -74,30 +71,17 @@
             <tr idx="@index">
               <td></td>
               <td>@entity.Id</td>
-              <td class="text-nowrap">@entity.CategoryURI</td>
-              <td class="category-name-@entity.Id  text-truncate">@entity.Slug</td>
-              @* <td class="text-truncate">@entity.ParentId</td> *@
-              <td>
-                @{
-                  RenderParent(entity.Parent, Model.DefaultLanguage.IsoCode);
-                }
-              </td>
-              <td class="text-truncate">
-                @* @entity.Color *@
-                @Html.DisplayFor(x => entity.Color, "ColorPicker")
-              </td>
-              <td class="text-truncate">@JsonSerializer.Serialize(entity.Locales.ToList())</td>
-              <td class="text-truncate">@JsonSerializer.Serialize(entity.Childrens.Select(x  => x.Id).ToList())</td>
+              <td class="text-nowrap post-type-name">@entity.Name</td>
               <td class="text-nowrap">
                 @* Edit Button *@
-                <button class="btn btn-sm btn-icon edit-Category-button" data-bs-toggle="offcanvas"
-                        data-bs-target="#editCategoryOffcanvas" id="@entity.Id--editCategory">
+                <button class="btn btn-sm btn-icon edit-post-type-button" data-bs-toggle="modal"
+                        data-bs-target="#editPostTypeModal" id="@entity.Id--editPostType">
                   <i class="ri-edit-box-line ri-20px"></i>
                 </button>
                 @* Delete Button *@
                 <form method="post" asp-page-handler="Delete" asp-route-id="@entity.Id" id="@entity.Id--deleteForm"
                       onsubmit="showSuccessAlert('Deleted');" class="d-inline">
-                  <button class="btn btn-sm btn-icon" id="@entity.Id-deleteCategory" onclick="showDeleteConfirmation('@entity.Id')">
+                  <button class="btn btn-sm btn-icon" id="@entity.Id-deletePostType" onclick="showDeleteConfirmation('@entity.Id')">
                     <i class="ri-delete-bin-7-line ri-20px"></i>
                   </button>
                 </form>
@@ -127,17 +111,12 @@ else
       <h5 class="card-title mb-0">Search Filter</h5>
     </div>
     <div class="card-datatable table-responsive">
-      <table id="CategoriesTable" class="table">
+      <table id="PostTypesTable" class="table">
         <thead>
           <tr>
             <th></th>
             <th>Id</th>
-            <th>CategoryURI</th>
-            <th>Slug</th>
-            <th>Parent</th>
-            <th>Color</th>
-            <th>Locals</th>
-            <th>Childrens</th>
+            <th>Name</th>
             <th>Action</th>
             <th></th>
           </tr>
@@ -147,22 +126,27 @@ else
   </div>
 }
 
-
-@* Create Attribute Form Offcanvas Partial*@
-@await Html.PartialAsync("partials/_CreateCategoryOffcanvasPartial")
-
-@* Edit Attribute Form Offcanvas Partial*@
-@await Html.PartialAsync("partials/_EditCategoryOffcanvasPartial")
-
-
 @functions
 {
-  void RenderParent(Category parent, string langIsoCode)
-  {
-    if (parent is not null)
-    {
-      <div class="visually-hidden-focusable parentId">@parent.Id.ToString().ToUpper()</div>
-      <div class="parentName">@parent.GetLocal(langIsoCode)?.Name</div>
-    }
-  }
+  // void RenderParent(Category parent, string langIsoCode)
+  // {
+  //   if (parent is not null)
+  //   {
+  //     <div class="visually-hidden-focusable parentId">@parent.Id.ToString().ToUpper()</div>
+  //     <div class="parentName">@parent.GetLocal(langIsoCode)?.Name</div>
+  //   }
+  // }
 }
+
+@* Create Attribute Form Offcanvas Partial*@
+@await Html.PartialAsync("partials/_CreatePostTypeModalPartial")
+@await Html.PartialAsync("partials/_EditPostTypeModalPartial")
+
+@* Edit Attribute Form Offcanvas Partial*@
+@* @await Html.PartialAsync("partials/_EditAttributeOffcanvasPartial") *@
+
+
+
+<script>
+  PageLoaded();
+</script>

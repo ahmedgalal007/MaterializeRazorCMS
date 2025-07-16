@@ -1,0 +1,183 @@
+@model AspnetCoreStarter.Pages.Apps.Posts.PostTypeModel
+@using AspnetCoreStarter.Common;
+@using AspnetCoreStarter.Entities.Posts;
+@{
+  var InputPrefix = "NewEntry";
+  List<KeyValuePair<string, string>> Attributes = Model.autoCompeleteHelper.Query("", "Attribute").ToList() ?? new();
+  List<KeyValuePair<string, string>> PostTypes = Model.autoCompeleteHelper.Query("", "PostType").ToList() ?? new();
+}
+<!-- Modal -->
+<div class="modal fade" id="createPostTypeModal" tabindex="-1" aria-labelledby="modalScrollableTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-xl" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalScrollableTitle">New Post Type</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+        </button>
+      </div>
+      <form method="post" id="createPostTypeForm">
+        <div class="modal-body">
+          <div class="row g-6">
+            <div class="col-md-6 col-sm-12">
+              <div class="form-floating form-floating-outline mb-5">
+                <input asp-for="@Model.NewEntry.Name" class="form-control" placeholder="name of Post Type"
+                       aria-label="name of Post Type"
+                       value="@Model.NewEntry.Name" />
+                <label for="NewEntry_Name">Post Type Name</label>
+              </div>
+            </div>
+            <div class="col-md-6 col-sm-12">
+              <div class="form-floating form-floating-outline mb-5">
+                <input asp-for="@Model.NewEntry.Slug" class="form-control" placeholder="Slug of Post Type"
+                       aria-label="Post Type Slug"
+                       value="@Model.NewEntry.Slug" disabled />
+                <label for="NewEntry_Slug">Post Type Slug</label>
+              </div>
+            </div>
+            <div class="col-md-6 col-sm-12">
+              <div class="form-floating form-floating-outline mb-5">
+                @Html.Select2EditorFor(x => x.NewEntry.ParentId, $"NewEntry.ParentId", PostTypes, "Parent PostType", "createCategory_ParentId")
+              </div>
+            </div>
+            @* <div class="row">
+            <div class="col-12">
+            <button type="submit" class="btn btn-primary me-3">Submit</button>
+            <button type="reset" class="btn btn-outline-secondary" data-bs-dismiss="offcanvas">Cancel</button>
+            </div>
+            </div> *@
+            <div class="col-sm-12">
+              <div class="card overflow-hidden mb-6 bt-6" style="height: 300px;">
+                <div class="card-body" id="vertical-scrollbar">
+                  <div id="post-type-attributes" class="form-repeater">
+                    <div data-repeater-list="NewEntry.Attributes" class="mt-1">
+                      @if (Model.NewEntry.Attributes != null && Model.NewEntry.Attributes.Count > 0)
+                      {
+                        foreach (var item in Model.NewEntry.Attributes.Select((x, i) => new { value = x, index = i }))
+                        {
+                          await RenderAttribute(item.value, Attributes, PostTypes, item.index);
+                        }
+                      }
+                      else
+                      {
+                        await RenderAttribute(new PostTypeAttribute(), Attributes, PostTypes, 0);
+                      }
+                    </div>
+                    <div class="mb-0">
+                      <button type="button" class="btn btn-primary" data-repeater-create>
+                        <i class="ri-add-line me-1"></i>
+                        <span class="align-middle">Add</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary waves-effect waves-light">Save changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+@functions
+{
+  // Object GenerateSelect2ViewDataDictionary(string inputName, string inputId, List<KeyValuePair<string, string>> options)
+  // {
+  //     return new
+  //     {
+  //         Select2Model = new Select2Model(inputName, options, false, false, [], inputId)
+  //     };
+  // }
+  async Task RenderAttribute(PostTypeAttribute attribute, List<KeyValuePair<string, string>> attributes, List<KeyValuePair<string, string>> postTypes, int idx = 0)
+  {
+    // if (Model.AttributeTypes.Count == 0)
+    //   Model.AttributeTypes.Add(new Entities.Posts.Attribute());
+    if (Model.NewEntry.Attributes.Count == 0)
+      Model.NewEntry.Attributes.Add(new Entities.Posts.PostTypeAttribute() { IsReference = true });
+
+    <div data-repeater-item>
+      <div class="row">
+        @*<div class="col-1">
+
+    </div>*@
+        <div class="mb-1 col-lg-6 col-xl-3 col-12 mb-0">
+          <div class="form-floating form-floating-outline">
+            <div class="input-group mb-4">
+              <button class="btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-attribute-menu-@idx" aria-expanded="true" aria-controls="collapse-attribute-menu-@idx">
+                >>
+              </button>
+              <input data-entity="NewEntry.Attributes" data-idx="@idx" data-field="Name" type="text" id="Name" name="Name" class="form-control" placeholder="Write a descripteve name for attribute" />
+              @*<label for="Name">Attribute Name</label>*@
+            </div>
+          </div>
+        </div>
+        @*<div class="mb-1 col-lg-6 col-xl-3 col-12 mb-0">
+    <div class="form-floating form-floating-outline">
+    <input type="password" id="form-repeater-1-2" class="form-control" placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;" />
+    <label for="form-repeater-1-2">Password</label>
+    </div>
+    </div>*@
+        <div class="mb-1 col-lg-6 col-xl-3 col-12 mb-0">
+          <div class="form-floating form-floating-outline mb-5">
+            @Html.Select2EditorFor(
+                 x => x.NewEntry.Attributes[idx].TypeID,
+                 "TypeID",
+                 attributes,
+                 "",
+                 $"createPostType_Attributes[{idx}]_TypeID",
+                 "",
+                 new Dictionary<string, object>{
+                  {"data-entity", "NewEntry.Attributes"},
+                  {"data-idx", $"{idx}"},
+                  {"data-field", "TypeID"},
+            })
+          </div>
+        </div>
+        <div class="mb-1 col-lg-6 col-xl-3 col-12 mb-0">
+          <div class="form-floating form-floating-outline mb-0">
+            <div class="input-group">
+              <div class="input-group-text form-check mb-5">
+                @Html.CheckBox("IsReference",
+                     new Dictionary<string, object>{
+            {"id", $"createPostType_Attributes[{idx}]_IsReference"},
+            {"data-entity", "NewEntry.Attributes"},
+            {"data-idx", $"{idx}"},
+            {"data-field", "IsReference"},
+            {"onchange", $"alert(\"hi({idx})\");"},
+            {"onload", $"alert(\"hi({idx})\");"},
+            {"class", "form-check-control"},
+            {"checked", $"{(Model.NewEntry.Attributes[idx].IsReference? "checked" : "")}"}
+            })
+              </div>
+              <div>
+                @Html.Select2EditorFor(x => x.NewEntry.Attributes[idx].ReferenceId, "ReferenceId", postTypes, "", $"createPostType_Attributes[{idx}]_ReferenceId", "", new Dictionary<string, object>
+            {
+            {"data-entity", "NewEntry.Attributes"},
+            {"data-idx", $"{idx}"},
+            {"data-field", "ReferenceId"},
+            })
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- <div class="mb-6 col-lg-12 col-xl-2 col-12 d-flex align-items-center mb-0"> -->
+        <div class="mb-1 col-lg-12 col-xl-2 col-12 mb-0">
+          <button type="button" class="btn btn-outline-danger btn-xl" data-repeater-delete>
+            <i class="ri-close-line ri-24px me-1"></i>
+            <span class="align-middle">Delete</span>
+          </button>
+        </div>
+      </div>
+      <div class="row collapse" id="collapse-attribute-menu-@idx">
+        <div class="col-12 mb-0">
+          <h6>Collapse Me</h6>
+        </div>
+      </div>
+    </div>
+    <hr class="mt-0">
+  }
+}

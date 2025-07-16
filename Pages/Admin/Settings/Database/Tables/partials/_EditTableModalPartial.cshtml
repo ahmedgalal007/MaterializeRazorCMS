@@ -1,0 +1,31 @@
+@model AspnetCoreStarter.Pages.Apps.Posts.PostTypeModel
+<!-- Modal -->
+<div class="modal fade" id="editPostTypeModal" tabindex="-1" aria-labelledby="modalScrollableTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalScrollableTitle">Modal title</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+        </button>
+      </div>
+      <div class="modal-body">
+        <form method="post" asp-page-handler="EditOrUpdate" asp-route-id="" id="editPostTypeForm">
+          <div class="form-floating form-floating-outline mb-5">
+            <input class="form-control" id="NewEntry_Name" name="NewEntry.Name" value="" />
+            <label for="NewEntry_Name">PostType Name</label>
+          </div>
+          <div class="row">
+            <div class="col-12">
+              <button type="submit" class="btn btn-primary me-3">Submit</button>
+              <button type="reset" class="btn btn-outline-secondary" data-bs-dismiss="offcanvas">Cancel</button>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>

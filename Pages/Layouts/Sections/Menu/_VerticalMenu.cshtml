@@ -46,136 +46,166 @@
         <div data-i18n="UserCRUD">UserCRUD</div>
       </a>
     </li>
-    <!-- / Keywords Main Menu -->
-    <li class='menu-item@(currentPage.StartsWith("/Apps/Keywords") ? " active open" : "")'>
-      <a href="javascript:void(0);" class="menu-link menu-toggle">
-        <i class='menu-icon tf-icons ri-layout-2-line'></i>
-        <div data-i18n="Keywords">Keywords</div>
-      </a>
-      <ul class="menu-sub">
-        <li class='menu-item@(currentPage == "/Apps/Keywords/List" ? " active" : "")'>
-          <a asp-page="/Apps/Keywords/List" class="menu-link">
-            <div data-i18n="ListKeywords">Keywords List</div>
-          </a>
-        </li>
-      </ul>
-    </li>
-    <!-- / Categories Main Menu -->
-    <li class='menu-item@(currentPage.StartsWith("/Apps/Categories") ? " active open" : "")'>
-      <a href="javascript:void(0);" class="menu-link menu-toggle">
-        <i class='menu-icon tf-icons ri-layout-2-line'></i>
-        <div data-i18n="Categories">Categories</div>
-      </a>
-      <ul class="menu-sub">
-        <li class='menu-item@(currentPage == "/Apps/Categories/List" ? " active" : "")'>
-          <a asp-page="/Apps/Categories/List" class="menu-link">
-            <div data-i18n="ListCategories">Category List</div>
-          </a>
-        </li>
-      </ul>
-    </li>
-    <!-- / Posts Main Menu -->
-    <li class='menu-item@(currentPage.StartsWith("/Apps/Posts") ? " active open" : "")'>
-      <a href="javascript:void(0);" class="menu-link menu-toggle">
-        <i class='menu-icon tf-icons ri-layout-2-line'></i>
-        <div data-i18n="Posts">Posts</div>
-      </a>
-      <ul class="menu-sub">
-        <li class='menu-item@(currentPage == "/Apps/Posts/Attribute" ? " active" : "")'>
-          <a asp-page="/Apps/Posts/Attribute" class="menu-link">
-            <div data-i18n="Attribute">Attribute</div>
-          </a>
-        </li>
-        <li class='menu-item@(currentPage == "/Apps/Posts/PostType" ? " active" : "")'>
-          <a asp-page="/Apps/Posts/PostType" class="menu-link">
-            <div data-i18n="PostType">Post Type</div>
-          </a>
-        </li>
-        <li class='menu-item@(currentPage == "/Apps/Posts/PostType2" ? " active" : "")'>
-          <a asp-page="/Apps/Posts/PostType2" class="menu-link">
-            <div data-i18n="PostType">Post Type 2</div>
-          </a>
-        </li>
-      </ul>
-    </li>
-
-    <!-- / Users Main Menu -->
-    <li class='menu-item@(currentPage.StartsWith("/Apps/Users") ? " active open" : "")'>
-      <a href="javascript:void(0);" class="menu-link menu-toggle">
-        <i class='menu-icon tf-icons ri-layout-2-line'></i>
-        <div data-i18n="Users">Users</div>
-      </a>
-      <ul class="menu-sub">
-        <li class='menu-item@(currentPage == "/Apps/Users/List" ? " active" : "")'>
-          <a asp-page="/Apps/Users/List" class="menu-link">
-            <div data-i18n="List">List</div>
-          </a>
-        </li>
-      </ul>
-    </li>
-
-    <!-- / ExtendedUi Main Menu -->
-    <li class='menu-item@(currentPage.StartsWith("/ExtendedUi") ? " active open" : "")'>
-      <a href='javascript:void(0);' class='menu-link menu-toggle'>
-        <i class='menu-icon tf-icons ri-shopping-bag-3-line'></i>
-        <div data-i18n="ExtendedUi">Extended Ui</div>
-      </a>
-      <ul class='menu-sub'>
-        <li class='menu-item@(currentPage == "/ExtendedUi/DragDrop" ? " active" : "")'>
-          <a asp-page='/ExtendedUi/DragDrop' class='menu-link'>
-            <div data-i18n='DragDrop'>Drag Drop</div>
-          </a>
-        </li>
-      </ul>
-    </li>
-    <!-- / Products Main Menu -->
-    <li class='menu-item@(currentPage.StartsWith("/Apps/Products") ? " active open" : "")'>
-      <a href='javascript:void(0);' class='menu-link menu-toggle'>
-        <div data-i18n='Products'>Products</div>
-      </a>
-      <ul class='menu-sub'>
-        <li class='menu-item@(currentPage == "/Apps/Products/ProductList" ? " active" : "")'>
-          <a asp-page='/Apps/Products/ProductList' class='menu-link'>
-            <div data-i18n='Product List'>Product List</div>
-          </a>
-        </li>
-        <li class='menu-item@(currentPage == "/Apps/Products/ProductAdd" ? " active" : "")'>
-          <a asp-page='/Apps/Products/ProductAdd' class='menu-link'>
-            <div data-i18n='Add Product'>Add Product</div>
-          </a>
-        </li>
-        <li class='menu-item@(currentPage == "/Apps/Products/CategoryList" ? " active" : "")'>
-          <a asp-page='/Apps/Products/CategoryList' class='menu-link'>
-            <div data-i18n='Category List'>Category List</div>
-          </a>
-        </li>
-      </ul>
-    </li>
-
-
-
     <!-- / Settings Main Menu -->
-    <li class='menu-item@(currentPage.StartsWith("/Settings") ? " active open" : "")'>
+    <li class='menu-item@(currentPage.StartsWith("/Admin/Settings") ? " active open" : "")'>
       <a href="javascript:void(0);" class="menu-link menu-toggle">
-        <i class='menu-icon tf-icons ri-tools-fill'></i>
+        <i class='menu-icon tf-icons ri-settings-3-line'></i>
         <div data-i18n="Settings">Settings</div>
       </a>
-      <ul class="menu-sub">
-        <li class='menu-item@(currentPage.StartsWith("/Settings") ? " active open" : "")'>
+      <ul class="menu-sub ">
+        <li class='ml-1 menu-item@(currentPage.StartsWith("/Admin/Settings/Database") ? " active open" : "")'>
           <a href="javascript:void(0);" class="menu-link menu-toggle">
-            <i class='menu-icon tf-icons ri-store-2-line'></i>
-            <div data-i18n="Store">Store</div>
+            <i class='menu-icon tf-icons ri-database-2-line'></i>
+            <div data-i18n="Database">Database</div>
           </a>
           <ul class="menu-sub">
-            <li class='menu-item@(currentPage == "/Settings/StoreDetails" ? " active" : "")'>
-              <a asp-page="/Settings/StoreDetails" class="menu-link">
-                <div data-i18n="StoreDetails">Store Details</div>
+            <li class='menu-item@(currentPage == "/Admin/Settings/Database/Tables/Index" ? " active" : "")'>
+              <a asp-page="/Admin/Settings/Database/Tables/Index" class="menu-link">
+                <i class='me-1 menu-icon tf-icons ri-table-line'></i>
+                <div data-i18n="Tables">Tables</div>
               </a>
             </li>
-          </ul>
+            <li class='menu-item@(currentPage == "/Admin/Settings/Database/Fields/Index" ? " active" : "")'>
+              <a asp-page="/Admin/Settings/Database/Fields/Index" class="menu-link">
+                <i class='me-1 menu-icon tf-icons ri-input-field'></i>
+                <div data-i18n="Fields">Fields</div>
+              </a>
+            </li>
         </li>
       </ul>
-    </li>
+  </ul>
+  </li>
+
+  <!-- / Keywords Main Menu -->
+  <li class='menu-item@(currentPage.StartsWith("/Admin/Keywords") ? " active open" : "")'>
+    <a href="javascript:void(0);" class="menu-link menu-toggle">
+      <i class='menu-icon tf-icons ri-layout-2-line'></i>
+      <div data-i18n="Keywords">Keywords</div>
+    </a>
+    <ul class="menu-sub">
+      <li class='menu-item@(currentPage == "/Admin/Keywords/List" ? " active" : "")'>
+        <a asp-page="/Admin/Keywords/List" class="menu-link">
+          <div data-i18n="ListKeywords">Keywords List</div>
+        </a>
+      </li>
+    </ul>
+  </li>
+  <!-- / Categories Main Menu -->
+  <li class='menu-item@(currentPage.StartsWith("/Admin/Categories") ? " active open" : "")'>
+    <a href="javascript:void(0);" class="menu-link menu-toggle">
+      <i class='menu-icon tf-icons ri-layout-2-line'></i>
+      <div data-i18n="Categories">Categories</div>
+    </a>
+    <ul class="menu-sub">
+      <li class='menu-item@(currentPage == "/Admin/Categories/List" ? " active" : "")'>
+        <a asp-page="/Admin/Categories/List" class="menu-link">
+          <div data-i18n="ListCategories">Category List</div>
+        </a>
+      </li>
+    </ul>
+  </li>
+  <!-- / Posts Main Menu -->
+  <li class='menu-item@(currentPage.StartsWith("/Admin/Posts") ? " active open" : "")'>
+    <a href="javascript:void(0);" class="menu-link menu-toggle">
+      <i class='menu-icon tf-icons ri-layout-2-line'></i>
+      <div data-i18n="Posts">Posts</div>
+    </a>
+    <ul class="menu-sub">
+      <li class='menu-item@(currentPage == "/Admin/Posts/Attribute" ? " active" : "")'>
+        <a asp-page="/Admin/Posts/Attribute" class="menu-link">
+          <div data-i18n="Attribute">Attribute</div>
+        </a>
+      </li>
+      <li class='menu-item@(currentPage == "/Admin/Posts/PostType" ? " active" : "")'>
+        <a asp-page="/Admin/Posts/PostType" class="menu-link">
+          <div data-i18n="PostType">Post Type</div>
+        </a>
+      </li>
+      <li class='menu-item@(currentPage == "/Admin/Posts/PostType2" ? " active" : "")'>
+        <a asp-page="/Admin/Posts/PostType2" class="menu-link">
+          <div data-i18n="PostType">Post Type 2</div>
+        </a>
+      </li>
+    </ul>
+  </li>
+
+  <!-- / Users Main Menu -->
+  <li class='menu-item@(currentPage.StartsWith("/Apps/Users") ? " active open" : "")'>
+    <a href="javascript:void(0);" class="menu-link menu-toggle">
+      <i class='menu-icon tf-icons ri-layout-2-line'></i>
+      <div data-i18n="Users">Users</div>
+    </a>
+    <ul class="menu-sub">
+      <li class='menu-item@(currentPage == "/Apps/Users/List" ? " active" : "")'>
+        <a asp-page="/Apps/Users/List" class="menu-link">
+          <div data-i18n="List">List</div>
+        </a>
+      </li>
+    </ul>
+  </li>
+
+  <!-- / ExtendedUi Main Menu -->
+  <li class='menu-item@(currentPage.StartsWith("/ExtendedUi") ? " active open" : "")'>
+    <a href='javascript:void(0);' class='menu-link menu-toggle'>
+      <i class='menu-icon tf-icons ri-shopping-bag-3-line'></i>
+      <div data-i18n="ExtendedUi">Extended Ui</div>
+    </a>
+    <ul class='menu-sub'>
+      <li class='menu-item@(currentPage == "/ExtendedUi/DragDrop" ? " active" : "")'>
+        <a asp-page='/ExtendedUi/DragDrop' class='menu-link'>
+          <div data-i18n='DragDrop'>Drag Drop</div>
+        </a>
+      </li>
+    </ul>
+  </li>
+  <!-- / Products Main Menu -->
+  <li class='menu-item@(currentPage.StartsWith("/Apps/Products") ? " active open" : "")'>
+    <a href='javascript:void(0);' class='menu-link menu-toggle'>
+      <div data-i18n='Products'>Products</div>
+    </a>
+    <ul class='menu-sub'>
+      <li class='menu-item@(currentPage == "/Apps/Products/ProductList" ? " active" : "")'>
+        <a asp-page='/Apps/Products/ProductList' class='menu-link'>
+          <div data-i18n='Product List'>Product List</div>
+        </a>
+      </li>
+      <li class='menu-item@(currentPage == "/Apps/Products/ProductAdd" ? " active" : "")'>
+        <a asp-page='/Apps/Products/ProductAdd' class='menu-link'>
+          <div data-i18n='Add Product'>Add Product</div>
+        </a>
+      </li>
+      <li class='menu-item@(currentPage == "/Apps/Products/CategoryList" ? " active" : "")'>
+        <a asp-page='/Apps/Products/CategoryList' class='menu-link'>
+          <div data-i18n='Category List'>Category List</div>
+        </a>
+      </li>
+    </ul>
+  </li>
+
+
+
+  <!-- / Settings Main Menu -->
+  <li class='menu-item@(currentPage.StartsWith("/Settings") ? " active open" : "")'>
+    <a href="javascript:void(0);" class="menu-link menu-toggle">
+      <i class='menu-icon tf-icons ri-tools-fill'></i>
+      <div data-i18n="Settings">Settings</div>
+    </a>
+    <ul class="menu-sub">
+      <li class='menu-item@(currentPage.StartsWith("/Settings") ? " active open" : "")'>
+        <a href="javascript:void(0);" class="menu-link menu-toggle">
+          <i class='menu-icon tf-icons ri-store-2-line'></i>
+          <div data-i18n="Store">Store</div>
+        </a>
+        <ul class="menu-sub">
+          <li class='menu-item@(currentPage == "/Settings/StoreDetails" ? " active" : "")'>
+            <a asp-page="/Settings/StoreDetails" class="menu-link">
+              <div data-i18n="StoreDetails">Store Details</div>
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
   </ul>
 
 </aside>

@@ -1,5 +1,6 @@
 using AspnetCoreStarter.Entities;
 using Microsoft.EntityFrameworkCore;
+using AspnetCoreStarter.Entities.Database;
 using Microsoft.Extensions.Options;
 
 namespace AspnetCoreStarter.Data;
@@ -12,6 +13,7 @@ public class ApplicationSettingsDbContext(DbContextOptions<ApplicationSettingsDb
 
   public DbSet<AppSetting> AppSettings { get; set; } = null!;
   public DbSet<DynamicTableConfig> TablesConfig { get; set; } = null!;
+  public DbSet<DynamicPropertyConfig> PropertyConfigs { get; set; } = null!;
 
   protected override void OnModelCreating(ModelBuilder modelBuilder)
   {

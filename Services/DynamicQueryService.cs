@@ -1,16 +1,13 @@
 using AspnetCoreStarter.Data;
+using AspnetCoreStarter.Entities.Database;
 using AspnetCoreStarter.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Internal;
-using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Reflection;
 
 namespace AspnetCoreStarter.Services;
 
-public class DynamicQueryService : IDynamicQueryService
+public partial class DynamicQueryService : IDynamicQueryService
 {
   private readonly ApplicationDbContext _context;
 
@@ -44,7 +41,7 @@ public class DynamicQueryService : IDynamicQueryService
     };
 
     var dbSet = dbSetProperty is null ?
-                          _context.Set<Dictionary<string, BaseDynamicEntity>>(entityName)!.Cast<Dictionary<string, BaseDynamicEntity>>() :
+                          _context.Set<Dictionary<string, DynamicDbContextConfig>>(entityName)!.Cast<Dictionary<string, DynamicDbContextConfig>>() :
                           GetDbSetByEntityName(_context, entityType)!.Cast<object>();
 
     // var filteredQuery = (IQueryable)genericWhereMethod.Invoke(null, new object[] { dbSet, lambda });
@@ -63,19 +60,6 @@ public class DynamicQueryService : IDynamicQueryService
       Start = start,
       Length = length
     };
-  }
-  public struct PropertyFilter
-  {
-    public PropertyFilter(string propertyName, object propertyValue, string comparisonType = "Equals")
-    {
-      PropertyName = propertyName;
-      PropertyValue = propertyValue;
-      ComparisonType = comparisonType;
-    }
-
-    public string PropertyName { get; set; }
-    public object PropertyValue { get; set; }
-    public string ComparisonType { get; set; } = "Equals";
   }
 
   public static IQueryable? GenerateQueryFilters(IQueryable? query, Type entityType, string entityName, PropertyFilter[] filters)
