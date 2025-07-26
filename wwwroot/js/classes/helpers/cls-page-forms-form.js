@@ -5,9 +5,11 @@
 'use strict';
 
 export class clsPageFormsForm extends HTMLFormElement {
-  constructor(container) {
+  constructor(container, dtAction) {
     super();
     this.container = container;
+    this.action = dtAction.url;
+    this.method = dtAction.method || 'POST';
     // this.Controls = new HTMLCollection<HTMLFormControlElement>();
     // console.log(this.elements);
   }

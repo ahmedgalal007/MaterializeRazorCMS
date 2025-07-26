@@ -7,18 +7,22 @@ using AspnetCoreStarter.Entities.Posts;
 using AspnetCoreStarter.Endpoints.Schemas;
 using AspnetCoreStarter.Endpoints.Admin.Settings.Database;
 using AspnetCoreStarter.Entities.Database;
+using Microsoft.AspNetCore.Antiforgery;
 
 namespace AspnetCoreStarter.Endpoints;
 public static class ApiEndpointsExtension
 {
   public static void MapUserEndpoints(this IEndpointRouteBuilder routes)
   {
+    new AntiForgeryEndpoints(routes, "/api/antiforgery", nameof(User));
     new UsersEndpoints(routes, "/api/User", nameof(User));
     new PostTypessEndpoints(routes, "/api/PostType", nameof(PostType));
     new EntitiesEndpoints(routes, "/api/Entity", "Entitiy");
     new SchemaEndpoints(routes, "/api/Schema", "Schema");
 
     new DynamicTableConfigEndpoints(routes, "/api/Admin/Database/Tables", nameof(DynamicTableConfig));
+
+
   }
 }
 

@@ -75,8 +75,8 @@ export class clsPageDataTable {
     for (const i of data.columns.sort(sortByIndex)) {
       let elem = $(this.Selector).find('tr').append('<th>' + i.data + '</th');
     }
-    for (var frm of this.getFormFieldsOptions()) {
-      this.Forms.push(new clsPageFormsBase(frm.name, this.Page, this.generateFormId(frm.name), frm.fields, this.IsModal));
+    for (var action of this.getFormFieldsOptions()) {
+      this.Forms.push(new clsPageFormsBase(action, this.Page, this.generateFormId(action.name), action.fields, this.IsModal));
     }
 
 
@@ -97,7 +97,7 @@ export class clsPageDataTable {
           fields.push(field.options);
         }
       });
-      options.push({name: action.name, fields:fields});
+      options.push({name: action.name, fields:fields,url:action.url,method:action.method});
     }
     return options;
   }

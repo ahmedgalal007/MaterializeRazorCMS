@@ -82,7 +82,7 @@ app.UseAuthorization();
 // await app.UseRolesAndPermissions();
 
 app.MapRazorPages();
-
+app.UseAntiforgery();
 app.MapUserEndpoints();
 
 app.Run();

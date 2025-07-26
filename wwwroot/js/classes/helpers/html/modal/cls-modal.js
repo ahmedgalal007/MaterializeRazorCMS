@@ -36,6 +36,19 @@ export class clsHelpersHtmlModal extends HTMLDivElement{
     modalBody.height = 150;
     modalBody.className = "modal-body";
 
+    // Add Ststus Divs
+    let statusFailure = document.createElement('div');
+    statusFailure.setAttribute('role', 'alert');
+    statusFailure.className = "status-failure";
+    statusFailure.innerHTML = "Connection failure, please try again.";
+    this.Form.Form.appendChild(statusFailure);
+    let statusBusy = document.createElement('div');
+    statusBusy.setAttribute('role', 'alert');
+    statusBusy.className = "status-busy";
+    statusBusy.innerHTML = "Busy sending data, please wait.";
+    this.Form.Form.appendChild(statusBusy);
+    statusFailure.hidden = true;
+    statusBusy.hidden = true;
     new clsDynamicFormEngine(this.Form, modalBody);
     //let bTxt = new inputs.Basic.TextField(this.Form, "BasicTestName", {});
     //modalBody.appendChild(bTxt);
@@ -50,8 +63,10 @@ export class clsHelpersHtmlModal extends HTMLDivElement{
     this.childNodes.forEach(nd => {
       content.appendChild(nd);
     })
-      
-    content.appendChild(this.Footer);
+
+    
+    // content.appendChild(this.Footer);
+    this.Form.Form.appendChild(this.Footer);
     this.appendChild(content);
     this.Form.appendChild(this);
   }

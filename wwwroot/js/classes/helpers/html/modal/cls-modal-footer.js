@@ -5,6 +5,7 @@
 export class clsHelpersHtmlModalFooter extends HTMLDivElement {
   constructor(modal) {
     super();
+    this.Modal = modal;
     this.render();
   }
 
@@ -24,8 +25,8 @@ export class clsHelpersHtmlModalFooter extends HTMLDivElement {
     this.appendChild(btnClose);
     let btnSave = document.createElement("button");
     btnSave.className = "btn btn-outline-secondary";
-    btnSave.setAttribute('type', 'button');
-    btnSave.innerText = "Save changes";
+    btnSave.setAttribute('type', 'submit');
+    btnSave.innerText = this.Modal.Form.FormActionName || "Save changes";
     this.appendChild(btnSave);
   }
 }

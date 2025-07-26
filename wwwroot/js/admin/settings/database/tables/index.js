@@ -25,8 +25,8 @@ const dataTableOptions = {
             id: 'TableName',
             name: "TableName",
             typeName: 'TextField',
-            size: 'lg',
-            colSize: 8
+            size: '',//'lg',
+            colSize: 6
           }
         },
         {
@@ -34,12 +34,14 @@ const dataTableOptions = {
             id: 'EntityName',
             name: "EntityName",
             typeName: 'TextField',
-            size: 'lg',
-            colSize: 8
+            size: '',//'lg',
+            colSize: 6
           }
         }
       ],
-      name: 'create'
+      name: 'create',
+      method: 'POST',
+      url: '/api/admin/database/tables/',
     },
     {
       columns: [
@@ -73,14 +75,16 @@ const dataTableOptions = {
           }
         }
       ],
-      name: 'update'
+      name: 'update',
+      method: 'PUT',
+      url: '/api/admin/database/tables/',
     }
   ],
   columnDefs: []
 };
 $(document).ready(function () {
   console.log("Page Loaded");
-  const page = new Page(this, '#app-page', config, entityName, "/Apps/Posts/PostType", editHandler, FormValidation, "#DynamicTableConfigTable", dataTableOptions);
+  const page = new Page(this, '#app-page', config, entityName, "/api/Admin/Database/Tables", editHandler, FormValidation, "#DynamicTableConfigTable", dataTableOptions);
   const { borderColor, bodyBg, headingColor } = page.getConfigColors(isDarkStyle);
   PageLoaded();
 
